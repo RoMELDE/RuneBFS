@@ -1,0 +1,87 @@
+html{
+    height: 100%;
+}
+
+body {
+    padding-top: 60px;
+    font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    height: 100%;
+}
+
+.panel-heading {
+    cursor: pointer;
+}
+
+#main{
+    overflow-x :auto;
+    height: 100%;
+    padding: 20px 0;
+    position: relative;
+}
+
+#main .rune-container{
+    position: relative;
+}
+#main .rune-container canvas{
+    position: absolute;
+}
+
+#main .rune{
+    width: 10px;
+    height: 10px;
+    background: black;
+    z-index: 2;
+    cursor: pointer;
+    position: absolute;
+}
+
+#main .rune.rune-center{
+    background: gold;
+    cursor:default;
+}
+#main .rune.rune-checked{
+    background: blue;
+}
+#main .rune.rune-saved{
+    background: green;
+}
+#main .rune.rune-special{
+    border: 2px dotted greenyellow;
+}
+#main .rune.rune-not-available{
+    background: rgba(222, 222, 222, 0.2);
+    border:none;
+    cursor:not-allowed;
+}
+
+.rune-cost{
+    position: absolute;
+    top: 60px;
+    right: 25px;
+    background: rgba(200, 200, 200, 0.5);
+    padding: 10px;
+    min-width: 100px;
+    text-align: right;
+    z-index: 5;
+}
+
+.notAvailable{
+    filter: grayscale(100%);
+}
+
+.top-background {
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    height: 125px;
+    background: linear-gradient(180deg, white, white 75px, transparent 100px, transparent);
+    z-index: 3;
+}
+
+.row-top-buffer {
+    margin-top: 20px;
+}
+
+.noUi-connect {
+    background: #337ab7;
+}

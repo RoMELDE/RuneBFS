@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>*α*ROMEL Rune BFS</title>
+    <!-- Bootstrap -->
+    <link href="css/libs/bootstrap.min.css" rel="stylesheet">
+    <link href="css/libs/bootstrap-select.min.css" rel="stylesheet">
+    <link href="css/libs/nprogress.css" rel="stylesheet">
+    <link href="css/libs/nouislider.min.css" rel="stylesheet">
+    <link href="css/libs/nouislider.pips.css" rel="stylesheet">
+    <link href="css/libs/nouislider.tooltips.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+                <a class="navbar-brand" href="#">ROMEL Rune Breadth-First-Search<sup>α</sup></a>
+                <!--β-->
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <span data-lang="class">class</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#class/1" data-class-id="1">剑士</a></li>
+                            <li><a href="#class/2" data-class-id="2">魔法师</a></li>
+                            <li><a href="#class/3" data-class-id="3">盗贼</a></li>
+                            <!--<li><a href="#class/4" data-class-id="4">弓箭手</a></li>-->
+                            <li><a href="#class/5" data-class-id="5">服事</a></li>
+                            <li><a href="#class/6" data-class-id="6">商人</a></li>
+                        </ul>
+                    </li>
+                    <form class="navbar-form navbar-left">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="查询符文" id="txtSearch">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" id="btnSearch">查询</button>
+                                <button type="button" class="btn btn-default" id="btnClear">清空</button>
+                            </span>
+                        </div>
+                    </form>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <p class="navbar-text">当前版本：116215</p>
+                    <li><a href="http://ro.xd.com/" target="_blank" data-lang="officalsite">OfficalSite</a></li>
+                    <li><a href="http://nga.178.com/thread.php?fid=555/" target="_blank" data-lang="donate">Donate</a></li>
+                    <li class="dropdown" style="display:none">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <span class='glyphicon glyphicon-globe'></span>
+                            <span data-lang="ui">UI</span>
+                            <span id="currentLang"></span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#lang/ja-JP">日本語</a></li>
+                            <li><a href="#lang/zh-TW">正體中文</a></li>
+                            <li><a href="#lang/en-US">English</a></li>
+                            <li><a href="#lang/zh-CN">简体中文</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" style="display:none">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <span class='glyphicon glyphicon-file'></span>
+                            <span data-lang="data">Data</span>
+                            <span id="currentDataLang"></span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#lang/data/ja-JP">日本語</a></li>
+                            <li><a href="#lang/data/zh-TW">正體中文</a></li>
+                            <li><a href="#lang/data/en-US">English</a></li>
+                            <li><a href="#lang/data/zh-CN">简体中文</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+    </nav>
+    <div id="main">
+    </div>
+    <div id="cost" class="rune-cost">
+        <div>已选：<span id="runeCost">0</span></div>
+        <div>本次：<span id="runeCheckCost">0</span></div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-danger" id="btnReset">重置本次选择</button>
+            <button type="button" class="btn btn-primary" id="btnSave">保存</button>
+        </div>
+    </div>
+    <script src="js/libs/nprogress.js"></script>
+    <script src="js/libs/require.js" data-main="js/main" defer async="true"></script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-97666474-2', 'auto');
+        ga('send', 'pageview');
+    </script>
+</body>
+
+</html>
