@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZString', 'bitset', 'text!../template/skillDesc.html', 'bootstrap', 'bootstrap-select', 'jquery.unveil'], function ($, _, Backbone, Data, Ui, noUiSlider, LZString, BitSet, skillDescTemplate) {
+define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZString', 'bootstrap', 'bootstrap-select', 'jquery.unveil'], function ($, _, Backbone, Data, Ui, noUiSlider, LZString, BitSet, skillDescTemplate) {
     var activeMenu = "";
     var runeList = [];
     var runeCheckList = [];
