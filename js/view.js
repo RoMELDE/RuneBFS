@@ -104,16 +104,17 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         });
 
         renderRuneLink();
+        renderCost();
 
-        $('#btnSearch').click(function () {
+        $('#btnSearch').off('click').click(function () {
             var text = $('#txtSearch').val();
             $('.rune[data-original-title*="' + text + '"]').popover('show');
         });
-        $('#btnClear').click(function () {
+        $('#btnClear').off('click').click(function () {
             $('[data-toggle="popover"]').popover('hide');
         });
 
-        $('#btnReset').click(function () {
+        $('#btnReset').off('click').click(function () {
             if (confirm("是否重置本次选择？")) {
                 _.each(runeCheckList, function (o, i) {
                     var $rune = $("#rune" + o);
@@ -126,7 +127,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 renderCost();
             }
         });
-        $('#btnSave').click(function () {
+        $('#btnSave').off('click').click(function () {
             save();
         });
 
