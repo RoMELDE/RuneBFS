@@ -1,7 +1,7 @@
-# RO Mobile: Eternal Love Skill Simulator
+# RO Mobile: Eternal Love Rune Simulator
 
-All skill data && image rights belong to XinDong.
+All rune data rights belong to XinDong.
 
 ### Todo 
 
-- Share
+- ???
