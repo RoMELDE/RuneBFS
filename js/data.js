@@ -174,6 +174,7 @@ define(['jquery'], function () {
 
     var formatRunetip = function (Runetip) {
         var text = formatRichText(Runetip.Runetip);
+        Runetip.SkillTipParm = Runetip.SkillTipParm || [];
         for (var i = 0; i < Runetip.SkillTipParm.length; i++) {
             text = text.replace("%s", Runetip.SkillTipParm[i]);
         }
