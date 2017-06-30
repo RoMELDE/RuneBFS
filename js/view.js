@@ -90,7 +90,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                     .attr("data-toggle", "")
                     .off('click');
             }
-            if (_.findKey(cost,function(o){return o=="金色徽章";})) {
+            if (_.any(cost, function (o) { return o.Id == 5261; })) {
                 $rune.addClass("rune-special");
             }
             $div.append($rune);
