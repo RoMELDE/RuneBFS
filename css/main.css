@@ -21,7 +21,7 @@ body {
 
 #main .rune-container{
     position: relative;
-    margin: 10px;
+    margin: 0 10px;
 }
 #main .rune-container canvas{
     position: absolute;
