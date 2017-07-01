@@ -28,6 +28,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         //$("body>div[data-tab]").hide();
         var current = $("nav.navbar [data-class-id=" + id + "]");
         current.parents('li').addClass('active');
+        $('#class').text(current.text());
     };
     var init = function (id, savedata) {
         clear();
