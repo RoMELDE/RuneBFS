@@ -153,9 +153,9 @@ define(['jquery'], function () {
 
         var relax = function (v) {
             _.each(getRuneLink(v), function (w) {
-                //if (disableEvo3 && (_.find(data.astrolabe, function (p) { return p.Id === parseInt(w); }) || {}).Evo === 3) {
-                //    return;
-                //}
+                if (disableEvo3 && (_.find(data.astrolabe, function (p) { return p.Id === parseInt(w); }) || {}).Evo === 3) {
+                    return;
+                }
                 var weight = getRuneWeight(w, param);
                 if (distTo[w] > distTo[v] + weight) {
                     distTo[w] = distTo[v] + weight;
