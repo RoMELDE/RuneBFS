@@ -63,10 +63,13 @@ body {
 }
 
 .rune-panel .rune-panel-main{
-    background: rgba(200, 200, 200, 0.5);
-    padding: 10px;
+    background: rgba(220, 220, 220, 0.8);
+    padding: 5px 10px;
     min-width: 100px;
     text-align: right;
+}
+.rune-panel .rune-panel-main>div{
+    margin: 5px 0;
 }
 
 .rune-panel .rune-panel-switch{
@@ -82,7 +85,7 @@ body {
 .rune-panel .rune-panel-divider{
     margin:5px 0;
     height: 1px;
-    background: black;
+    background: white;
 }
 
 .notAvailable{

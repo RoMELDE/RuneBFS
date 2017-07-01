@@ -110,11 +110,36 @@
             <div>启用进阶符文
                 <div class="btn-group" data-toggle="buttons">
                     <label class="btn btn-default">
-                    <input type="radio" name="evo3" id="radEvo3Disable" autocomplete="off" value="false">不启用
-                </label>
+                        <input type="radio" name="evo3" id="radEvo3Disable" autocomplete="off" value="false">不启用
+                    </label>
                     <label class="btn btn-default active">
-                    <input type="radio" name="evo3" id="radEvo3Enable" autocomplete="off" value="true" checked>启用
-                </label>
+                        <input type="radio" name="evo3" id="radEvo3Enable" autocomplete="off" value="true" checked>启用
+                    </label>
+                </div>
+            </div>
+            <div class="rune-panel-divider"></div>
+            <div>寻路算法
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default">
+                        <input type="radio" name="pathAlgorithm" autocomplete="off" value="simple">最短路径
+                    </label>
+                    <label class="btn btn-default active">
+                        <input type="radio" name="pathAlgorithm" autocomplete="off" value="nogold" checked>最少金质勋章
+                    </label>
+                    <label class="btn btn-default">
+                        <input type="radio" name="pathAlgorithm" autocomplete="off" value="custom">自定义
+                    </label>
+                </div>
+            </div>
+            <div class="form-inline">
+                权重
+                <div class="input-group">
+                    <span class="input-group-addon">贡献</span>
+                    <input type="number" class="form-control" id="weight140" value="0.001" style="width:100px">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">金质勋章</span>
+                    <input type="number" class="form-control" id="weight5261" value="1000" style="width:100px">
                 </div>
             </div>
             <div class="rune-panel-divider"></div>

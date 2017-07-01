@@ -9,6 +9,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
     var maxY = 0;
     var scale = 0.2;
     var disableEvo3 = false;
+    var pathAlgorithm = "nogold";
 
     var initUiLanguage = function () {
         $('[data-lang]').each(function () {
@@ -70,6 +71,9 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 disableEvo3 = true;
             }
             render(classId);
+        });
+        $('input[name="pathAlgorithm"]').change(function () {
+            pathAlgorithm = this.value;
         });
         $('.rune-panel-switch').click(function () {
             $('.rune-panel-main').toggle();
@@ -258,8 +262,18 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             return;
         }
         if (!noRecursion) {
-            var path = Data.getPath(runeList.concat(runeCheckList), runeId);
-            console.log("getPath", path);
+            //var path = Data.getPath(runeList.concat(runeCheckList), runeId);
+            var path = [];
+            switch (pathAlgorithm) {
+                case "simple": path = Data.getPath(runeList.concat(runeCheckList), runeId, disableEvo3); break;
+                case "nogold": path = Data.getPathWithWeight(runeList.concat(runeCheckList), runeId, disableEvo3); break;
+                case "custom": {
+                    var param = [{ id: 140, weight: parseFloat($('#weight140').val()) || 0 }, { id: 5261, weight: parseFloat($('#weight5261').val()) || 0 }];
+                    path = Data.getPathWithWeight(runeList.concat(runeCheckList), runeId, disableEvo3, param);
+                    break;
+                }
+            }
+            console.log("getPath", pathAlgorithm, path);
             if (!path.length) {
                 alert("无路径！")
                 return;
