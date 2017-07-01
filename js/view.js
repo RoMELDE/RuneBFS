@@ -71,8 +71,8 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             }
             render(classId);
         });
-        $('.rune-panel-switch').click(function(){
-$('.rune-panel-main').toggle();
+        $('.rune-panel-switch').click(function () {
+            $('.rune-panel-main').toggle();
         });
     };
     var render = function (id, savedata) {
