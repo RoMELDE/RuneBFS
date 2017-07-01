@@ -141,6 +141,9 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             if (_.any(cost, function (o) { return o.Id == 5261; })) {
                 $rune.addClass("rune-special");
             }
+            if ((o.X - minX) / (maxX - minX) > 0.8) {
+                $rune.attr("data-placement", "left");
+            }
             $div.append($rune);
         });
         $('#main').append($div);
