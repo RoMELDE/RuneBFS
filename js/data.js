@@ -56,7 +56,7 @@ define(['jquery'], function () {
 
     var getAstrolabe = function () {
         return data["astrolabe"];
-    }
+    };
     var getRuneCost = function (id) {
         return (_.find(data.rune, function (p) { return p.Id === parseInt(id); }) || {}).Cost || [];
     }
@@ -76,9 +76,12 @@ define(['jquery'], function () {
     }
 
 
+    var getRuneDataById = function (id) {
+        return _.find(data.astrolabe, function (p) { return p.Id === parseInt(id); });
+    };
     var getRuneLink = function (id) {
-        return (_.find(data.astrolabe, function (p) { return p.Id === parseInt(id); }) || {}).Link || [];
-    }
+        return (getRuneDataById(id) || {}).Link || [];
+    };
     var getPath = function (runeList, runeId, disableEvo3) {
         var pathList = [];
 
@@ -268,6 +271,7 @@ define(['jquery'], function () {
         getAstrolabe: getAstrolabe,
         getRuneCost: getRuneCost,
         getRuneDesc: getRuneDesc,
+        getRuneDataById: getRuneDataById,
         getPath: getPath,
         getPathWithWeight: getPathWithWeight,
         getConnectedComponent: getConnectedComponent,

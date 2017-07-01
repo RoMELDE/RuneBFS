@@ -85,7 +85,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         $('.rune-panel-switch').click(function () {
             $('.rune-panel-main').toggle();
         });
-        inited=true;
+        inited = true;
     };
     var render = function (id, savedata) {
         console.log("render", id, savedata);
@@ -190,21 +190,19 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             .addClass("rune-link-container");
         $('.rune-container').append($runeLink);
         var linkcontext = $runeLink[0].getContext('2d');
-        $(".rune").each(function (i, o) {
-            var $rune = $(o);
-            var runeData = $rune.data("rune")
+        _.each(Data.getAstrolabe(), function (o, i) {
+            var runeData = o;
             _.each(runeData.Link, function (o, i) {
-                var $runeTo = $(".rune[data-id=" + o + "]");
-                var runeToData = $runeTo.data("rune");
-                if ($runeTo.length > 0) {
+                var runeToData = Data.getRuneDataById(o);
+                if (runeToData) {
                     linkcontext.beginPath();
-                    linkcontext.moveTo($rune.position().left + 5, $rune.position().top + 5);
-                    linkcontext.lineTo($runeTo.position().left + 5, $runeTo.position().top + 5);
+                    linkcontext.moveTo((runeData.X - minX) * scale + 5, (maxY - runeData.Y) * scale + 5);
+                    linkcontext.lineTo((runeToData.X - minX) * scale + 5, (maxY - runeToData.Y) * scale + 5);
                     linkcontext.lineWidth = 3;
                     if (disableEvo3 && (runeData.Evo == 3 || runeToData.Evo == 3)) {
                         linkcontext.strokeStyle = 'rgba(233, 233, 233, 0.15)';
                     }
-                    else if ($rune.data('status') == 0 || $runeTo.data('status') == 0) {
+                    else if (!(_.contains(runeList.concat(runeCheckList), runeData.Id) || _.contains(runeList.concat(runeCheckList), runeToData.Id))) {
                         linkcontext.strokeStyle = '#aaa';
                     }
                     else {
@@ -215,6 +213,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             });
         });
     };
+    
     var renderCost = function () {
         var runeCost = [];
         var runeCheckCost = [];
