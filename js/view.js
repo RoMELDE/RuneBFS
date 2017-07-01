@@ -10,6 +10,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
     var scale = 0.2;
     var disableEvo3 = false;
     var pathAlgorithm = "nogold";
+    var inited = false;
 
     var initUiLanguage = function () {
         $('[data-lang]').each(function () {
@@ -40,6 +41,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         runeCheckList = [];
     };
     var initControl = function () {
+        if (inited) { return; }
         $('#btnSearch').click(function () {
             var text = $('#txtSearch').val();
             $('.rune[data-original-title*="' + text + '"]').popover('show');
@@ -83,6 +85,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         $('.rune-panel-switch').click(function () {
             $('.rune-panel-main').toggle();
         });
+        inited=true;
     };
     var render = function (id, savedata) {
         console.log("render", id, savedata);
