@@ -73,6 +73,10 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             }
             render(classId);
         });
+        $('#scale').change(function () {
+            scale = parseFloat(this.value) || 0.2;
+            render(classId);
+        });
         $('input[name="pathAlgorithm"]').change(function () {
             pathAlgorithm = this.value;
         });
@@ -160,6 +164,9 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         }
         _.each(runeList, function (o, i) {
             checkRune(o, true, true);
+        });
+        _.each(runeCheckList, function (o, i) {
+            checkRune(o, true, false);
         });
         renderRuneLink();
         renderCost();
