@@ -30,7 +30,7 @@ require(['jquery', 'underscore', 'data', 'ui', 'view', 'router'], function ($, _
         $.when(Data.init("astrolabe"), Data.init("rune"))
             .then(function () {
                 NProgress.set(0.66);
-                $.when(Data.init("runeByClass"), Data.init("runeSpecial"))
+                $.when(Data.init("runeByClass"), Data.init("runeSpecial"), Data.init("runeSpecialDesc"))
                     .done(function () {
                         NProgress.set(0.9);
                         localStorage.setItem("lastUpdate", JSON.stringify(new Date()))

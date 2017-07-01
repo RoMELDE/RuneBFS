@@ -105,13 +105,27 @@
     </nav>
     <div id="main">
     </div>
-    <div id="cost" class="rune-cost">
-        <div>已选：<span id="runeCost">0</span></div>
-        <div>本次：<span id="runeCheckCost">0</span></div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-danger" id="btnReset">重置本次选择</button>
-            <button type="button" class="btn btn-primary" id="btnSave">保存</button>
+    <div class="rune-panel">
+        <div class="rune-panel-main">
+            <div>启用进阶符文
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default">
+                    <input type="radio" name="evo3" id="radEvo3Disable" autocomplete="off" value="false">不启用
+                </label>
+                    <label class="btn btn-default active">
+                    <input type="radio" name="evo3" id="radEvo3Enable" autocomplete="off" value="true" checked>启用
+                </label>
+                </div>
+            </div>
+            <div class="rune-panel-divider"></div>
+            <div>已选：<span id="runeCost">0</span></div>
+            <div>本次：<span id="runeCheckCost">0</span></div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger" id="btnReset">重置本次选择</button>
+                <button type="button" class="btn btn-primary" id="btnSave">保存</button>
+            </div>
         </div>
+        <div class="rune-panel-switch"></div>
     </div>
     <script src="js/libs/nprogress.js"></script>
     <script src="js/libs/require.js" data-main="js/main" defer async="true"></script>

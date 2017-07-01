@@ -8,6 +8,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
     var minY = 0;
     var maxY = 0;
     var scale = 0.2;
+    var disableEvo3 = false;
 
     var initUiLanguage = function () {
         $('[data-lang]').each(function () {
@@ -27,11 +28,55 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         var current = $("nav.navbar [data-class-id=" + id + "]");
         current.parents('li').addClass('active');
     };
+    var init = function (id, savedata) {
+        clear();
+        initControl();
+        render(id, savedata);
+    };
     var clear = function () {
         runeList = [];
         runeCheckList = [];
     };
+    var initControl = function () {
+        $('#btnSearch').click(function () {
+            var text = $('#txtSearch').val();
+            $('.rune[data-original-title*="' + text + '"]').popover('show');
+        });
+        $('#btnClear').click(function () {
+            $('[data-toggle="popover"]').popover('hide');
+        });
+
+        $('#btnReset').click(function () {
+            if (confirm("是否重置本次选择？")) {
+                _.each(runeCheckList, function (o, i) {
+                    var $rune = $("#rune" + o);
+                    $rune.data('status', 0)
+                        .removeClass('rune-checked')
+                });
+                runeCheckList = [];
+
+                renderRuneLink();
+                renderCost();
+            }
+        });
+        $('#btnSave').click(function () {
+            save();
+        });
+        $('input[name="evo3"]').change(function () {
+            if (this.value == "true") {
+                disableEvo3 = false;
+            }
+            else {
+                disableEvo3 = true;
+            }
+            render(classId);
+        });
+        $('.rune-panel-switch').click(function(){
+$('.rune-panel-main').toggle();
+        });
+    };
     var render = function (id, savedata) {
+        console.log("render", id, savedata);
         var self = this;
         if (id == 0) {
             return;
@@ -41,7 +86,6 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         //clear main
         $('#main').find("img").attr('src', ''); //stop image loading when doPage
         $('#main').empty();
-        clear();
         //get data
         var astrolabe = Data.getAstrolabe();
 
@@ -84,7 +128,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                     .attr("data-toggle", "")
                     .off('click');
             }
-            if (o.Evo == 3) {
+            if (disableEvo3 && o.Evo == 3) {
                 $rune.addClass("rune-not-available")
                     .attr("title", "")
                     .attr("data-toggle", "")
@@ -103,37 +147,14 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             trigger: 'hover focus'
         });
 
+        if (savedata) {
+            runeList = parseCondition(savedata);
+        }
+        _.each(runeList, function (o, i) {
+            checkRune(o, true, true);
+        });
         renderRuneLink();
         renderCost();
-
-        $('#btnSearch').off('click').click(function () {
-            var text = $('#txtSearch').val();
-            $('.rune[data-original-title*="' + text + '"]').popover('show');
-        });
-        $('#btnClear').off('click').click(function () {
-            $('[data-toggle="popover"]').popover('hide');
-        });
-
-        $('#btnReset').off('click').click(function () {
-            if (confirm("是否重置本次选择？")) {
-                _.each(runeCheckList, function (o, i) {
-                    var $rune = $("#rune" + o);
-                    $rune.data('status', 0)
-                        .removeClass('rune-checked')
-                });
-                runeCheckList = [];
-
-                renderRuneLink();
-                renderCost();
-            }
-        });
-        $('#btnSave').off('click').click(function () {
-            save();
-        });
-
-        if (savedata) {
-            load(savedata);
-        }
 
         setTimeout(function () {
             //a little delay to unveil for better unveil effect
@@ -162,7 +183,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                     linkcontext.moveTo($rune.position().left + 5, $rune.position().top + 5);
                     linkcontext.lineTo($runeTo.position().left + 5, $runeTo.position().top + 5);
                     linkcontext.lineWidth = 3;
-                    if (runeData.Evo == 3 || runeToData.Evo == 3) {
+                    if (disableEvo3 && (runeData.Evo == 3 || runeToData.Evo == 3)) {
                         linkcontext.strokeStyle = 'rgba(233, 233, 233, 0.15)';
                     }
                     else if ($rune.data('status') == 0 || $runeTo.data('status') == 0) {
@@ -233,7 +254,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             return;
         }
         var $rune = $("#rune" + runeId);
-        if ($rune.data('rune').evo == 3) {
+        if (disableEvo3 && $rune.data('rune').evo == 3) {
             return;
         }
         if (!noRecursion) {
@@ -269,7 +290,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             return;
         }
         var $rune = $("#rune" + runeId);
-        if ($rune.data('rune').evo == 3) {
+        if (disableEvo3 && $rune.data('rune').evo == 3) {
             return;
         }
         $rune.data('status', 0)
@@ -303,14 +324,6 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         var data = stringifyCondition(runeList);
         Backbone.history.navigate("class/" + classId + "/share/" + data, { trigger: false });
     };
-    var load = function (savedata) {
-        runeList = parseCondition(savedata);
-        _.each(runeList, function (o, i) {
-            checkRune(o, true, true);
-        });
-        renderRuneLink();
-        renderCost();
-    };
 
     function stringifyCondition(condition) {
         return LZString.compressToEncodedURIComponent(JSON.stringify(condition));
@@ -324,6 +337,6 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         initUiLanguage: initUiLanguage,
         getActiveMenu: getActiveMenu,
         setActiveMenu: setActiveMenu,
-        render: render,
+        init: init,
     };
 });

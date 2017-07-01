@@ -17,7 +17,7 @@ define(['jquery', 'underscore', 'backbone', 'ui', 'view'], function ($, _, Backb
 
         app_router.on('route:classRoute', function (id, data) {
             console.log("route:classRoute");
-            View.render(id,data);
+            View.init(id, data);
         });
         app_router.on('route:languageChangeRoute', function (lang) {
             Ui.setLang(lang);

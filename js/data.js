@@ -65,6 +65,7 @@ define(['jquery'], function () {
         if (desc.SpecialDescId) {
             desc.Runetip = _.find(data.runeSpecial, function (p) { return p.Id === parseInt(desc.SpecialDescId); });
             if (desc.Runetip) {
+                desc.Runetip.Text = _.find(data.runeSpecialDesc, function (p) { return p.Id === desc.Runetip.Runetip }).Text;
                 desc.Desc = formatRunetip(desc.Runetip);
             }
         }
@@ -78,7 +79,7 @@ define(['jquery'], function () {
     var getRuneLink = function (id) {
         return (_.find(data.astrolabe, function (p) { return p.Id === parseInt(id); }) || {}).Link || [];
     }
-    var getPath = function (runeList, runeId) {
+    var getPath = function (runeList, runeId, disableEvo3) {
         var pathList = [];
 
         var queue = [];
@@ -90,7 +91,7 @@ define(['jquery'], function () {
             while (queue.length) {
                 var v = queue.shift();
                 _.each(getRuneLink(v), function (w) {
-                    if ((_.find(data.astrolabe, function (p) { return p.Id === parseInt(w); }) || {}).Evo === 3) {
+                    if (disableEvo3 && (_.find(data.astrolabe, function (p) { return p.Id === parseInt(w); }) || {}).Evo === 3) {
                         return;
                     }
                     if (!marked[w]) {
@@ -173,7 +174,7 @@ define(['jquery'], function () {
     }
 
     var formatRunetip = function (Runetip) {
-        var text = formatRichText(Runetip.Runetip);
+        var text = formatRichText(Runetip.Text);
         Runetip.SkillTipParm = Runetip.SkillTipParm || [];
         for (var i = 0; i < Runetip.SkillTipParm.length; i++) {
             text = text.replace("%s", Runetip.SkillTipParm[i]);
