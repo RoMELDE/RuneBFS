@@ -159,7 +159,7 @@ define(['jquery'], function () {
                 if (disableEvo3 && (_.find(data.astrolabe, function (p) { return p.Id === parseInt(w); }) || {}).Evo === 3) {
                     return;
                 }
-                var weight = getRuneWeight(w, param);
+                var weight = getRuneWeight(v, param);
                 if (distTo[w] > distTo[v] + weight) {
                     distTo[w] = distTo[v] + weight;
                     edgeTo[w] = v;
