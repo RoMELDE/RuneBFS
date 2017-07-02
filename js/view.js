@@ -202,7 +202,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                     if (disableEvo3 && (runeData.Evo == 3 || runeToData.Evo == 3)) {
                         linkcontext.strokeStyle = 'rgba(233, 233, 233, 0.15)';
                     }
-                    else if (!(_.contains(runeList.concat(runeCheckList), runeData.Id) || _.contains(runeList.concat(runeCheckList), runeToData.Id))) {
+                    else if (!(_.contains(runeList.concat(runeCheckList), runeData.Id) && _.contains(runeList.concat(runeCheckList), runeToData.Id))) {
                         linkcontext.strokeStyle = '#aaa';
                     }
                     else {
