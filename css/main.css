@@ -59,7 +59,7 @@ body {
     position: absolute;
     top: 60px;
     right: 25px;
-    z-index: 5;
+    z-index: 2000;
 }
 
 .rune-panel .rune-panel-main{
