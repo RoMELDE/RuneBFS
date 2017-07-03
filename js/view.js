@@ -152,6 +152,9 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             if ((o.X - minX) / (maxX - minX) > 0.8) {
                 $rune.attr("data-placement", "left");
             }
+            if ((maxY - o.Y) / (maxY - minY) < 0.2) {
+                $rune.attr("data-placement", "bottom");
+            }
             $div.append($rune);
         });
         $('#main').append($div);
@@ -186,7 +189,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             .css("left", 0)
             .css("top", 0)
             .attr("width", (maxX - minX + 10) * scale)
-            .attr("height", (maxY - minY + 10) * scale)
+            .attr("height", (maxY - minY + 10) * scale + 20)
             .addClass("rune-link-container");
         $('.rune-container').append($runeLink);
         var linkcontext = $runeLink[0].getContext('2d');
@@ -213,7 +216,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             });
         });
     };
-    
+
     var renderCost = function () {
         var runeCost = [];
         var runeCheckCost = [];
