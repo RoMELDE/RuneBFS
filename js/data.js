@@ -56,7 +56,7 @@ define(['jquery'], function () {
 
     var getAstrolabe = function () {
         return data["astrolabe"];
-    }
+    };
     var getRuneCost = function (id) {
         return (_.find(data.rune, function (p) { return p.Id === parseInt(id); }) || {}).Cost || [];
     }
@@ -65,6 +65,7 @@ define(['jquery'], function () {
         if (desc.SpecialDescId) {
             desc.Runetip = _.find(data.runeSpecial, function (p) { return p.Id === parseInt(desc.SpecialDescId); });
             if (desc.Runetip) {
+                desc.Runetip.Text = _.find(data.runeSpecialDesc, function (p) { return p.Id === desc.Runetip.Runetip }).Text;
                 desc.Desc = formatRunetip(desc.Runetip);
             }
         }
@@ -75,10 +76,13 @@ define(['jquery'], function () {
     }
 
 
+    var getRuneDataById = function (id) {
+        return _.find(data.astrolabe, function (p) { return p.Id === parseInt(id); });
+    };
     var getRuneLink = function (id) {
-        return (_.find(data.astrolabe, function (p) { return p.Id === parseInt(id); }) || {}).Link || [];
-    }
-    var getPath = function (runeList, runeId) {
+        return (getRuneDataById(id) || {}).Link || [];
+    };
+    var getPath = function (runeList, runeId, disableEvo3) {
         var pathList = [];
 
         var queue = [];
@@ -90,7 +94,7 @@ define(['jquery'], function () {
             while (queue.length) {
                 var v = queue.shift();
                 _.each(getRuneLink(v), function (w) {
-                    if ((_.find(data.astrolabe, function (p) { return p.Id === parseInt(w); }) || {}).Evo === 3) {
+                    if (disableEvo3 && (_.find(data.astrolabe, function (p) { return p.Id === parseInt(w); }) || {}).Evo === 3) {
                         return;
                     }
                     if (!marked[w]) {
@@ -131,6 +135,83 @@ define(['jquery'], function () {
         }
         return _.min(pathList, function (o) { return o.length; });
     }
+
+    var getPathWithWeight = function (runeList, runeId, disableEvo3, param) {
+        var distTo = [];
+        var edgeTo = [];
+        var pq = [];
+
+        var DijkstraSP = function (s) {
+            _.each(data.astrolabe, function (o, i) {
+                distTo[o.Id] = Infinity;
+            });
+            distTo[s] = 0;
+            pq.push({ id: s, weight: 0 });
+            while (pq.length) {
+                var min = _.min(pq, "weight");
+                pq = _.without(pq, min);
+                relax(min.id);
+            }
+        };
+
+        var relax = function (v) {
+            _.each(getRuneLink(v), function (w) {
+                if (disableEvo3 && (_.find(data.astrolabe, function (p) { return p.Id === parseInt(w); }) || {}).Evo === 3) {
+                    return;
+                }
+                var weight = getRuneWeight(v, param);
+                if (distTo[w] > distTo[v] + weight) {
+                    distTo[w] = distTo[v] + weight;
+                    edgeTo[w] = v;
+                    if (_.any(pq, function (o) { return o.id == w })) {
+                        _.find(pq, function (o) { return o.id == w }).weight = distTo[w];
+                    }
+                    else {
+                        pq.push({ id: w, weight: distTo[w] });
+                    }
+                }
+            });
+        };
+
+        var hasPathTo = function (v) {
+            return distTo[v] < Infinity;
+        };
+        var pathTo = function (v) {
+            if (!hasPathTo(v)) {
+                return [];
+            }
+            var path = []
+            for (var e = edgeTo[v]; !!e; e = edgeTo[e]) {
+                path.push(e);
+            }
+            return path;
+        };
+
+        DijkstraSP(runeId);
+        var minRuneId = 0;
+        _.each(runeList, function (o, i) {
+            if (!minRuneId) {
+                minRuneId = o;
+            }
+            else {
+                minRuneId = distTo[minRuneId] < distTo[o] ? minRuneId : o;
+            }
+        });
+        if (!minRuneId) {
+            return [];
+        }
+        return pathTo(minRuneId);
+    };
+
+    var getRuneWeight = function (runeId, param) {
+        if (!param) {
+            param = [{ id: 140, weight: 0.001 }, { id: 5261, weight: 1000 }];
+        }
+        var cost = getRuneCost(runeId);
+        return _.reduce(cost, function (memo, item) {
+            return memo + item.Count * (_.find(param, function (o) { return o.id == item.Id }) || { weight: 0 }).weight;
+        }, 0);
+    };
 
     var getConnectedComponent = function (runeList) {
         var marked = [];
@@ -173,7 +254,7 @@ define(['jquery'], function () {
     }
 
     var formatRunetip = function (Runetip) {
-        var text = formatRichText(Runetip.Runetip);
+        var text = formatRichText(Runetip.Text);
         Runetip.SkillTipParm = Runetip.SkillTipParm || [];
         for (var i = 0; i < Runetip.SkillTipParm.length; i++) {
             text = text.replace("%s", Runetip.SkillTipParm[i]);
@@ -190,7 +271,9 @@ define(['jquery'], function () {
         getAstrolabe: getAstrolabe,
         getRuneCost: getRuneCost,
         getRuneDesc: getRuneDesc,
+        getRuneDataById: getRuneDataById,
         getPath: getPath,
+        getPathWithWeight: getPathWithWeight,
         getConnectedComponent: getConnectedComponent,
         init: init,
         isDataTooOld: isDataTooOld,

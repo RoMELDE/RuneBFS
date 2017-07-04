@@ -21,6 +21,7 @@ body {
 
 #main .rune-container{
     position: relative;
+    margin: 0 10px;
 }
 #main .rune-container canvas{
     position: absolute;
@@ -54,15 +55,37 @@ body {
     cursor:not-allowed;
 }
 
-.rune-cost{
+.rune-panel{
     position: absolute;
     top: 60px;
     right: 25px;
-    background: rgba(200, 200, 200, 0.5);
-    padding: 10px;
+    z-index: 2000;
+}
+
+.rune-panel .rune-panel-main{
+    background: rgba(220, 220, 220, 0.8);
+    padding: 5px 10px;
     min-width: 100px;
     text-align: right;
-    z-index: 5;
+}
+.rune-panel .rune-panel-main>div{
+    margin: 5px 0;
+}
+
+.rune-panel .rune-panel-switch{
+    width: 50px;
+    height: 0;
+    cursor: pointer;
+    float: right;
+    border-top: 15px solid #666;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+}
+
+.rune-panel .rune-panel-divider{
+    margin:5px 0;
+    height: 1px;
+    background: white;
 }
 
 .notAvailable{

@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>*α*ROMEL Rune BFS</title>
+    <meta name="description" content="仙境传说：守护永恒的爱 阿萨神碑加点模拟器;ROMEL Rune Breadth-First-Search." />
     <!-- Bootstrap -->
     <link href="css/libs/bootstrap.min.css" rel="stylesheet">
     <link href="css/libs/bootstrap-select.min.css" rel="stylesheet">
@@ -44,7 +45,7 @@
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            <span data-lang="class">class</span>
+                            <span data-lang="class" id="class">class</span>
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
@@ -67,7 +68,7 @@
                     </form>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <p class="navbar-text">当前版本：116215</p>
+                    <p class="navbar-text">当前版本：118394</p>
                     <li><a href="http://ro.xd.com/" target="_blank" data-lang="officalsite">OfficalSite</a></li>
                     <li><a href="http://nga.178.com/thread.php?fid=555/" target="_blank" data-lang="donate">Donate</a></li>
                     <li class="dropdown" style="display:none">
@@ -105,13 +106,59 @@
     </nav>
     <div id="main">
     </div>
-    <div id="cost" class="rune-cost">
-        <div>已选：<span id="runeCost">0</span></div>
-        <div>本次：<span id="runeCheckCost">0</span></div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-danger" id="btnReset">重置本次选择</button>
-            <button type="button" class="btn btn-primary" id="btnSave">保存</button>
+    <div class="rune-panel">
+        <div class="rune-panel-main">
+            <div>启用进阶符文
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default">
+                        <input type="radio" name="evo3" id="radEvo3Disable" autocomplete="off" value="false">不启用
+                    </label>
+                    <label class="btn btn-default active">
+                        <input type="radio" name="evo3" id="radEvo3Enable" autocomplete="off" value="true" checked>启用
+                    </label>
+                </div>
+            </div>
+            <div class="rune-panel-divider"></div>
+            <div class="form-inline">
+                <div class="input-group">
+                    <span class="input-group-addon">缩放</span>
+                    <input type="number" class="form-control" id="scale" value="0.20" min="0.1" max="1" step="0.05" style="width:100px">
+                </div>
+            </div>            
+            <div class="rune-panel-divider"></div>
+            <div>寻路算法
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default">
+                        <input type="radio" name="pathAlgorithm" autocomplete="off" value="simple">最短路径
+                    </label>
+                    <label class="btn btn-default active">
+                        <input type="radio" name="pathAlgorithm" autocomplete="off" value="nogold" checked>最少金质勋章
+                    </label>
+                    <label class="btn btn-default">
+                        <input type="radio" name="pathAlgorithm" autocomplete="off" value="custom">自定义
+                    </label>
+                </div>
+            </div>
+            <div class="form-inline">
+                权重
+                <div class="input-group">
+                    <span class="input-group-addon">贡献</span>
+                    <input type="number" class="form-control" id="weight140" value="0.001" style="width:100px">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">金质勋章</span>
+                    <input type="number" class="form-control" id="weight5261" value="1000" style="width:100px">
+                </div>
+            </div>
+            <div class="rune-panel-divider"></div>
+            <div>已选：<span id="runeCost">0</span></div>
+            <div>本次：<span id="runeCheckCost">0</span></div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger" id="btnReset">重置本次选择</button>
+                <button type="button" class="btn btn-primary" id="btnSave">保存</button>
+            </div>
         </div>
+        <div class="rune-panel-switch"></div>
     </div>
     <script src="js/libs/nprogress.js"></script>
     <script src="js/libs/require.js" data-main="js/main" defer async="true"></script>

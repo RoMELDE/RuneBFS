@@ -8,6 +8,9 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
     var minY = 0;
     var maxY = 0;
     var scale = 0.2;
+    var disableEvo3 = false;
+    var pathAlgorithm = "nogold";
+    var inited = false;
 
     var initUiLanguage = function () {
         $('[data-lang]').each(function () {
@@ -26,12 +29,66 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         //$("body>div[data-tab]").hide();
         var current = $("nav.navbar [data-class-id=" + id + "]");
         current.parents('li').addClass('active');
+        $('#class').text(current.text());
+    };
+    var init = function (id, savedata) {
+        clear();
+        initControl();
+        render(id, savedata);
     };
     var clear = function () {
         runeList = [];
         runeCheckList = [];
     };
+    var initControl = function () {
+        if (inited) { return; }
+        $('#btnSearch').click(function () {
+            var text = $('#txtSearch').val();
+            $('.rune[data-original-title*="' + text + '"]').popover('show');
+        });
+        $('#btnClear').click(function () {
+            $('[data-toggle="popover"]').popover('hide');
+        });
+
+        $('#btnReset').click(function () {
+            if (confirm("是否重置本次选择？")) {
+                _.each(runeCheckList, function (o, i) {
+                    var $rune = $("#rune" + o);
+                    $rune.data('status', 0)
+                        .removeClass('rune-checked')
+                });
+                runeCheckList = [];
+
+                renderRuneLink();
+                renderCost();
+            }
+        });
+        $('#btnSave').click(function () {
+            save();
+        });
+        $('input[name="evo3"]').change(function () {
+            if (this.value == "true") {
+                disableEvo3 = false;
+            }
+            else {
+                disableEvo3 = true;
+            }
+            render(classId);
+        });
+        $('#scale').change(function () {
+            scale = parseFloat(this.value) || 0.2;
+            render(classId);
+        });
+        $('input[name="pathAlgorithm"]').change(function () {
+            pathAlgorithm = this.value;
+        });
+        $('.rune-panel-switch').click(function () {
+            $('.rune-panel-main').toggle();
+        });
+        inited = true;
+    };
     var render = function (id, savedata) {
+        console.log("render", id, savedata);
         var self = this;
         if (id == 0) {
             return;
@@ -41,7 +98,6 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         //clear main
         $('#main').find("img").attr('src', ''); //stop image loading when doPage
         $('#main').empty();
-        clear();
         //get data
         var astrolabe = Data.getAstrolabe();
 
@@ -84,14 +140,20 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                     .attr("data-toggle", "")
                     .off('click');
             }
-            if (o.Evo == 3) {
+            if (disableEvo3 && o.Evo == 3) {
                 $rune.addClass("rune-not-available")
                     .attr("title", "")
                     .attr("data-toggle", "")
                     .off('click');
             }
-            if (desc.SpecialDescId) {
+            if (_.any(cost, function (o) { return o.Id == 5261; })) {
                 $rune.addClass("rune-special");
+            }
+            if ((o.X - minX) / (maxX - minX) > 0.8) {
+                $rune.attr("data-placement", "left");
+            }
+            if ((maxY - o.Y) / (maxY - minY) < 0.2) {
+                $rune.attr("data-placement", "bottom");
             }
             $div.append($rune);
         });
@@ -103,37 +165,17 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             trigger: 'hover focus'
         });
 
+        if (savedata) {
+            runeList = parseCondition(savedata);
+        }
+        _.each(runeList, function (o, i) {
+            checkRune(o, true, true);
+        });
+        _.each(runeCheckList, function (o, i) {
+            checkRune(o, true, false);
+        });
         renderRuneLink();
         renderCost();
-
-        $('#btnSearch').off('click').click(function () {
-            var text = $('#txtSearch').val();
-            $('.rune[data-original-title*="' + text + '"]').popover('show');
-        });
-        $('#btnClear').off('click').click(function () {
-            $('[data-toggle="popover"]').popover('hide');
-        });
-
-        $('#btnReset').off('click').click(function () {
-            if (confirm("是否重置本次选择？")) {
-                _.each(runeCheckList, function (o, i) {
-                    var $rune = $("#rune" + o);
-                    $rune.data('status', 0)
-                        .removeClass('rune-checked')
-                });
-                runeCheckList = [];
-
-                renderRuneLink();
-                renderCost();
-            }
-        });
-        $('#btnSave').off('click').click(function () {
-            save();
-        });
-
-        if (savedata) {
-            load(savedata);
-        }
 
         setTimeout(function () {
             //a little delay to unveil for better unveil effect
@@ -147,25 +189,23 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             .css("left", 0)
             .css("top", 0)
             .attr("width", (maxX - minX + 10) * scale)
-            .attr("height", (maxY - minY + 10) * scale)
+            .attr("height", (maxY - minY + 10) * scale + 20)
             .addClass("rune-link-container");
         $('.rune-container').append($runeLink);
         var linkcontext = $runeLink[0].getContext('2d');
-        $(".rune").each(function (i, o) {
-            var $rune = $(o);
-            var runeData = $rune.data("rune")
+        _.each(Data.getAstrolabe(), function (o, i) {
+            var runeData = o;
             _.each(runeData.Link, function (o, i) {
-                var $runeTo = $(".rune[data-id=" + o + "]");
-                var runeToData = $runeTo.data("rune");
-                if ($runeTo.length > 0) {
+                var runeToData = Data.getRuneDataById(o);
+                if (runeToData) {
                     linkcontext.beginPath();
-                    linkcontext.moveTo($rune.position().left + 5, $rune.position().top + 5);
-                    linkcontext.lineTo($runeTo.position().left + 5, $runeTo.position().top + 5);
+                    linkcontext.moveTo((runeData.X - minX) * scale + 5, (maxY - runeData.Y) * scale + 5);
+                    linkcontext.lineTo((runeToData.X - minX) * scale + 5, (maxY - runeToData.Y) * scale + 5);
                     linkcontext.lineWidth = 3;
-                    if (runeData.Evo == 3 || runeToData.Evo == 3) {
+                    if (disableEvo3 && (runeData.Evo == 3 || runeToData.Evo == 3)) {
                         linkcontext.strokeStyle = 'rgba(233, 233, 233, 0.15)';
                     }
-                    else if ($rune.data('status') == 0 || $runeTo.data('status') == 0) {
+                    else if (!(_.contains(runeList.concat(runeCheckList), runeData.Id) && _.contains(runeList.concat(runeCheckList), runeToData.Id))) {
                         linkcontext.strokeStyle = '#aaa';
                     }
                     else {
@@ -176,6 +216,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             });
         });
     };
+
     var renderCost = function () {
         var runeCost = [];
         var runeCheckCost = [];
@@ -233,12 +274,22 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             return;
         }
         var $rune = $("#rune" + runeId);
-        if ($rune.data('rune').evo == 3) {
+        if (disableEvo3 && $rune.data('rune').evo == 3) {
             return;
         }
         if (!noRecursion) {
-            var path = Data.getPath(runeList.concat(runeCheckList), runeId);
-            console.log("getPath", path);
+            //var path = Data.getPath(runeList.concat(runeCheckList), runeId);
+            var path = [];
+            switch (pathAlgorithm) {
+                case "simple": path = Data.getPath(runeList.concat(runeCheckList), runeId, disableEvo3); break;
+                case "nogold": path = Data.getPathWithWeight(runeList.concat(runeCheckList), runeId, disableEvo3); break;
+                case "custom": {
+                    var param = [{ id: 140, weight: parseFloat($('#weight140').val()) || 0 }, { id: 5261, weight: parseFloat($('#weight5261').val()) || 0 }];
+                    path = Data.getPathWithWeight(runeList.concat(runeCheckList), runeId, disableEvo3, param);
+                    break;
+                }
+            }
+            console.log("getPath", pathAlgorithm, path);
             if (!path.length) {
                 alert("无路径！")
                 return;
@@ -269,7 +320,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             return;
         }
         var $rune = $("#rune" + runeId);
-        if ($rune.data('rune').evo == 3) {
+        if (disableEvo3 && $rune.data('rune').evo == 3) {
             return;
         }
         $rune.data('status', 0)
@@ -303,14 +354,6 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         var data = stringifyCondition(runeList);
         Backbone.history.navigate("class/" + classId + "/share/" + data, { trigger: false });
     };
-    var load = function (savedata) {
-        runeList = parseCondition(savedata);
-        _.each(runeList, function (o, i) {
-            checkRune(o, true, true);
-        });
-        renderRuneLink();
-        renderCost();
-    };
 
     function stringifyCondition(condition) {
         return LZString.compressToEncodedURIComponent(JSON.stringify(condition));
@@ -324,6 +367,6 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         initUiLanguage: initUiLanguage,
         getActiveMenu: getActiveMenu,
         setActiveMenu: setActiveMenu,
-        render: render,
+        init: init,
     };
 });
