@@ -188,7 +188,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         var $runeLink = $("<canvas>")
             .css("left", 0)
             .css("top", 0)
-            .attr("width", (maxX - minX + 10) * scale)
+            .attr("width", (maxX - minX + 10) * scale + 20)
             .attr("height", (maxY - minY + 10) * scale + 20)
             .addClass("rune-link-container");
         $('.rune-container').append($runeLink);
