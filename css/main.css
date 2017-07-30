@@ -23,9 +23,6 @@ body {
     position: relative;
     margin: 0 15px;
 }
-.astrolabe-container canvas{
-    position: absolute;
-}
 
 .rune{
     min-width: 10px;
@@ -97,6 +94,10 @@ body {
 
 .notAvailable{
     filter: grayscale(100%);
+}
+
+button.close{
+    line-height: 14px;
 }
 
 .top-background {

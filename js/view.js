@@ -126,7 +126,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 .data("desc", desc)
                 .data("status", 0)  //0:unchecked,1:checked,2:saved
                 .attr("data-toggle", "popover")
-                .attr("title", desc.Name + '<button type="button" id="close" class="close" onclick="debugger;$(this).parents(&quot;.popover&quot;).popover(&quot;hide&quot;);">&times;</button>')
+                .attr("title", desc.Name + '<button type="button" id="close" class="close" onclick="$(this).parents(&quot;.popover&quot;).popover(&quot;hide&quot;);">&times;</button>')
                 .attr("data-content", (desc.Desc || "")
                 + "<br/>" + _.reduce(cost, function (result, current) {
                     return result + current.Name + "*" + current.Count + " ";
@@ -164,7 +164,8 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
 
         $('[data-toggle="popover"]').popover({
             html: true,
-            trigger: 'hover focus'
+            trigger: 'hover focus',
+            viewport: '.astrolabe-container'
         });
 
         if (savedata) {
@@ -188,8 +189,6 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
     var renderRuneLink = function () {
         $(".rune-link-container").remove();
         var $runeLink = $("<canvas>")
-            .css("left", 0)
-            .css("top", 0)
             .attr("width", (maxX - minX + runeSize * 2) * scale)
             .attr("height", (maxY - minY + runeSize * 2) * scale)
             .addClass("rune-link-container");
