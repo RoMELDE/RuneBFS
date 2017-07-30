@@ -27,11 +27,6 @@ body {
     position: absolute;
 }
 
-.rune-container{
-    position: relative;
-    width:0;
-    height:0;
-}
 .rune{
     min-width: 10px;
     min-height: 10px;
