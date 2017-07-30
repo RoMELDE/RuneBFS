@@ -113,14 +113,10 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             //debugger;
             var cost = Data.getRuneCost(o.Id);
             var desc = Data.getRuneDesc(o.Id, classId);
-            var $runeContainer = $('<div>')
-                .addClass('rune-container')
-                .css("left", (o.X - minX) * scale)
-                .css("top", (maxY - o.Y) * scale);
             var $rune = $("<div>")
                 .addClass("rune")
-                .css("left", -(runeSize * scale) / 2)
-                .css("top", -(runeSize * scale) / 2)
+                .css("left", (((o.X - minX) - runeSize / 2) * scale))
+                .css("top", (((maxY - o.Y) - runeSize / 2) * scale))
                 .css("width", runeSize * scale)
                 .css("height", runeSize * scale)
                 .attr("id", "rune" + o.Id)
@@ -130,7 +126,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 .data("desc", desc)
                 .data("status", 0)  //0:unchecked,1:checked,2:saved
                 .attr("data-toggle", "popover")
-                .attr("title", desc.Name)
+                .attr("title", desc.Name + '<button type="button" id="close" class="close" onclick="debugger;$(this).parents(&quot;.popover&quot;).popover(&quot;hide&quot;);">&times;</button>')
                 .attr("data-content", (desc.Desc || "")
                 + "<br/>" + _.reduce(cost, function (result, current) {
                     return result + current.Name + "*" + current.Count + " ";
@@ -162,12 +158,11 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             if ((maxY - o.Y) / (maxY - minY) < 0.2) {
                 $rune.attr("data-placement", "bottom");
             }
-            $div.append($runeContainer.append($rune));
+            $div.append($rune);
         });
         $('#main').append($div);
 
         $('[data-toggle="popover"]').popover({
-            container: '.astrolabe-container',
             html: true,
             trigger: 'hover focus'
         });
