@@ -79,7 +79,7 @@ define(['jquery'], function () {
             .uniq(function (rune) { return rune.Name; })
             .pluck('Name')
             .compact()
-            .sortBy(function(o){return o;})
+            .sortBy(function (o) { return o; })
             .value() || [];
     }
 

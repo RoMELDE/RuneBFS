@@ -46,15 +46,19 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         $('#btnSearch').click(function () {
             var text = $('#txtSearch').val();
             //$('.rune[data-name*="' + text + '"]').popover('show');
-            $('.rune[data-name="' + text + '"]').popover('show');
-            if ($('.rune[data-name="' + text + '"]').length) {
+            var list = $('.rune[data-name="' + text + '"]').not('.rune-not-available');
+            list.popover('show');
+            if (list.length) {
                 var top = 9999999;
-                $('.rune[data-name="' + text + '"]').each(function (i, o) {
+                list.each(function (i, o) {
                     top = Math.min(top, parseFloat($(o).css('top')));
                 });
                 $('#main').animate({
                     scrollTop: Math.max(top - 50, 0)
                 }, 500);
+            }
+            else {
+                alert("该符文不存在，请尝试启用进阶符文");
             }
         });
         $('#btnClear').click(function () {
