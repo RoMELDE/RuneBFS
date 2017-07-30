@@ -15,13 +15,11 @@ body {
 #main{
     overflow-x :auto;
     height: 100%;
-    padding: 20px 0;
     position: relative;
 }
 
 .astrolabe-container{
     position: relative;
-    margin: 0 15px;
 }
 
 .rune{

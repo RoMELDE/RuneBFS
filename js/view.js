@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZString', 'bootstrap', 'bootstrap-select', 'jquery.unveil'], function ($, _, Backbone, Data, Ui, noUiSlider, LZString, BitSet, skillDescTemplate) {
+define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZString', 'bootstrap', 'bootstrap-select', 'jquery.unveil', 'dom-to-image'], function ($, _, Backbone, Data, Ui, noUiSlider, LZString, BitSet, skillDescTemplate) {
     var activeMenu = "";
     var runeList = [];
     var runeCheckList = [];
@@ -65,6 +65,19 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             $('[data-toggle="popover"]').popover('hide');
         });
 
+        $('#btnSaveImage').click(function () {
+            var w = window.open('about:blank;', '_blank');
+            $(w.document.body).append("生成中……");
+            domtoimage.toPng($('.astrolabe-container')[0], { bgcolor: '#fff' })
+                .then(function (dataUrl) {
+                    $(w.document.body).empty();
+                    $(w.document.body).append($('<textarea style="width:100%;height:100px;">').val(window.location));
+                    $(w.document.body).append($('<img>').attr('src', dataUrl));
+                })
+                .catch(function (error) {
+                    console.error('生成图片异常', error);
+                });
+        });
         $('#btnReset').click(function () {
             if (confirm("是否重置本次选择？")) {
                 _.each(runeCheckList, function (o, i) {
@@ -135,8 +148,8 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             var desc = Data.getRuneDesc(o.Id, classId);
             var $rune = $("<div>")
                 .addClass("rune")
-                .css("left", (((o.X - minX) - runeSize / 2) * scale))
-                .css("top", (((maxY - o.Y) - runeSize / 2) * scale))
+                .css("left", (((o.X - minX) + runeSize / 2) * scale))
+                .css("top", (((maxY - o.Y) + runeSize / 2) * scale))
                 .css("width", runeSize * scale)
                 .css("height", runeSize * scale)
                 .attr("id", "rune" + o.Id)
@@ -227,8 +240,8 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 var runeToData = Data.getRuneDataById(o);
                 if (runeToData) {
                     linkcontext.beginPath();
-                    linkcontext.moveTo((runeData.X - minX) * scale, (maxY - runeData.Y) * scale);
-                    linkcontext.lineTo((runeToData.X - minX) * scale, (maxY - runeToData.Y) * scale);
+                    linkcontext.moveTo((runeData.X - minX + runeSize) * scale, (maxY - runeData.Y + runeSize) * scale);
+                    linkcontext.lineTo((runeToData.X - minX + runeSize) * scale, (maxY - runeToData.Y + runeSize) * scale);
                     linkcontext.lineWidth = 3;
                     if (disableEvo3 && (runeData.Evo == 3 || runeToData.Evo == 3)) {
                         linkcontext.strokeStyle = 'rgba(233, 233, 233, 0.15)';
