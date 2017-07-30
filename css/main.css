@@ -19,37 +19,49 @@ body {
     position: relative;
 }
 
-#main .rune-container{
+.astrolabe-container{
     position: relative;
-    margin: 0 10px;
+    margin: 0 15px;
 }
-#main .rune-container canvas{
+.astrolabe-container canvas{
     position: absolute;
 }
 
-#main .rune{
-    width: 10px;
-    height: 10px;
-    background: black;
+.rune-container{
+    position: relative;
+    width:0;
+    height:0;
+}
+.rune{
+    min-width: 10px;
+    min-height: 10px;
+    background-color: #fff;
+    border:2px solid #ccc;
     z-index: 2;
     cursor: pointer;
     position: absolute;
+    border-radius: 100px;
 }
 
-#main .rune.rune-center{
-    background: gold !important;
+.rune.rune-center{
+    background-color: gold !important;
+    border-color:gold !important;
+    transform: scale(1.5);
     cursor:default;
 }
-#main .rune.rune-checked{
-    background: blue;
+.rune.rune-checked{    
+    background-color: #337ab7;
+    border-color: #2e6da4;
 }
-#main .rune.rune-saved{
-    background: green;
+.rune.rune-saved{
+    background-color: #5cb85c;
+    border-color: #4cae4c;
 }
-#main .rune.rune-special{
-    border: 2px dotted greenyellow;
+.rune.rune-special{  
+    border-color:  #f0ad4e;
+    transform: scale(1.5);
 }
-#main .rune.rune-not-available{
+.rune.rune-not-available{
     background: rgba(222, 222, 222, 0.2);
     border:none;
     cursor:not-allowed;

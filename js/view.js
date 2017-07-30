@@ -11,6 +11,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
     var disableEvo3 = false;
     var pathAlgorithm = "nogold";
     var inited = false;
+    var runeSize = 60.0;
 
     var initUiLanguage = function () {
         $('[data-lang]').each(function () {
@@ -106,16 +107,22 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         minY = _.min(astrolabe, function (o) { return o.Y }).Y;
         maxY = _.max(astrolabe, function (o) { return o.Y }).Y;
 
-        var $div = $("<div>").addClass("rune-container");
+        var $div = $("<div>").addClass("astrolabe-container");
 
         _.each(astrolabe, function (o, i) {
             //debugger;
             var cost = Data.getRuneCost(o.Id);
             var desc = Data.getRuneDesc(o.Id, classId);
-            var $rune = $("<span>")
+            var $runeContainer = $('<div>')
+                .addClass('rune-container')
                 .css("left", (o.X - minX) * scale)
-                .css("top", (maxY - o.Y) * scale)
+                .css("top", (maxY - o.Y) * scale);
+            var $rune = $("<div>")
                 .addClass("rune")
+                .css("left", -(runeSize * scale) / 2)
+                .css("top", -(runeSize * scale) / 2)
+                .css("width", runeSize * scale)
+                .css("height", runeSize * scale)
                 .attr("id", "rune" + o.Id)
                 .attr("data-id", o.Id)
                 .data("rune", o)
@@ -155,12 +162,12 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             if ((maxY - o.Y) / (maxY - minY) < 0.2) {
                 $rune.attr("data-placement", "bottom");
             }
-            $div.append($rune);
+            $div.append($runeContainer.append($rune));
         });
         $('#main').append($div);
 
         $('[data-toggle="popover"]').popover({
-            //container: 'body',
+            container: '.astrolabe-container',
             html: true,
             trigger: 'hover focus'
         });
@@ -188,10 +195,10 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         var $runeLink = $("<canvas>")
             .css("left", 0)
             .css("top", 0)
-            .attr("width", (maxX - minX + 10) * scale + 20)
-            .attr("height", (maxY - minY + 10) * scale + 20)
+            .attr("width", (maxX - minX + runeSize * 2) * scale)
+            .attr("height", (maxY - minY + runeSize * 2) * scale)
             .addClass("rune-link-container");
-        $('.rune-container').append($runeLink);
+        $('.astrolabe-container').append($runeLink);
         var linkcontext = $runeLink[0].getContext('2d');
         _.each(Data.getAstrolabe(), function (o, i) {
             var runeData = o;
@@ -199,19 +206,31 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 var runeToData = Data.getRuneDataById(o);
                 if (runeToData) {
                     linkcontext.beginPath();
-                    linkcontext.moveTo((runeData.X - minX) * scale + 5, (maxY - runeData.Y) * scale + 5);
-                    linkcontext.lineTo((runeToData.X - minX) * scale + 5, (maxY - runeToData.Y) * scale + 5);
+                    linkcontext.moveTo((runeData.X - minX) * scale, (maxY - runeData.Y) * scale);
+                    linkcontext.lineTo((runeToData.X - minX) * scale, (maxY - runeToData.Y) * scale);
                     linkcontext.lineWidth = 3;
                     if (disableEvo3 && (runeData.Evo == 3 || runeToData.Evo == 3)) {
                         linkcontext.strokeStyle = 'rgba(233, 233, 233, 0.15)';
+                        linkcontext.stroke();
                     }
                     else if (!(_.contains(runeList.concat(runeCheckList), runeData.Id) && _.contains(runeList.concat(runeCheckList), runeToData.Id))) {
-                        linkcontext.strokeStyle = '#aaa';
+                        linkcontext.strokeStyle = '#333';
+                        linkcontext.stroke();
                     }
                     else {
-                        linkcontext.strokeStyle = 'skyblue';
+                        linkcontext.lineWidth = 4;
+                        linkcontext.strokeStyle = '#13a7ff';
+                        linkcontext.stroke();
+                        linkcontext.lineWidth = 3;
+                        linkcontext.strokeStyle = '#85e2ff';
+                        linkcontext.stroke();
+                        linkcontext.lineWidth = 2;
+                        linkcontext.strokeStyle = '#cef3ff';
+                        linkcontext.stroke();
+                        linkcontext.lineWidth = 1;
+                        linkcontext.strokeStyle = '#eefcff';
+                        linkcontext.stroke();
                     }
-                    linkcontext.stroke();
                 }
             });
         });
