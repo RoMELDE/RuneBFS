@@ -45,7 +45,17 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         if (inited) { return; }
         $('#btnSearch').click(function () {
             var text = $('#txtSearch').val();
-            $('.rune[data-original-title*="' + text + '"]').popover('show');
+            //$('.rune[data-name*="' + text + '"]').popover('show');
+            $('.rune[data-name="' + text + '"]').popover('show');
+            if ($('.rune[data-name="' + text + '"]').length) {
+                var top = 9999999;
+                $('.rune[data-name="' + text + '"]').each(function (i, o) {
+                    top = Math.min(top, parseFloat($(o).css('top')));
+                });
+                $('#main').animate({
+                    scrollTop: Math.max(top - 50, 0)
+                }, 500);
+            }
         });
         $('#btnClear').click(function () {
             $('[data-toggle="popover"]').popover('hide');
@@ -85,6 +95,12 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         });
         $('.rune-panel-switch').click(function () {
             $('.rune-panel-main').toggle();
+        });
+        $('#txtSearch').selectpicker({
+            width: 'auto',
+            size: 8,
+            liveSearch: true,
+            liveSearchNormalize: true,
         });
         inited = true;
     };
@@ -126,6 +142,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 .data("desc", desc)
                 .data("status", 0)  //0:unchecked,1:checked,2:saved
                 .attr("data-toggle", "popover")
+                .attr("data-name", desc.Name)
                 .attr("title", desc.Name + '<button type="button" id="close" class="close" onclick="$(this).parents(&quot;.popover&quot;).popover(&quot;hide&quot;);">&times;</button>')
                 .attr("data-content", (desc.Desc || "")
                 + "<br/>" + _.reduce(cost, function (result, current) {
@@ -167,6 +184,12 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             trigger: 'hover focus',
             viewport: '.astrolabe-container'
         });
+
+        $('#txtSearch').empty();
+        _.each(Data.getAllRuneDescNameByClassId(classId), function (o, i) {
+            $('#txtSearch').append($('<option>').text(o).val(o));
+        });
+        $('.selectpicker').selectpicker('refresh');
 
         if (savedata) {
             runeList = parseCondition(savedata);
