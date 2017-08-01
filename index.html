@@ -59,7 +59,8 @@
                     </li>
                     <form class="navbar-form navbar-left">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="查询符文" id="txtSearch">
+                            <!--<input type="text" class="form-control" placeholder="查询符文" id="txtSearch">-->
+                            <select class="selectpicker" placeholder="查询符文" id="txtSearch"></select>
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default" id="btnSearch">查询</button>
                                 <button type="button" class="btn btn-default" id="btnClear">清空</button>
@@ -68,7 +69,7 @@
                     </form>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <p class="navbar-text">当前版本：120957</p>
+                    <p class="navbar-text">当前版本：123097</p>
                     <li><a href="http://ro.xd.com/" target="_blank" data-lang="officalsite">OfficalSite</a></li>
                     <li><a href="http://nga.178.com/thread.php?fid=555/" target="_blank" data-lang="donate">Donate</a></li>
                     <li class="dropdown" style="display:none">
@@ -124,7 +125,7 @@
                     <span class="input-group-addon">缩放</span>
                     <input type="number" class="form-control" id="scale" value="0.20" min="0.1" max="1" step="0.05" style="width:100px">
                 </div>
-            </div>            
+            </div>
             <div class="rune-panel-divider"></div>
             <div>寻路算法
                 <div class="btn-group" data-toggle="buttons">
@@ -153,9 +154,12 @@
             <div class="rune-panel-divider"></div>
             <div>已选：<span id="runeCost">0</span></div>
             <div>本次：<span id="runeCheckCost">0</span></div>
-            <div class="btn-group">
-                <button type="button" class="btn btn-danger" id="btnReset">重置本次选择</button>
-                <button type="button" class="btn btn-primary" id="btnSave">保存</button>
+            <div class="row">
+                <button type="button" class="btn btn-default" id="btnSaveImage">生成全符文图片</button>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-danger" id="btnReset">重置本次选择</button>
+                    <button type="button" class="btn btn-primary" id="btnSave">保存</button>
+                </div>
             </div>
         </div>
         <div class="rune-panel-switch"></div>

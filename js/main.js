@@ -19,7 +19,8 @@ require.config({
         "bitset": "libs/bitset.min",
         "nouislider": "libs/nouislider.min",
         "bootstrap": "libs/bootstrap.min",
-        "bootstrap-select": "libs/bootstrap-select.min"
+        "bootstrap-select": "libs/bootstrap-select.min",
+        "dom-to-image":"libs/dom-to-image.min"
     }
 });
 NProgress.start();

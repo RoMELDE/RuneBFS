@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZString', 'bootstrap', 'bootstrap-select', 'jquery.unveil'], function ($, _, Backbone, Data, Ui, noUiSlider, LZString, BitSet, skillDescTemplate) {
+define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZString', 'bootstrap', 'bootstrap-select', 'jquery.unveil', 'dom-to-image'], function ($, _, Backbone, Data, Ui, noUiSlider, LZString, BitSet, skillDescTemplate) {
     var activeMenu = "";
     var runeList = [];
     var runeCheckList = [];
@@ -11,6 +11,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
     var disableEvo3 = false;
     var pathAlgorithm = "nogold";
     var inited = false;
+    var runeSize = 60.0;
 
     var initUiLanguage = function () {
         $('[data-lang]').each(function () {
@@ -44,12 +45,39 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         if (inited) { return; }
         $('#btnSearch').click(function () {
             var text = $('#txtSearch').val();
-            $('.rune[data-original-title*="' + text + '"]').popover('show');
+            //$('.rune[data-name*="' + text + '"]').popover('show');
+            var list = $('.rune[data-name="' + text + '"]').not('.rune-not-available');
+            list.popover('show');
+            if (list.length) {
+                var top = 9999999;
+                list.each(function (i, o) {
+                    top = Math.min(top, parseFloat($(o).css('top')));
+                });
+                $('#main').animate({
+                    scrollTop: Math.max(top - 50, 0)
+                }, 500);
+            }
+            else {
+                alert("该符文不存在，请尝试启用进阶符文");
+            }
         });
         $('#btnClear').click(function () {
             $('[data-toggle="popover"]').popover('hide');
         });
 
+        $('#btnSaveImage').click(function () {
+            var w = window.open('about:blank;', '_blank');
+            $(w.document.body).append("生成中……");
+            domtoimage.toPng($('.astrolabe-container')[0], { bgcolor: '#fff' })
+                .then(function (dataUrl) {
+                    $(w.document.body).empty();
+                    $(w.document.body).append($('<textarea style="width:100%;height:100px;">').val(window.location));
+                    $(w.document.body).append($('<img>').attr('src', dataUrl));
+                })
+                .catch(function (error) {
+                    console.error('生成图片异常', error);
+                });
+        });
         $('#btnReset').click(function () {
             if (confirm("是否重置本次选择？")) {
                 _.each(runeCheckList, function (o, i) {
@@ -85,6 +113,12 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         $('.rune-panel-switch').click(function () {
             $('.rune-panel-main').toggle();
         });
+        $('#txtSearch').selectpicker({
+            width: 'auto',
+            size: 8,
+            liveSearch: true,
+            liveSearchNormalize: true,
+        });
         inited = true;
     };
     var render = function (id, savedata) {
@@ -106,16 +140,18 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         minY = _.min(astrolabe, function (o) { return o.Y }).Y;
         maxY = _.max(astrolabe, function (o) { return o.Y }).Y;
 
-        var $div = $("<div>").addClass("rune-container");
+        var $div = $("<div>").addClass("astrolabe-container");
 
         _.each(astrolabe, function (o, i) {
             //debugger;
             var cost = Data.getRuneCost(o.Id);
             var desc = Data.getRuneDesc(o.Id, classId);
-            var $rune = $("<span>")
-                .css("left", (o.X - minX) * scale)
-                .css("top", (maxY - o.Y) * scale)
+            var $rune = $("<div>")
                 .addClass("rune")
+                .css("left", (((o.X - minX) + runeSize / 2) * scale))
+                .css("top", (((maxY - o.Y) + runeSize / 2) * scale))
+                .css("width", runeSize * scale)
+                .css("height", runeSize * scale)
                 .attr("id", "rune" + o.Id)
                 .attr("data-id", o.Id)
                 .data("rune", o)
@@ -123,7 +159,8 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 .data("desc", desc)
                 .data("status", 0)  //0:unchecked,1:checked,2:saved
                 .attr("data-toggle", "popover")
-                .attr("title", desc.Name)
+                .attr("data-name", desc.Name)
+                .attr("title", desc.Name + '<button type="button" id="close" class="close" onclick="$(this).parents(&quot;.popover&quot;).popover(&quot;hide&quot;);">&times;</button>')
                 .attr("data-content", (desc.Desc || "")
                 + "<br/>" + _.reduce(cost, function (result, current) {
                     return result + current.Name + "*" + current.Count + " ";
@@ -160,10 +197,16 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         $('#main').append($div);
 
         $('[data-toggle="popover"]').popover({
-            //container: 'body',
             html: true,
-            trigger: 'hover focus'
+            trigger: 'hover focus',
+            viewport: '.astrolabe-container'
         });
+
+        $('#txtSearch').empty();
+        _.each(Data.getAllRuneDescNameByClassId(classId), function (o, i) {
+            $('#txtSearch').append($('<option>').text(o).val(o));
+        });
+        $('.selectpicker').selectpicker('refresh');
 
         if (savedata) {
             runeList = parseCondition(savedata);
@@ -186,12 +229,10 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
     var renderRuneLink = function () {
         $(".rune-link-container").remove();
         var $runeLink = $("<canvas>")
-            .css("left", 0)
-            .css("top", 0)
-            .attr("width", (maxX - minX + 10) * scale + 20)
-            .attr("height", (maxY - minY + 10) * scale + 20)
+            .attr("width", (maxX - minX + runeSize * 2) * scale)
+            .attr("height", (maxY - minY + runeSize * 2) * scale)
             .addClass("rune-link-container");
-        $('.rune-container').append($runeLink);
+        $('.astrolabe-container').append($runeLink);
         var linkcontext = $runeLink[0].getContext('2d');
         _.each(Data.getAstrolabe(), function (o, i) {
             var runeData = o;
@@ -199,19 +240,31 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 var runeToData = Data.getRuneDataById(o);
                 if (runeToData) {
                     linkcontext.beginPath();
-                    linkcontext.moveTo((runeData.X - minX) * scale + 5, (maxY - runeData.Y) * scale + 5);
-                    linkcontext.lineTo((runeToData.X - minX) * scale + 5, (maxY - runeToData.Y) * scale + 5);
+                    linkcontext.moveTo((runeData.X - minX + runeSize) * scale, (maxY - runeData.Y + runeSize) * scale);
+                    linkcontext.lineTo((runeToData.X - minX + runeSize) * scale, (maxY - runeToData.Y + runeSize) * scale);
                     linkcontext.lineWidth = 3;
                     if (disableEvo3 && (runeData.Evo == 3 || runeToData.Evo == 3)) {
                         linkcontext.strokeStyle = 'rgba(233, 233, 233, 0.15)';
+                        linkcontext.stroke();
                     }
                     else if (!(_.contains(runeList.concat(runeCheckList), runeData.Id) && _.contains(runeList.concat(runeCheckList), runeToData.Id))) {
-                        linkcontext.strokeStyle = '#aaa';
+                        linkcontext.strokeStyle = '#333';
+                        linkcontext.stroke();
                     }
                     else {
-                        linkcontext.strokeStyle = 'skyblue';
+                        linkcontext.lineWidth = 4;
+                        linkcontext.strokeStyle = '#13a7ff';
+                        linkcontext.stroke();
+                        linkcontext.lineWidth = 3;
+                        linkcontext.strokeStyle = '#85e2ff';
+                        linkcontext.stroke();
+                        linkcontext.lineWidth = 2;
+                        linkcontext.strokeStyle = '#cef3ff';
+                        linkcontext.stroke();
+                        linkcontext.lineWidth = 1;
+                        linkcontext.strokeStyle = '#eefcff';
+                        linkcontext.stroke();
                     }
-                    linkcontext.stroke();
                 }
             });
         });

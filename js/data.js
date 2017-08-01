@@ -74,6 +74,14 @@ define(['jquery'], function () {
         }
         return desc;
     }
+    var getAllRuneDescNameByClassId = function (classId) {
+        return _.chain(data.runeByClass[classId])
+            .uniq(function (rune) { return rune.Name; })
+            .pluck('Name')
+            .compact()
+            .sortBy(function (o) { return o; })
+            .value() || [];
+    }
 
 
     var getRuneDataById = function (id) {
@@ -271,6 +279,7 @@ define(['jquery'], function () {
         getAstrolabe: getAstrolabe,
         getRuneCost: getRuneCost,
         getRuneDesc: getRuneDesc,
+        getAllRuneDescNameByClassId: getAllRuneDescNameByClassId,
         getRuneDataById: getRuneDataById,
         getPath: getPath,
         getPathWithWeight: getPathWithWeight,
