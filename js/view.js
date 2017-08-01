@@ -113,12 +113,6 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         $('.rune-panel-switch').click(function () {
             $('.rune-panel-main').toggle();
         });
-        $('#txtSearch').selectpicker({
-            width: 'auto',
-            size: 8,
-            liveSearch: true,
-            liveSearchNormalize: true,
-        });
         inited = true;
     };
     var render = function (id, savedata) {
