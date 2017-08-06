@@ -431,6 +431,9 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                     .addClass('rune-checked');
                 runeCheckList.push(runeId);
             }
+            $('.rune-icon[runeId="' + runeId + '"]')
+                .toggleClass('rune-off-' + $rune.data('desc').Type)
+                .toggleClass('rune-on-' + $rune.data('desc').Type);
         }
     };
     var uncheckRuneWithConfirm = function (runeId) {
@@ -446,6 +449,9 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         $rune.data('status', 0)
             .removeClass('rune-checked')
             .removeClass('rune-saved');
+            $('.rune-icon[runeId="' + runeId + '"]')
+                .toggleClass('rune-off-' + $rune.data('desc').Type)
+                .toggleClass('rune-on-' + $rune.data('desc').Type);
         runeList = _.without(runeList, runeId);
         runeCheckList = _.without(runeCheckList, runeId);
         if (!noRecursion) {
