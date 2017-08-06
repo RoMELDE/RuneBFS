@@ -168,8 +168,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 $rune.addClass("rune-center")
                     .data("status", 2)
                     .attr("title", "")
-                    .attr("data-toggle", "")
-                    .off('click');
+                    .attr("data-toggle", "");
             }
             if (disableEvo3 && o.Evo == 3) {
                 $rune.addClass("rune-not-available")
@@ -205,7 +204,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             $(e.target.nextSibling)
                 .css('z-index', z + 1)
                 .off('mouseenter').off('click')
-                .on("mouseenter click",function () {
+                .on("mouseenter click", function () {
                     var zIndex = 0;
                     $('.popover').each(function (i, o) {
                         if (zIndex < parseInt($(o).css('z-index'))) {
@@ -213,7 +212,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                         }
                     })
                     $(this).css('z-index', zIndex + 1);
-                    console.log("current popover Z-Index",zIndex);
+                    //console.log("current popover Z-Index", zIndex);
                 });
         });
 
@@ -325,13 +324,18 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
     };
 
     var runeClick = function (rune) {
-        var $rune = $("#rune" + rune.Id);
-        var status = $rune.data('status');
-        switch (status) {
-            case 0: checkRune(rune.Id); break;
-            case 1: uncheckRune(rune.Id); break;
-            case 2: uncheckRuneWithConfirm(rune.Id); break;
-            default: break;
+        if (rune.Id == 10000) {
+            uncheckRuneWithConfirm(rune.Id);
+        }
+        else {
+            var $rune = $("#rune" + rune.Id);
+            var status = $rune.data('status');
+            switch (status) {
+                case 0: checkRune(rune.Id); break;
+                case 1: uncheckRune(rune.Id); break;
+                case 2: uncheckRuneWithConfirm(rune.Id); break;
+                default: break;
+            }
         }
         renderRuneLink();
         renderCost();
@@ -384,9 +388,6 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         }
     };
     var uncheckRune = function (runeId, noRecursion) {
-        if (runeId == 10000) {
-            return;
-        }
         var $rune = $("#rune" + runeId);
         if (disableEvo3 && $rune.data('rune').evo == 3) {
             return;
@@ -406,6 +407,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 }
             });
         }
+        runeList = _.union(runeList, [10000]);
     };
 
     var save = function () {

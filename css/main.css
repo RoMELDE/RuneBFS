@@ -37,7 +37,6 @@ body {
     background-color: gold !important;
     border-color:gold !important;
     transform: scale(1.5);
-    cursor:default;
 }
 .rune.rune-checked{    
     background-color: #337ab7;
