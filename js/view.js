@@ -195,6 +195,27 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             trigger: 'hover focus',
             viewport: '.astrolabe-container'
         });
+        $('#main').on('inserted.bs.popover', function (e) {
+            var z = 0;
+            $('.popover').each(function (i, o) {
+                if (z < parseInt($(o).css('z-index'))) {
+                    z = parseInt($(o).css('z-index'));
+                }
+            });
+            $(e.target.nextSibling)
+                .css('z-index', z + 1)
+                .off('mouseenter').off('click')
+                .on("mouseenter click",function () {
+                    var zIndex = 0;
+                    $('.popover').each(function (i, o) {
+                        if (zIndex < parseInt($(o).css('z-index'))) {
+                            zIndex = parseInt($(o).css('z-index'));
+                        }
+                    })
+                    $(this).css('z-index', zIndex + 1);
+                    console.log("current popover Z-Index",zIndex);
+                });
+        });
 
         $('#txtSearch').empty();
         _.each(Data.getAllRuneDescNameByClassId(classId), function (o, i) {
