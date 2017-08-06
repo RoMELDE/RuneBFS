@@ -1,4 +1,4 @@
-html{
+html {
     height: 100%;
 }
 
@@ -12,68 +12,136 @@ body {
     cursor: pointer;
 }
 
-#main{
-    overflow-x :auto;
+#main {
+    overflow-x: auto;
     height: 100%;
     position: relative;
 }
 
-.astrolabe-container{
+.astrolabe-container {
     position: relative;
 }
 
-.rune{
+.rune {
     min-width: 10px;
     min-height: 10px;
     background-color: #fff;
-    border:2px solid #ccc;
+    border: 2px solid #ccc;
     z-index: 2;
     cursor: pointer;
     position: absolute;
     border-radius: 100px;
 }
 
-.rune.rune-center{
+.rune.rune-center {
     background-color: gold !important;
-    border-color:gold !important;
+    border-color: gold !important;
     transform: scale(1.5);
 }
-.rune.rune-checked{    
+
+.rune.rune-checked {
     background-color: #337ab7;
     border-color: #2e6da4;
 }
-.rune.rune-saved{
+
+.rune.rune-saved {
     background-color: #5cb85c;
     border-color: #4cae4c;
 }
-.rune.rune-special{  
-    border-color:  #f0ad4e;
+
+.rune.rune-special {
+    border-color: #f0ad4e;
     transform: scale(1.5);
 }
-.rune.rune-not-available{
+
+.rune.rune-not-available {
     background: rgba(222, 222, 222, 0.2);
-    border:none;
-    cursor:not-allowed;
+    border: none;
+    cursor: not-allowed;
 }
 
-.rune-panel{
+.popover-title {
+    padding: 5px;
+}
+
+.rune-icon {
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    padding-left: 33px;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+.rune-icon.rune-off-1 {
+    background-image: url(../img/Rune_Off_1.png);
+}
+
+.rune-icon.rune-off-2 {
+    background-image: url(../img/Rune_Off_2.png);
+}
+
+.rune-icon.rune-off-3 {
+    background-image: url(../img/Rune_Off_3.png);
+}
+
+.rune-icon.rune-off-4 {
+    background-image: url(../img/Rune_Off_4.png);
+}
+
+.rune-icon.rune-off-5 {
+    background-image: url(../img/Rune_Off_5.png);
+}
+
+.rune-icon.rune-off-6 {
+    background-image: url(../img/Rune_Off_6.png);
+}
+
+.rune-icon.rune-on-1 {
+    background-image: url(../img/Rune_On_1.png);
+}
+
+.rune-icon.rune-on-2 {
+    background-image: url(../img/Rune_On_2.png);
+}
+
+.rune-icon.rune-on-3 {
+    background-image: url(../img/Rune_On_3.png);
+}
+
+.rune-icon.rune-on-4 {
+    background-image: url(../img/Rune_On_4.png);
+}
+
+.rune-icon.rune-on-5 {
+    background-image: url(../img/Rune_On_5.png);
+}
+
+.rune-icon.rune-on-6 {
+    background-image: url(../img/Rune_On_6.png);
+}
+
+.rune-panel {
     position: absolute;
     top: 60px;
     right: 25px;
     z-index: 2000;
 }
 
-.rune-panel .rune-panel-main{
+.rune-panel .rune-panel-main {
     background: rgba(220, 220, 220, 0.8);
     padding: 5px 10px;
     min-width: 100px;
     text-align: right;
 }
-.rune-panel .rune-panel-main>div{
+
+.rune-panel .rune-panel-main>div {
     margin: 5px 0;
 }
 
-.rune-panel .rune-panel-switch{
+.rune-panel .rune-panel-switch {
     width: 50px;
     height: 0;
     cursor: pointer;
@@ -83,18 +151,19 @@ body {
     border-right: 10px solid transparent;
 }
 
-.rune-panel .rune-panel-divider{
-    margin:5px 0;
+.rune-panel .rune-panel-divider {
+    margin: 5px 0;
     height: 1px;
     background: white;
 }
 
-.notAvailable{
+.notAvailable {
     filter: grayscale(100%);
 }
 
-button.close{
-    line-height: 14px;
+button.close {
+    line-height: 30px;
+    font-size: 30px;
 }
 
 .top-background {

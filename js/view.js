@@ -139,6 +139,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         _.each(astrolabe, function (o, i) {
             //debugger;
             var cost = Data.getRuneCost(o.Id);
+            var resetCost = Data.getRuneResetCost(o.Id);
             var desc = Data.getRuneDesc(o.Id, classId);
             var $rune = $("<div>")
                 .addClass("rune")
@@ -150,17 +151,19 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 .attr("data-id", o.Id)
                 .data("rune", o)
                 .data("cost", cost)
+                .data("resetCost", resetCost)
                 .data("desc", desc)
                 .data("status", 0)  //0:unchecked,1:checked,2:saved
                 .attr("data-toggle", "popover")
                 .attr("data-name", desc.Name)
-                .attr("title", desc.Name + '<button type="button" id="close" class="close" onclick="$(this).parents(&quot;.popover&quot;).popover(&quot;hide&quot;);">&times;</button>')
+                //.attr("title", desc.Name + '<button type="button" id="close" class="close" onclick="$(this).parents(&quot;.popover&quot;).popover(&quot;hide&quot;);">&times;</button>')
+                //.attr("title", $title.html())
                 .attr("data-content", (desc.Desc || "")
                 + "<br/>" + _.reduce(cost, function (result, current) {
                     return result + current.Name + "*" + current.Count + " ";
                 }, ""))
                 .click(function () {
-                    runeClick(o);
+                    runeClick(o.Id);
                 });
             if (o.Id == 10000) {
                 //set default rune as saved
@@ -194,6 +197,19 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             trigger: 'hover focus',
             viewport: '.astrolabe-container'
         });
+        $('#main').on('show.bs.popover', function (e) {
+            var $rune = $(e.target);
+            var desc = $rune.data("desc");
+            var status = $rune.data("status");
+            var $title = $('<div>')
+                .append($('<div>')
+                    .attr('runeId', $rune.attr("data-id"))
+                    .addClass('rune-icon')
+                    .addClass('rune-' + (status == 0 ? "off" : "on") + '-' + desc.Type)
+                    .text(desc.Name))
+                .append('<button type="button" id="close" class="close" onclick="$(this).parents(&quot;.popover&quot;).popover(&quot;hide&quot;);">&times;</button>');
+            $rune.attr('data-original-title', $title.html());
+        });
         $('#main').on('inserted.bs.popover', function (e) {
             var z = 0;
             $('.popover').each(function (i, o) {
@@ -213,6 +229,10 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                     })
                     $(this).css('z-index', zIndex + 1);
                     //console.log("current popover Z-Index", zIndex);
+                })
+                .on("click", '.rune-icon', function () {
+                    $(e.target).popover('hide');
+                    runeClick(parseInt($(this).attr('runeId')));
                 });
         });
 
@@ -287,15 +307,26 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
     var renderCost = function () {
         var runeCost = [];
         var runeCheckCost = [];
+        var runeResetCost = [];
+        var runeCheckResetCost = [];
         $(".rune").each(function (i, o) {
             var $rune = $(o);
             var runeData = $rune.data("rune")
             var status = $rune.data('status');
             var cost = $rune.data('cost');
+            var resetCost = $rune.data('resetCost');
             switch (status) {
                 case 0: break;
-                case 1: runeCheckCost.push(cost); break;
-                case 2: runeCost.push(cost); break;
+                case 1: {
+                    runeCheckCost.push(cost);
+                    runeCheckResetCost.push(resetCost);
+                    break;
+                }
+                case 2: {
+                    runeCost.push(cost);
+                    runeResetCost.push(resetCost);
+                    break;
+                }
                 default: break;
             }
         });
@@ -315,25 +346,45 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         _.each(runeCheckCost, function (o, i) {
             runeCheckCostText += i + "*" + o + " ";
         })
-        $('#runeCheckCost').text(runeCheckCostText);
         var runeCostText = "";
         _.each(runeCost, function (o, i) {
             runeCostText += i + "*" + o + " ";
         })
-        $('#runeCost').text(runeCostText);
+        runeCheckResetCost = _.reduce(runeCheckResetCost, function (memo, item) {
+            _.each(item, function (o, i) {
+                memo[o.Name] = (memo[o.Name] || 0) + o.Count;
+            })
+            return memo;
+        }, {});
+        runeResetCost = _.reduce(runeResetCost, function (memo, item) {
+            _.each(item, function (o, i) {
+                memo[o.Name] = (memo[o.Name] || 0) + o.Count;
+            })
+            return memo;
+        }, {});
+        var runeCheckResetCostText = "";
+        _.each(runeCheckResetCost, function (o, i) {
+            runeCheckResetCostText += i + "*" + o + " ";
+        })
+        var runeResetCostText = "";
+        _.each(runeResetCost, function (o, i) {
+            runeResetCostText += i + "*" + o + " ";
+        })
+        $('#runeCheckCost').text(runeCheckCostText + "(" + runeCheckResetCostText + ")");
+        $('#runeCost').text(runeCostText + "(" + runeResetCostText + ")");
     };
 
-    var runeClick = function (rune) {
-        if (rune.Id == 10000) {
-            uncheckRuneWithConfirm(rune.Id);
+    var runeClick = function (runeId) {
+        if (runeId == 10000) {
+            uncheckRuneWithConfirm(runeId);
         }
         else {
-            var $rune = $("#rune" + rune.Id);
+            var $rune = $("#rune" + runeId);
             var status = $rune.data('status');
             switch (status) {
-                case 0: checkRune(rune.Id); break;
-                case 1: uncheckRune(rune.Id); break;
-                case 2: uncheckRuneWithConfirm(rune.Id); break;
+                case 0: checkRune(runeId); break;
+                case 1: uncheckRune(runeId); break;
+                case 2: uncheckRuneWithConfirm(runeId); break;
                 default: break;
             }
         }

@@ -60,6 +60,9 @@ define(['jquery'], function () {
     var getRuneCost = function (id) {
         return (_.find(data.rune, function (p) { return p.Id === parseInt(id); }) || {}).Cost || [];
     }
+    var getRuneResetCost = function (id) {
+        return (_.find(data.rune, function (p) { return p.Id === parseInt(id); }) || {}).ResetCost || [];
+    }
     var getRuneDesc = function (id, classId) {
         var desc = _.find(data.runeByClass[classId], function (p) { return p.Id === parseInt(id); }) || {};
         if (desc.SpecialDescId) {
@@ -278,6 +281,7 @@ define(['jquery'], function () {
         //data: data,
         getAstrolabe: getAstrolabe,
         getRuneCost: getRuneCost,
+        getRuneResetCost: getRuneResetCost,
         getRuneDesc: getRuneDesc,
         getAllRuneDescNameByClassId: getAllRuneDescNameByClassId,
         getRuneDataById: getRuneDataById,
