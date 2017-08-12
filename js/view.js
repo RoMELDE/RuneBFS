@@ -43,6 +43,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
     };
     var initControl = function () {
         if (inited) { return; }
+        $('#version').text(Data.getVersion());
         $('#btnSearch').click(function () {
             var text = $('#txtSearch').val();
             //$('.rune[data-name*="' + text + '"]').popover('show');
@@ -262,12 +263,19 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
 
     var renderRuneLink = function () {
         $(".rune-link-container").remove();
+        var runeLinkWidth = (maxX - minX + runeSize * 2) * scale;
+        var runeLinkHeight = (maxY - minY + runeSize * 2) * scale
         var $runeLink = $("<canvas>")
-            .attr("width", (maxX - minX + runeSize * 2) * scale)
-            .attr("height", (maxY - minY + runeSize * 2) * scale)
+            .attr("width", runeLinkWidth)
+            .attr("height", runeLinkHeight)
             .addClass("rune-link-container");
         $('.astrolabe-container').append($runeLink);
         var linkcontext = $runeLink[0].getContext('2d');
+        linkcontext.font = "25px Consolas";
+        linkcontext.fillStyle = "rgba(0, 0, 0, 0.25)";
+        linkcontext.textAlign = "right";
+        linkcontext.fillText("ROMEL Rune BFS", runeLinkWidth, runeLinkHeight - 25);
+        linkcontext.fillText("Version:" + Data.getVersion(), runeLinkWidth, runeLinkHeight);
         _.each(Data.getAstrolabe(), function (o, i) {
             var runeData = o;
             _.each(runeData.Link, function (o, i) {
@@ -449,9 +457,9 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         $rune.data('status', 0)
             .removeClass('rune-checked')
             .removeClass('rune-saved');
-            $('.rune-icon[runeId="' + runeId + '"]')
-                .toggleClass('rune-off-' + $rune.data('desc').Type)
-                .toggleClass('rune-on-' + $rune.data('desc').Type);
+        $('.rune-icon[runeId="' + runeId + '"]')
+            .toggleClass('rune-off-' + $rune.data('desc').Type)
+            .toggleClass('rune-on-' + $rune.data('desc').Type);
         runeList = _.without(runeList, runeId);
         runeCheckList = _.without(runeCheckList, runeId);
         if (!noRecursion) {

@@ -6,8 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>*α*ROMEL Rune BFS</title>
+    <title>*β*ROMEL Rune BFS</title>
     <meta name="description" content="仙境传说：守护永恒的爱 阿萨神碑加点模拟器;ROMEL Rune Breadth-First-Search." />
+    <meta name="keywords" content="仙境传说,守护永恒的爱,阿萨神碑,符文,碑文,加点,RuneBFS,ForeverLove">
     <!-- Bootstrap -->
     <link href="css/libs/bootstrap.min.css" rel="stylesheet">
     <link href="css/libs/bootstrap-select.min.css" rel="stylesheet">
@@ -37,7 +38,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-                <a class="navbar-brand" href="#">ROMEL Rune Breadth-First-Search<sup>α</sup></a>
+                <a class="navbar-brand" title="ROMEL Rune Breadth-First-Search" href="#">ROMEL Rune BFS<sup>β</sup></a>
                 <!--β-->
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -69,10 +70,10 @@
                     </form>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <p class="navbar-text">当前版本：123097</p>
+                    <p class="navbar-text">当前版本：<span id="version"></span></p>
                     <li><a href="http://ro.xd.com/" target="_blank" data-lang="officalsite">OfficalSite</a></li>
                     <li><a href="http://nga.178.com/thread.php?fid=555/" target="_blank" data-lang="donate">Donate</a></li>
-                    <li class="dropdown" style="display:none">
+                    <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <span class='glyphicon glyphicon-globe'></span>
                             <span data-lang="ui">UI</span>
@@ -80,7 +81,7 @@
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="#lang/ja-JP">日本語</a></li>
+                            <!--<li><a href="#lang/ja-JP">日本語</a></li>-->
                             <li><a href="#lang/zh-TW">正體中文</a></li>
                             <li><a href="#lang/en-US">English</a></li>
                             <li><a href="#lang/zh-CN">简体中文</a></li>

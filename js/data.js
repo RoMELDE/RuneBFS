@@ -1,6 +1,8 @@
 define(['jquery'], function () {
     var data = {};
 
+    var version = 123097;
+
     var init = function (type) {
         var dtd = $.Deferred();
         if (!type) {
@@ -279,6 +281,9 @@ define(['jquery'], function () {
 
     return {
         //data: data,
+        getVersion: function () {
+            return version;
+        },
         getAstrolabe: getAstrolabe,
         getRuneCost: getRuneCost,
         getRuneResetCost: getRuneResetCost,
