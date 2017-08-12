@@ -59,7 +59,8 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 }, 500);
             }
             else {
-                alert("该符文不存在，请尝试启用进阶符文");
+                //alert("该符文不存在，请尝试启用进阶符文");
+                alert(Ui.getText('runenotexist'));
             }
         });
         $('#btnClear').click(function () {
@@ -68,7 +69,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
 
         $('#btnSaveImage').click(function () {
             var w = window.open('about:blank;', '_blank');
-            $(w.document.body).append("生成中……");
+            $(w.document.body).append(Ui.getText('generating'));
             domtoimage.toPng($('.astrolabe-container')[0], { bgcolor: '#fff' })
                 .then(function (dataUrl) {
                     $(w.document.body).empty();
@@ -76,11 +77,11 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                     $(w.document.body).append($('<img>').attr('src', dataUrl));
                 })
                 .catch(function (error) {
-                    console.error('生成图片异常', error);
+                    console.error(Ui.getText('generateerror'), error);
                 });
         });
         $('#btnReset').click(function () {
-            if (confirm("是否重置本次选择？")) {
+            if (confirm(Ui.getText('confirmreset'))) {
                 _.each(runeCheckList, function (o, i) {
                     var $rune = $("#rune" + o);
                     $rune.data('status', 0)
@@ -428,7 +429,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             }
             console.log("getPath", pathAlgorithm, path);
             if (!path.length) {
-                alert("无路径！")
+                alert(Ui.getText("nopath"))
                 return;
             }
             _.each(path, function (o, i) {
@@ -451,7 +452,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         }
     };
     var uncheckRuneWithConfirm = function (runeId) {
-        if (confirm("是否取消选中该符文？")) {
+        if (confirm(Ui.getText("confirmuncheck"))) {
             uncheckRune(runeId);
         }
     };
