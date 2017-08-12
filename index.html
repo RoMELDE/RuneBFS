@@ -50,27 +50,27 @@
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="#class/1" data-class-id="1">剑士</a></li>
-                            <li><a href="#class/2" data-class-id="2">魔法师</a></li>
-                            <li><a href="#class/3" data-class-id="3">盗贼</a></li>
-                            <li><a href="#class/4" data-class-id="4">弓箭手</a></li>
-                            <li><a href="#class/5" data-class-id="5">服事</a></li>
-                            <li><a href="#class/6" data-class-id="6">商人</a></li>
+                            <li><a href="#class/1" data-class-id="1" data-lang="class-1">剑士</a></li>
+                            <li><a href="#class/2" data-class-id="2" data-lang="class-2">魔法师</a></li>
+                            <li><a href="#class/3" data-class-id="3" data-lang="class-3">盗贼</a></li>
+                            <li><a href="#class/4" data-class-id="4" data-lang="class-4">弓箭手</a></li>
+                            <li><a href="#class/5" data-class-id="5" data-lang="class-5">服事</a></li>
+                            <li><a href="#class/6" data-class-id="6" data-lang="class-6">商人</a></li>
                         </ul>
                     </li>
                     <form class="navbar-form navbar-left">
                         <div class="input-group">
                             <!--<input type="text" class="form-control" placeholder="查询符文" id="txtSearch">-->
-                            <select class="selectpicker" placeholder="查询符文" id="txtSearch" data-width='auto' data-size='8' data-live-search='true' data-live-search-normalize='true'></select>
+                            <select class="selectpicker" id="txtSearch" data-width='auto' data-size='8' data-live-search='true' data-live-search-normalize='true'></select>
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-default" id="btnSearch">查询</button>
-                                <button type="button" class="btn btn-default" id="btnClear">清空</button>
+                                <button type="button" class="btn btn-default" id="btnSearch" data-lang="search">查询</button>
+                                <button type="button" class="btn btn-default" id="btnClear" data-lang="clear">清空</button>
                             </span>
                         </div>
                     </form>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <p class="navbar-text">当前版本：<span id="version"></span></p>
+                    <p class="navbar-text"><span data-lang="currentversion">当前版本：</span><span id="version"></span></p>
                     <li><a href="http://ro.xd.com/" target="_blank" data-lang="officalsite">OfficalSite</a></li>
                     <li><a href="http://nga.178.com/thread.php?fid=555/" target="_blank" data-lang="donate">Donate</a></li>
                     <li class="dropdown">
@@ -110,56 +110,58 @@
     </div>
     <div class="rune-panel">
         <div class="rune-panel-main">
-            <div>启用进阶符文
+            <div>
+                <span data-lang="evorune">进阶符文</span>
                 <div class="btn-group" data-toggle="buttons">
                     <label class="btn btn-default">
-                        <input type="radio" name="evo3" id="radEvo3Disable" autocomplete="off" value="false">不启用
+                        <input type="radio" name="evo3" id="radEvo3Disable" autocomplete="off" value="false"><span data-lang="disable">不启用</span>
                     </label>
                     <label class="btn btn-default active">
-                        <input type="radio" name="evo3" id="radEvo3Enable" autocomplete="off" value="true" checked>启用
+                        <input type="radio" name="evo3" id="radEvo3Enable" autocomplete="off" value="true" checked><span data-lang="enable">启用</span>
                     </label>
                 </div>
             </div>
             <div class="rune-panel-divider"></div>
             <div class="form-inline">
                 <div class="input-group">
-                    <span class="input-group-addon">缩放</span>
+                    <span class="input-group-addon" data-lang="zoom">缩放</span>
                     <input type="number" class="form-control" id="scale" value="0.20" min="0.1" max="1" step="0.05" style="width:100px">
                 </div>
             </div>
             <div class="rune-panel-divider"></div>
-            <div>寻路算法
+            <div>
+                <span data-lang="algorithm">寻路算法</span>
                 <div class="btn-group" data-toggle="buttons">
                     <label class="btn btn-default">
-                        <input type="radio" name="pathAlgorithm" autocomplete="off" value="simple">最短路径
+                        <input type="radio" name="pathAlgorithm" autocomplete="off" value="simple"><span data-lang="algorithm-simple">最短路径</span>
                     </label>
                     <label class="btn btn-default active">
-                        <input type="radio" name="pathAlgorithm" autocomplete="off" value="nogold" checked>最少金质勋章
+                        <input type="radio" name="pathAlgorithm" autocomplete="off" value="nogold" checked><span data-lang="algorithm-nogold">最少金质勋章</span>
                     </label>
                     <label class="btn btn-default">
-                        <input type="radio" name="pathAlgorithm" autocomplete="off" value="custom">自定义
+                        <input type="radio" name="pathAlgorithm" autocomplete="off" value="custom"><span data-lang="algorithm-custom">自定义</span>
                     </label>
                 </div>
             </div>
-            <div class="form-inline">
-                权重
+            <div class="form-inline" id="algorithmWeight" style="display:none;">
+                <span data-lang="weight">权重</span>
                 <div class="input-group">
-                    <span class="input-group-addon">贡献</span>
+                    <span class="input-group-addon" data-lang='contribution'>贡献</span>
                     <input type="number" class="form-control" id="weight140" value="0.001" style="width:100px">
                 </div>
                 <div class="input-group">
-                    <span class="input-group-addon">金质勋章</span>
+                    <span class="input-group-addon" data-lang='goldmedal'>金质勋章</span>
                     <input type="number" class="form-control" id="weight5261" value="1000" style="width:100px">
                 </div>
             </div>
             <div class="rune-panel-divider"></div>
-            <div>已选：<span id="runeCost">0</span></div>
-            <div>本次：<span id="runeCheckCost">0</span></div>
+            <div><span data-lang="selected">已选：</span><span id="runeCost">0</span></div>
+            <div><span data-lang="currentselected">本次：</span><span id="runeCheckCost">0</span></div>
             <div class="row">
-                <button type="button" class="btn btn-default" id="btnSaveImage">生成全符文图片</button>
+                <button type="button" class="btn btn-default" id="btnSaveImage" data-lang="saveimage">生成全符文图片</button>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-danger" id="btnReset">重置本次选择</button>
-                    <button type="button" class="btn btn-primary" id="btnSave">保存</button>
+                    <button type="button" class="btn btn-danger" id="btnReset" data-lang="reset">重置本次选择</button>
+                    <button type="button" class="btn btn-primary" id="btnSave" data-lang="save">保存</button>
                 </div>
             </div>
         </div>

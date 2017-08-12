@@ -110,6 +110,12 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         });
         $('input[name="pathAlgorithm"]').change(function () {
             pathAlgorithm = this.value;
+            if (pathAlgorithm == "custom") {
+                $('#algorithmWeight').show();
+            }
+            else {
+                $('#algorithmWeight').hide();
+            }
         });
         $('.rune-panel-switch').click(function () {
             $('.rune-panel-main').toggle();

@@ -127,11 +127,11 @@ body {
     position: absolute;
     top: 60px;
     right: 25px;
-    z-index: 2000;
+    z-index: 500;
 }
 
 .rune-panel .rune-panel-main {
-    background: rgba(220, 220, 220, 0.8);
+    background: rgba(220, 220, 220, 0.9);
     padding: 5px 10px;
     min-width: 100px;
     text-align: right;
