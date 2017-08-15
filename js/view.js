@@ -43,6 +43,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
     };
     var initControl = function () {
         if (inited) { return; }
+        $('#version').text(Data.getVersion());
         $('#btnSearch').click(function () {
             var text = $('#txtSearch').val();
             //$('.rune[data-name*="' + text + '"]').popover('show');
@@ -58,7 +59,8 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 }, 500);
             }
             else {
-                alert("该符文不存在，请尝试启用进阶符文");
+                //alert("该符文不存在，请尝试启用进阶符文");
+                alert(Ui.getText('runenotexist'));
             }
         });
         $('#btnClear').click(function () {
@@ -67,7 +69,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
 
         $('#btnSaveImage').click(function () {
             var w = window.open('about:blank;', '_blank');
-            $(w.document.body).append("生成中……");
+            $(w.document.body).append(Ui.getText('generating'));
             domtoimage.toPng($('.astrolabe-container')[0], { bgcolor: '#fff' })
                 .then(function (dataUrl) {
                     $(w.document.body).empty();
@@ -75,11 +77,11 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                     $(w.document.body).append($('<img>').attr('src', dataUrl));
                 })
                 .catch(function (error) {
-                    console.error('生成图片异常', error);
+                    console.error(Ui.getText('generateerror'), error);
                 });
         });
         $('#btnReset').click(function () {
-            if (confirm("是否重置本次选择？")) {
+            if (confirm(Ui.getText('confirmreset'))) {
                 _.each(runeCheckList, function (o, i) {
                     var $rune = $("#rune" + o);
                     $rune.data('status', 0)
@@ -109,6 +111,12 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         });
         $('input[name="pathAlgorithm"]').change(function () {
             pathAlgorithm = this.value;
+            if (pathAlgorithm == "custom") {
+                $('#algorithmWeight').show();
+            }
+            else {
+                $('#algorithmWeight').hide();
+            }
         });
         $('.rune-panel-switch').click(function () {
             $('.rune-panel-main').toggle();
@@ -139,6 +147,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         _.each(astrolabe, function (o, i) {
             //debugger;
             var cost = Data.getRuneCost(o.Id);
+            var resetCost = Data.getRuneResetCost(o.Id);
             var desc = Data.getRuneDesc(o.Id, classId);
             var $rune = $("<div>")
                 .addClass("rune")
@@ -150,17 +159,19 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 .attr("data-id", o.Id)
                 .data("rune", o)
                 .data("cost", cost)
+                .data("resetCost", resetCost)
                 .data("desc", desc)
                 .data("status", 0)  //0:unchecked,1:checked,2:saved
                 .attr("data-toggle", "popover")
                 .attr("data-name", desc.Name)
-                .attr("title", desc.Name + '<button type="button" id="close" class="close" onclick="$(this).parents(&quot;.popover&quot;).popover(&quot;hide&quot;);">&times;</button>')
+                //.attr("title", desc.Name + '<button type="button" id="close" class="close" onclick="$(this).parents(&quot;.popover&quot;).popover(&quot;hide&quot;);">&times;</button>')
+                //.attr("title", $title.html())
                 .attr("data-content", (desc.Desc || "")
                 + "<br/>" + _.reduce(cost, function (result, current) {
                     return result + current.Name + "*" + current.Count + " ";
                 }, ""))
                 .click(function () {
-                    runeClick(o);
+                    runeClick(o.Id);
                 });
             if (o.Id == 10000) {
                 //set default rune as saved
@@ -168,8 +179,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 $rune.addClass("rune-center")
                     .data("status", 2)
                     .attr("title", "")
-                    .attr("data-toggle", "")
-                    .off('click');
+                    .attr("data-toggle", "");
             }
             if (disableEvo3 && o.Evo == 3) {
                 $rune.addClass("rune-not-available")
@@ -194,6 +204,44 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             html: true,
             trigger: 'hover focus',
             viewport: '.astrolabe-container'
+        });
+        $('#main').on('show.bs.popover', function (e) {
+            var $rune = $(e.target);
+            var desc = $rune.data("desc");
+            var status = $rune.data("status");
+            var $title = $('<div>')
+                .append($('<div>')
+                    .attr('runeId', $rune.attr("data-id"))
+                    .addClass('rune-icon')
+                    .addClass('rune-' + (status == 0 ? "off" : "on") + '-' + desc.Type)
+                    .text(desc.Name))
+                .append('<button type="button" id="close" class="close" onclick="$(this).parents(&quot;.popover&quot;).popover(&quot;hide&quot;);">&times;</button>');
+            $rune.attr('data-original-title', $title.html());
+        });
+        $('#main').on('inserted.bs.popover', function (e) {
+            var z = 0;
+            $('.popover').each(function (i, o) {
+                if (z < parseInt($(o).css('z-index'))) {
+                    z = parseInt($(o).css('z-index'));
+                }
+            });
+            $(e.target.nextSibling)
+                .css('z-index', z + 1)
+                .off('mouseenter').off('click')
+                .on("mouseenter click", function () {
+                    var zIndex = 0;
+                    $('.popover').each(function (i, o) {
+                        if (zIndex < parseInt($(o).css('z-index'))) {
+                            zIndex = parseInt($(o).css('z-index'));
+                        }
+                    })
+                    $(this).css('z-index', zIndex + 1);
+                    //console.log("current popover Z-Index", zIndex);
+                })
+                .on("click", '.rune-icon', function () {
+                    $(e.target).popover('hide');
+                    runeClick(parseInt($(this).attr('runeId')));
+                });
         });
 
         $('#txtSearch').empty();
@@ -222,12 +270,19 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
 
     var renderRuneLink = function () {
         $(".rune-link-container").remove();
+        var runeLinkWidth = (maxX - minX + runeSize * 2) * scale;
+        var runeLinkHeight = (maxY - minY + runeSize * 2) * scale
         var $runeLink = $("<canvas>")
-            .attr("width", (maxX - minX + runeSize * 2) * scale)
-            .attr("height", (maxY - minY + runeSize * 2) * scale)
+            .attr("width", runeLinkWidth)
+            .attr("height", runeLinkHeight)
             .addClass("rune-link-container");
         $('.astrolabe-container').append($runeLink);
         var linkcontext = $runeLink[0].getContext('2d');
+        linkcontext.font = "25px Consolas";
+        linkcontext.fillStyle = "rgba(0, 0, 0, 0.25)";
+        linkcontext.textAlign = "right";
+        linkcontext.fillText("ROMEL Rune BFS", runeLinkWidth, runeLinkHeight - 25);
+        linkcontext.fillText("Version:" + Data.getVersion(), runeLinkWidth, runeLinkHeight);
         _.each(Data.getAstrolabe(), function (o, i) {
             var runeData = o;
             _.each(runeData.Link, function (o, i) {
@@ -267,15 +322,26 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
     var renderCost = function () {
         var runeCost = [];
         var runeCheckCost = [];
+        var runeResetCost = [];
+        var runeCheckResetCost = [];
         $(".rune").each(function (i, o) {
             var $rune = $(o);
             var runeData = $rune.data("rune")
             var status = $rune.data('status');
             var cost = $rune.data('cost');
+            var resetCost = $rune.data('resetCost');
             switch (status) {
                 case 0: break;
-                case 1: runeCheckCost.push(cost); break;
-                case 2: runeCost.push(cost); break;
+                case 1: {
+                    runeCheckCost.push(cost);
+                    runeCheckResetCost.push(resetCost);
+                    break;
+                }
+                case 2: {
+                    runeCost.push(cost);
+                    runeResetCost.push(resetCost);
+                    break;
+                }
                 default: break;
             }
         });
@@ -295,22 +361,47 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         _.each(runeCheckCost, function (o, i) {
             runeCheckCostText += i + "*" + o + " ";
         })
-        $('#runeCheckCost').text(runeCheckCostText);
         var runeCostText = "";
         _.each(runeCost, function (o, i) {
             runeCostText += i + "*" + o + " ";
         })
-        $('#runeCost').text(runeCostText);
+        runeCheckResetCost = _.reduce(runeCheckResetCost, function (memo, item) {
+            _.each(item, function (o, i) {
+                memo[o.Name] = (memo[o.Name] || 0) + o.Count;
+            })
+            return memo;
+        }, {});
+        runeResetCost = _.reduce(runeResetCost, function (memo, item) {
+            _.each(item, function (o, i) {
+                memo[o.Name] = (memo[o.Name] || 0) + o.Count;
+            })
+            return memo;
+        }, {});
+        var runeCheckResetCostText = "";
+        _.each(runeCheckResetCost, function (o, i) {
+            runeCheckResetCostText += i + "*" + o + " ";
+        })
+        var runeResetCostText = "";
+        _.each(runeResetCost, function (o, i) {
+            runeResetCostText += i + "*" + o + " ";
+        })
+        $('#runeCheckCost').text(runeCheckCostText + "(" + runeCheckResetCostText + ")");
+        $('#runeCost').text(runeCostText + "(" + runeResetCostText + ")");
     };
 
-    var runeClick = function (rune) {
-        var $rune = $("#rune" + rune.Id);
-        var status = $rune.data('status');
-        switch (status) {
-            case 0: checkRune(rune.Id); break;
-            case 1: uncheckRune(rune.Id); break;
-            case 2: uncheckRuneWithConfirm(rune.Id); break;
-            default: break;
+    var runeClick = function (runeId) {
+        if (runeId == 10000) {
+            uncheckRuneWithConfirm(runeId);
+        }
+        else {
+            var $rune = $("#rune" + runeId);
+            var status = $rune.data('status');
+            switch (status) {
+                case 0: checkRune(runeId); break;
+                case 1: uncheckRune(runeId); break;
+                case 2: uncheckRuneWithConfirm(runeId); break;
+                default: break;
+            }
         }
         renderRuneLink();
         renderCost();
@@ -338,7 +429,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             }
             console.log("getPath", pathAlgorithm, path);
             if (!path.length) {
-                alert("无路径！")
+                alert(Ui.getText("nopath"))
                 return;
             }
             _.each(path, function (o, i) {
@@ -355,17 +446,17 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                     .addClass('rune-checked');
                 runeCheckList.push(runeId);
             }
+            $('.rune-icon[runeId="' + runeId + '"]')
+                .toggleClass('rune-off-' + $rune.data('desc').Type)
+                .toggleClass('rune-on-' + $rune.data('desc').Type);
         }
     };
     var uncheckRuneWithConfirm = function (runeId) {
-        if (confirm("是否取消选中该符文？")) {
+        if (confirm(Ui.getText("confirmuncheck"))) {
             uncheckRune(runeId);
         }
     };
     var uncheckRune = function (runeId, noRecursion) {
-        if (runeId == 10000) {
-            return;
-        }
         var $rune = $("#rune" + runeId);
         if (disableEvo3 && $rune.data('rune').evo == 3) {
             return;
@@ -373,6 +464,9 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         $rune.data('status', 0)
             .removeClass('rune-checked')
             .removeClass('rune-saved');
+        $('.rune-icon[runeId="' + runeId + '"]')
+            .toggleClass('rune-off-' + $rune.data('desc').Type)
+            .toggleClass('rune-on-' + $rune.data('desc').Type);
         runeList = _.without(runeList, runeId);
         runeCheckList = _.without(runeCheckList, runeId);
         if (!noRecursion) {
@@ -385,6 +479,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 }
             });
         }
+        runeList = _.union(runeList, [10000]);
     };
 
     var save = function () {

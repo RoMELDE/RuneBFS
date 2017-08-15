@@ -1,6 +1,8 @@
 define(['jquery'], function () {
     var data = {};
 
+    var version = 126005;
+
     var init = function (type) {
         var dtd = $.Deferred();
         if (!type) {
@@ -59,6 +61,9 @@ define(['jquery'], function () {
     };
     var getRuneCost = function (id) {
         return (_.find(data.rune, function (p) { return p.Id === parseInt(id); }) || {}).Cost || [];
+    }
+    var getRuneResetCost = function (id) {
+        return (_.find(data.rune, function (p) { return p.Id === parseInt(id); }) || {}).ResetCost || [];
     }
     var getRuneDesc = function (id, classId) {
         var desc = _.find(data.runeByClass[classId], function (p) { return p.Id === parseInt(id); }) || {};
@@ -276,8 +281,12 @@ define(['jquery'], function () {
 
     return {
         //data: data,
+        getVersion: function () {
+            return version;
+        },
         getAstrolabe: getAstrolabe,
         getRuneCost: getRuneCost,
+        getRuneResetCost: getRuneResetCost,
         getRuneDesc: getRuneDesc,
         getAllRuneDescNameByClassId: getAllRuneDescNameByClassId,
         getRuneDataById: getRuneDataById,

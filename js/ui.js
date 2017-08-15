@@ -1,9 +1,9 @@
 define(['jquery', 'underscore'], function ($, _) {
     var supportedLang = [
-        {
+        /*{
             key: 'ja-JP',
             text: '日本語'
-        },
+        },*/
         {
             key: 'zh-TW',
             text: '正體中文'
@@ -20,17 +20,47 @@ define(['jquery', 'underscore'], function ($, _) {
     var currentLang = '';
     var data = [];
     //navbar
-    data["list"] = { "ja-JP": "図鑑", "zh-TW": "圖鑑", "en-US": "Encyclopedia", "zh-CN": "图鉴" };
-    data["search"] = { "ja-JP": "検索", "zh-TW": "搜索", "en-US": "Search", "zh-CN": "搜索" };
-    data["category"] = { "ja-JP": "", "zh-TW": "分類", "en-US": "Category", "zh-CN": "分类" };
-    data["about"] = { "ja-JP": "", "zh-TW": "關於", "en-US": "About", "zh-CN": "关于" };
-    data["info"] = { "ja-JP": "お知らせ", "zh-TW": "通知", "en-US": "Notices", "zh-CN": "游戏公告" };
+    data["class"] = { "ja-JP": "", "zh-TW": "職業", "en-US": "Classes", "zh-CN": "职业" };
+    data["class-1"] = { "ja-JP": "", "zh-TW": "劍士", "en-US": "Swordman", "zh-CN": "剑士" };
+    data["class-2"] = { "ja-JP": "", "zh-TW": "魔法師", "en-US": "Mage", "zh-CN": "魔法师" };
+    data["class-3"] = { "ja-JP": "", "zh-TW": "盜賊", "en-US": "Thief", "zh-CN": "盗贼" };
+    data["class-4"] = { "ja-JP": "", "zh-TW": "弓箭手", "en-US": "Archer", "zh-CN": "弓箭手" };
+    data["class-5"] = { "ja-JP": "", "zh-TW": "服事", "en-US": "Acolyte", "zh-CN": "服事" };
+    data["class-6"] = { "ja-JP": "", "zh-TW": "商人", "en-US": "Merchant", "zh-CN": "商人" };
+
+    data["search"] = { "ja-JP": "検索", "zh-TW": "搜尋", "en-US": "Search", "zh-CN": "查询" };
+    data["clear"] = { "ja-JP": "", "zh-TW": "清空", "en-US": "Clear", "zh-CN": "清空" };
+
+    data["currentversion"] = { "ja-JP": "", "zh-TW": "當前版本：", "en-US": "Current Ver.:", "zh-CN": "当前版本：" };
+    data["officalsite"] = { "ja-JP": "", "zh-TW": "官網", "en-US": "Offical Site", "zh-CN": "官网" };
+    data["donate"] = { "ja-JP": "", "zh-TW": "送版主女裝", "en-US": "NGA RO", "zh-CN": "送版主女装" };
+
     data["ui"] = { "ja-JP": "", "zh-TW": "界面語言", "en-US": "UI", "zh-CN": "界面语言" };
     data["data"] = { "ja-JP": "", "zh-TW": "資料語言", "en-US": "Data", "zh-CN": "数据语言" };
-    data["class"] = { "ja-JP": "", "zh-TW": "", "en-US": "Class", "zh-CN": "职业" };
-    data["officalsite"] = { "ja-JP": "", "zh-TW": "", "en-US": "Offical Site", "zh-CN": "官网" };
-    data["donate"] = { "ja-JP": "", "zh-TW": "", "en-US": "Donate", "zh-CN": "送版主女装" };
-
+    //rune panel
+    data["evorune"] = { "ja-JP": "", "zh-TW": "進階符文", "en-US": "Evolution Rune", "zh-CN": "进阶符文" };
+    data["disable"] = { "ja-JP": "", "zh-TW": "不啟用", "en-US": "Disable", "zh-CN": "不启用" };
+    data["enable"] = { "ja-JP": "", "zh-TW": "啟用", "en-US": "Enable", "zh-CN": "启用" };
+    data["zoom"] = { "ja-JP": "", "zh-TW": "縮放", "en-US": "Zoom", "zh-CN": "缩放" };
+    data["algorithm"] = { "ja-JP": "", "zh-TW": "尋路算法", "en-US": "Pathfinding algorithm", "zh-CN": "寻路算法" };
+    data["algorithm-simple"] = { "ja-JP": "", "zh-TW": "最短路徑", "en-US": "Shortest Path", "zh-CN": "最短路径" };
+    data["algorithm-nogold"] = { "ja-JP": "", "zh-TW": "最少金質勳章", "en-US": "Minimum Golden Badge", "zh-CN": "最少金质勋章" };
+    data["algorithm-custom"] = { "ja-JP": "", "zh-TW": "自定義", "en-US": "Custom", "zh-CN": "自定义" };
+    data["weight"] = { "ja-JP": "", "zh-TW": "權重", "en-US": "Weights", "zh-CN": "权重" };
+    data["contribution"] = { "ja-JP": "", "zh-TW": "貢獻", "en-US": "Contribution", "zh-CN": "贡献" };
+    data["goldmedal"] = { "ja-JP": "", "zh-TW": "金質勳章", "en-US": "Golden Badge", "zh-CN": "金质勋章" };
+    data["selected"] = { "ja-JP": "", "zh-TW": "已選：", "en-US": "Selected:", "zh-CN": "已选：" };
+    data["currentselected"] = { "ja-JP": "", "zh-TW": "本次：", "en-US": "Current:", "zh-CN": "本次：" };
+    data["saveimage"] = { "ja-JP": "", "zh-TW": "生成全符文圖片", "en-US": "Generate all rune image", "zh-CN": "生成全符文图片" };
+    data["reset"] = { "ja-JP": "", "zh-TW": "重置本次選擇", "en-US": "Reset current selected", "zh-CN": "重置本次选择" };
+    data["save"] = { "ja-JP": "", "zh-TW": "保存", "en-US": "Save", "zh-CN": "保存" };
+    //dialog
+    data["runenotexist"] = { "ja-JP": "", "zh-TW": "該符文不存在，請嘗試啟用進階符文", "en-US": "This rune is not exist, try enable Evolution Rune first", "zh-CN": "该符文不存在，请尝试启用进阶符文" };
+    data["generating"] = { "ja-JP": "", "zh-TW": "生成中……", "en-US": "Generating...", "zh-CN": "生成中……" };
+    data["generateerror"] = { "ja-JP": "", "zh-TW": "生成圖片異常", "en-US": "Generate Error", "zh-CN": "生成图片异常" };
+    data["confirmreset"] = { "ja-JP": "", "zh-TW": "是否重置本次選擇？", "en-US": "Confirm reset current selected?", "zh-CN": "是否重置本次选择？" };
+    data["nopath"] = { "ja-JP": "", "zh-TW": "無路徑！", "en-US": "No path!", "zh-CN": "无路径！" };
+    data["confirmuncheck"] = { "ja-JP": "", "zh-TW": "是否取消選中該符文？", "en-US": "Confirm uncheck this rune?", "zh-CN": "是否取消选中该符文？" };
 
     var getText = function (key) {
         if (!data[key]) {
