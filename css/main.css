@@ -18,8 +18,13 @@ body {
     position: relative;
 }
 
+div.alert + #main {
+    height: calc(100% - 75px);
+}
+
 .astrolabe-container {
     position: relative;
+    display: inline-block;
 }
 
 .rune {
