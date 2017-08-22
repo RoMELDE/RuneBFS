@@ -24,6 +24,7 @@ div.alert + #main {
 
 .astrolabe-container {
     position: relative;
+    display: inline-block;
 }
 
 .rune {

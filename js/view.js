@@ -106,8 +106,8 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 });
                 runeCheckList = [];
 
-                renderRuneLink();
                 renderCost();
+                renderRuneLink();
             }
         });
         $('#btnSave').click(function () {
@@ -276,8 +276,8 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         _.each(runeCheckList, function (o, i) {
             checkRune(o, true, false);
         });
-        renderRuneLink();
         renderCost();
+        renderRuneLink();
 
         setTimeout(function () {
             //a little delay to unveil for better unveil effect
@@ -295,8 +295,16 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             .addClass("rune-link-container");
         $('.astrolabe-container').append($runeLink);
         var linkcontext = $runeLink[0].getContext('2d');
-        linkcontext.font = "25px Consolas";
         linkcontext.fillStyle = "rgba(0, 0, 0, 0.25)";
+        linkcontext.font = "25px PingFang SC,Source Han Sans SC,Noto Sans CJK SC,Hiragino Sans GB,Microsoft YaHei UI,Microsoft YaHei,sans-serif";
+        if (Data.isTest()) {
+            linkcontext.textAlign = "left";
+            linkcontext.fillText(Ui.getText("alertCBT"), 0, 25);
+        }
+        linkcontext.textAlign = "left";
+        linkcontext.fillText($('#runeCheckCost').text(), 0, runeLinkHeight - 5);
+        linkcontext.fillText($('#runeCost').text(), 0, runeLinkHeight - 35);
+        linkcontext.font = "25px Consolas";
         linkcontext.textAlign = "right";
         linkcontext.fillText("ROMEL Rune BFS", runeLinkWidth, runeLinkHeight - 25);
         linkcontext.fillText("Version:" + Data.getVersion(), runeLinkWidth, runeLinkHeight);
@@ -420,8 +428,8 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 default: break;
             }
         }
-        renderRuneLink();
         renderCost();
+        renderRuneLink();
     };
 
     var checkRune = function (runeId, noRecursion, isSaved) {
@@ -509,6 +517,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 .addClass('rune-saved');
         });
         renderCost();
+        renderRuneLink();
 
         var data = stringifyCondition(runeList);
         Backbone.history.navigate("typeBranch/" + typeBranch + "/share/" + data, { trigger: false });

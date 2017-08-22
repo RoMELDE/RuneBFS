@@ -50,6 +50,8 @@ define(['jquery', 'underscore'], function ($, _) {
 
     data["ui"] = { "ja-JP": "", "zh-TW": "界面語言", "en-US": "UI", "zh-CN": "界面语言" };
     data["data"] = { "ja-JP": "", "zh-TW": "資料語言", "en-US": "Data", "zh-CN": "数据语言" };
+
+    data["alertCBT"]= { "ja-JP": "", "zh-TW": "警告：正在使用測試服務器數據。", "en-US": "Warning:Currently using CBT server data.", "zh-CN": "警告：正在使用测试服务器数据。" };
     //rune panel
     data["evorune"] = { "ja-JP": "", "zh-TW": "進階符文", "en-US": "Evolution Rune", "zh-CN": "进阶符文" };
     data["disable"] = { "ja-JP": "", "zh-TW": "不啟用", "en-US": "Disable", "zh-CN": "不启用" };
