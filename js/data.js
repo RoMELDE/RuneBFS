@@ -1,7 +1,8 @@
 define(['jquery'], function () {
     var data = {};
 
-    var version = 126005;
+    var version = 127157;
+    var isTest = true;
 
     var init = function (type) {
         var dtd = $.Deferred();
@@ -65,8 +66,8 @@ define(['jquery'], function () {
     var getRuneResetCost = function (id) {
         return (_.find(data.rune, function (p) { return p.Id === parseInt(id); }) || {}).ResetCost || [];
     }
-    var getRuneDesc = function (id, classId) {
-        var desc = _.find(data.runeByClass[classId], function (p) { return p.Id === parseInt(id); }) || {};
+    var getRuneDesc = function (id, typeBranch) {
+        var desc = _.find(data.runeByTypeBranch[typeBranch], function (p) { return p.Id === parseInt(id); }) || {};
         if (desc.SpecialDescId) {
             desc.Runetip = _.find(data.runeSpecial, function (p) { return p.Id === parseInt(desc.SpecialDescId); });
             if (desc.Runetip) {
@@ -79,8 +80,8 @@ define(['jquery'], function () {
         }
         return desc;
     }
-    var getAllRuneDescNameByClassId = function (classId) {
-        return _.chain(data.runeByClass[classId])
+    var getAllRuneDescNameByTypeBranch = function (typeBranch) {
+        return _.chain(data.runeByTypeBranch[typeBranch])
             .uniq(function (rune) { return rune.Name; })
             .pluck('Name')
             .compact()
@@ -281,14 +282,13 @@ define(['jquery'], function () {
 
     return {
         //data: data,
-        getVersion: function () {
-            return version;
-        },
+        getVersion: function () { return version; },
+        isTest: function () { return isTest; },
         getAstrolabe: getAstrolabe,
         getRuneCost: getRuneCost,
         getRuneResetCost: getRuneResetCost,
         getRuneDesc: getRuneDesc,
-        getAllRuneDescNameByClassId: getAllRuneDescNameByClassId,
+        getAllRuneDescNameByTypeBranch: getAllRuneDescNameByTypeBranch,
         getRuneDataById: getRuneDataById,
         getPath: getPath,
         getPathWithWeight: getPathWithWeight,

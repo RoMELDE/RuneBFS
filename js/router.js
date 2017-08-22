@@ -5,6 +5,8 @@ define(['jquery', 'underscore', 'backbone', 'ui', 'view'], function ($, _, Backb
             routes: {
                 "class/:id": "classRoute",
                 "class/:id/share/:data": "classRoute",
+                "typebranch/:id": "typeBranchRoute",
+                "typebranch/:id/share/:data": "typeBranchRoute",
                 "lang/:lang": "languageChangeRoute",
                 '*path': 'defaultRoute'
             },
@@ -17,6 +19,10 @@ define(['jquery', 'underscore', 'backbone', 'ui', 'view'], function ($, _, Backb
 
         app_router.on('route:classRoute', function (id, data) {
             console.log("route:classRoute");
+            View.initByClass(id, data);
+        });
+        app_router.on('route:typeBranchRoute', function (id, data) {
+            console.log("route:typeBranchRoute");
             View.init(id, data);
         });
         app_router.on('route:languageChangeRoute', function (lang) {

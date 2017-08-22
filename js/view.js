@@ -2,7 +2,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
     var activeMenu = "";
     var runeList = [];
     var runeCheckList = [];
-    var classId = 0;
+    var typeBranch = 0;
     var minX = 0;
     var maxX = 0;
     var minY = 0;
@@ -12,6 +12,14 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
     var pathAlgorithm = "nogold";
     var inited = false;
     var runeSize = 60.0;
+    var defaultTypeBranch = {
+        1: 11,
+        2: 21,
+        3: 31,
+        4: 41,
+        5: 51,
+        6: 61,
+    };
 
     var initUiLanguage = function () {
         $('[data-lang]').each(function () {
@@ -28,9 +36,15 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         activeMenu = id;
         $("nav.navbar .active").removeClass('active');
         //$("body>div[data-tab]").hide();
-        var current = $("nav.navbar [data-class-id=" + id + "]");
+        var current = $("nav.navbar [data-type-branch-id=" + id + "]");
         current.parents('li').addClass('active');
         $('#class').text(current.text());
+    };
+    var initByClass = function (id, savedata) {
+        if (defaultTypeBranch[id]) {
+            id = defaultTypeBranch[id];
+        }
+        init(id, savedata);
     };
     var init = function (id, savedata) {
         clear();
@@ -44,6 +58,9 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
     var initControl = function () {
         if (inited) { return; }
         $('#version').text(Data.getVersion());
+        if (Data.isTest()) {
+            $('.alert').show();
+        }
         $('#btnSearch').click(function () {
             var text = $('#txtSearch').val();
             //$('.rune[data-name*="' + text + '"]').popover('show');
@@ -103,11 +120,11 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             else {
                 disableEvo3 = true;
             }
-            render(classId);
+            render(typeBranch);
         });
         $('#scale').change(function () {
             scale = parseFloat(this.value) || 0.2;
-            render(classId);
+            render(typeBranch);
         });
         $('input[name="pathAlgorithm"]').change(function () {
             pathAlgorithm = this.value;
@@ -129,8 +146,8 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         if (id == 0) {
             return;
         }
-        classId = id;
-        setActiveMenu(id);
+        typeBranch = id;
+        setActiveMenu(typeBranch);
         //clear main
         $('#main').find("img").attr('src', ''); //stop image loading when doPage
         $('#main').empty();
@@ -148,7 +165,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             //debugger;
             var cost = Data.getRuneCost(o.Id);
             var resetCost = Data.getRuneResetCost(o.Id);
-            var desc = Data.getRuneDesc(o.Id, classId);
+            var desc = Data.getRuneDesc(o.Id, typeBranch);
             var $rune = $("<div>")
                 .addClass("rune")
                 .css("left", (((o.X - minX) + runeSize / 2) * scale))
@@ -245,7 +262,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         });
 
         $('#txtSearch').empty();
-        _.each(Data.getAllRuneDescNameByClassId(classId), function (o, i) {
+        _.each(Data.getAllRuneDescNameByTypeBranch(typeBranch), function (o, i) {
             $('#txtSearch').append($('<option>').text(o).val(o));
         });
         $('.selectpicker').selectpicker('refresh');
@@ -494,7 +511,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         renderCost();
 
         var data = stringifyCondition(runeList);
-        Backbone.history.navigate("class/" + classId + "/share/" + data, { trigger: false });
+        Backbone.history.navigate("typeBranch/" + typeBranch + "/share/" + data, { trigger: false });
     };
 
     function stringifyCondition(condition) {
@@ -510,5 +527,6 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         getActiveMenu: getActiveMenu,
         setActiveMenu: setActiveMenu,
         init: init,
+        initByClass: initByClass,
     };
 });
