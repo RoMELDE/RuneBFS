@@ -1,7 +1,7 @@
 define(['jquery'], function () {
     var data = {};
 
-    var version = 127157;
+    var version = 129700;
     var isTest = true;
 
     var init = function (type) {
