@@ -61,6 +61,9 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         if (Data.isTest()) {
             $('.alert').show();
         }
+        else{
+            $('.alert').remove();
+        }
         $('#btnSearch').click(function () {
             var text = $('#txtSearch').val();
             //$('.rune[data-name*="' + text + '"]').popover('show');
