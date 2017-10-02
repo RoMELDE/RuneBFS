@@ -5,8 +5,8 @@ define(['jquery', 'underscore', 'backbone', 'ui', 'view'], function ($, _, Backb
             routes: {
                 "class/:id": "classRoute",
                 "class/:id/share/:data": "classRoute",
-                "typebranch/:id": "typeBranchRoute",
-                "typebranch/:id/share/:data": "typeBranchRoute",
+                "typeBranch/:id": "typeBranchRoute",
+                "typeBranch/:id/share/:data": "typeBranchRoute",
                 "lang/:lang": "languageChangeRoute",
                 '*path': 'defaultRoute'
             },

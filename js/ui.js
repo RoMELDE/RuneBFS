@@ -28,18 +28,18 @@ define(['jquery', 'underscore'], function ($, _) {
     data["type-5"] = { "ja-JP": "", "zh-TW": "服事系", "en-US": "Acolyte", "zh-CN": "服事系" };
     data["type-6"] = { "ja-JP": "", "zh-TW": "商人系", "en-US": "Merchant", "zh-CN": "商人系" };
 
-    data["typebranch-11"] = { "ja-JP": "", "zh-TW": "騎士", "en-US": "Knight", "zh-CN": "骑士" };
-    data["typebranch-12"] = { "ja-JP": "", "zh-TW": "十字軍", "en-US": "Crusader", "zh-CN": "十字军" };
-    data["typebranch-21"] = { "ja-JP": "", "zh-TW": "巫師", "en-US": "Wizard", "zh-CN": "巫师" };
-    data["typebranch-22"] = { "ja-JP": "", "zh-TW": "賢者", "en-US": "Sage", "zh-CN": "贤者" };
-    data["typebranch-31"] = { "ja-JP": "", "zh-TW": "刺客", "en-US": "Assassin", "zh-CN": "刺客" };
-    data["typebranch-32"] = { "ja-JP": "", "zh-TW": "流氓", "en-US": "Rogue", "zh-CN": "流氓" };
-    data["typebranch-41"] = { "ja-JP": "", "zh-TW": "獵人", "en-US": "Hunter", "zh-CN": "猎人" };
-    data["typebranch-42"] = { "ja-JP": "", "zh-TW": "吟遊詩人/舞孃", "en-US": "Bard/Dancer", "zh-CN": "诗人/舞娘" };
-    data["typebranch-51"] = { "ja-JP": "", "zh-TW": "祭司", "en-US": "Priest", "zh-CN": "牧师" };
-    data["typebranch-52"] = { "ja-JP": "", "zh-TW": "武道家", "en-US": "Monk", "zh-CN": "武僧" };
-    data["typebranch-61"] = { "ja-JP": "", "zh-TW": "鐵匠", "en-US": "Blacksmith", "zh-CN": "铁匠" };
-    data["typebranch-62"] = { "ja-JP": "", "zh-TW": "鍊金術士", "en-US": "Alchemist", "zh-CN": "炼金术士" };
+    data["typeBranch-11"] = { "ja-JP": "", "zh-TW": "騎士", "en-US": "Knight", "zh-CN": "骑士" };
+    data["typeBranch-12"] = { "ja-JP": "", "zh-TW": "十字軍", "en-US": "Crusader", "zh-CN": "十字军" };
+    data["typeBranch-21"] = { "ja-JP": "", "zh-TW": "巫師", "en-US": "Wizard", "zh-CN": "巫师" };
+    data["typeBranch-22"] = { "ja-JP": "", "zh-TW": "賢者", "en-US": "Sage", "zh-CN": "贤者" };
+    data["typeBranch-31"] = { "ja-JP": "", "zh-TW": "刺客", "en-US": "Assassin", "zh-CN": "刺客" };
+    data["typeBranch-32"] = { "ja-JP": "", "zh-TW": "流氓", "en-US": "Rogue", "zh-CN": "流氓" };
+    data["typeBranch-41"] = { "ja-JP": "", "zh-TW": "獵人", "en-US": "Hunter", "zh-CN": "猎人" };
+    data["typeBranch-42"] = { "ja-JP": "", "zh-TW": "吟遊詩人/舞孃", "en-US": "Bard/Dancer", "zh-CN": "诗人/舞娘" };
+    data["typeBranch-51"] = { "ja-JP": "", "zh-TW": "祭司", "en-US": "Priest", "zh-CN": "牧师" };
+    data["typeBranch-52"] = { "ja-JP": "", "zh-TW": "武道家", "en-US": "Monk", "zh-CN": "武僧" };
+    data["typeBranch-61"] = { "ja-JP": "", "zh-TW": "鐵匠", "en-US": "Blacksmith", "zh-CN": "铁匠" };
+    data["typeBranch-62"] = { "ja-JP": "", "zh-TW": "鍊金術士", "en-US": "Alchemist", "zh-CN": "炼金术士" };
 
     data["search"] = { "ja-JP": "検索", "zh-TW": "搜尋", "en-US": "Search", "zh-CN": "查询" };
     data["clear"] = { "ja-JP": "", "zh-TW": "清空", "en-US": "Clear", "zh-CN": "清空" };
