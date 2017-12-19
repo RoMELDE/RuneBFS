@@ -4,7 +4,6 @@ define(['jquery'], function () {
     var version = 153836;
     var isTest = false;
 
-
     var init = function (type) {
         var dtd = $.Deferred();
         if (!type) {
@@ -46,7 +45,7 @@ define(['jquery'], function () {
             dtd.resolve(isLatest == false);
             return dtd.promise();
         }
-        var key = "lastUpdate";
+        var key = "lastUpdate_RuneBFS";
         lastUpdate = localStorage.getItem(key);
         if (!lastUpdate) {
             dtd.resolve(true);
