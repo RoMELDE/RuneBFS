@@ -1,8 +1,8 @@
 define(['jquery'], function () {
     var data = {};
 
-    var version = 151327;
-    var isTest = true;
+    var version = 153836;
+    var isTest = false;
 
     var init = function (type) {
         var dtd = $.Deferred();
