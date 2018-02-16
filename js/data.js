@@ -65,7 +65,7 @@ define(['jquery'], function () {
         });
     };
     var saveLastUpdate = function () {
-        localStorage.setItem("lastUpdate", lastUpdate)
+        localStorage.setItem("lastUpdate_RuneBFS", lastUpdate)
     };
 
     var getAstrolabe = function () {
