@@ -429,18 +429,19 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             memo[o.Key] = (memo[o.Key] || 0) + o.Value;
             return memo;
         }, {});
+
         var runeCheckTotalAttrText = "";
         var index = 0;
         _.each(runeCheckTotalAttr, function (o, i) {
             index++;
-            runeCheckTotalAttrText += i + "+" + Math.round(o * 100) / 100 + " ";
+            runeCheckTotalAttrText += Ui.getEquipEffect(i) + "+" + Math.round(o * 100) / 100 + " ";
             if (index % 4 == 0) { runeCheckTotalAttrText += "<br/>"; }
         })
         var runeTotalAttrText = "";
         index = 0;
         _.each(runeTotalAttr, function (o, i) {
             index++;
-            runeTotalAttrText += i + "+" + Math.round(o * 100) / 100 + " ";
+            runeTotalAttrText += Ui.getEquipEffect(i) + "+" + Math.round(o * 100) / 100 + " ";
             if (index % 4 == 0) { runeTotalAttrText += "<br/>"; }
         })
         $('#runeCheckCost').empty()

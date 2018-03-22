@@ -1,4 +1,4 @@
-define(['jquery'], function () {
+define(['jquery', 'ui'], function ($, Ui) {
     var data = {};
 
     var version = 173718;
@@ -57,8 +57,7 @@ define(['jquery'], function () {
             var remote = data;
             isLatest = new Date(local).getTime() >= new Date(remote).getTime();
             lastUpdate = remote;
-            if(!local)
-            {
+            if (!local) {
                 return true;
             }
             return isLatest == false;
@@ -87,7 +86,7 @@ define(['jquery'], function () {
             }
         }
         else {
-            desc.Desc = desc.Key + "+" + desc.Value;
+            desc.Desc = Ui.getEquipEffect(desc.Key) + "+" + desc.Value;
         }
         return desc;
     }

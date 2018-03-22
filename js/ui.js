@@ -51,7 +51,7 @@ define(['jquery', 'underscore'], function ($, _) {
     data["ui"] = { "ja-JP": "", "zh-TW": "界面語言", "en-US": "UI", "zh-CN": "界面语言" };
     data["data"] = { "ja-JP": "", "zh-TW": "資料語言", "en-US": "Data", "zh-CN": "数据语言" };
 
-    data["alertCBT"]= { "ja-JP": "", "zh-TW": "警告：正在使用測試服務器數據。", "en-US": "Warning:Currently using CBT server data.", "zh-CN": "警告：正在使用测试服务器数据。" };
+    data["alertCBT"] = { "ja-JP": "", "zh-TW": "警告：正在使用測試服務器數據。", "en-US": "Warning:Currently using CBT server data.", "zh-CN": "警告：正在使用测试服务器数据。" };
     //rune panel
     data["evorune"] = { "ja-JP": "", "zh-TW": "進階符文", "en-US": "Evolution Rune", "zh-CN": "进阶符文" };
     data["disable"] = { "ja-JP": "", "zh-TW": "不啟用", "en-US": "Disable", "zh-CN": "不启用" };
@@ -101,10 +101,85 @@ define(['jquery', 'underscore'], function ($, _) {
             return o.key == lang;
         }).text);
     };
+    var EquipEffect = {
+        "zh-CN": {
+            Atk: "物理攻击",
+            Def: "物理防御",
+            MAtk: "魔法攻击",
+            MDef: "魔法防御",
+            MaxHp: "最大生命值",
+            MaxHpPer: "最大生命值%",
+            Str: "力量",
+            Int: "智力",
+            Vit: "体质",
+            Agi: "敏捷",
+            Dex: "灵巧",
+            Luk: "幸运",
+            AtkPer: "物攻百分比",
+            DefPer: "物防百分比",
+            MAtkPer: "魔攻百分比",
+            MDefPer: "魔防百分比",
+            Hit: "命中",
+            Flee: "闪避",
+            Cri: "暴击",
+            CriRes: "暴击防护",
+            AtkSpd: "攻击速度",
+            MoveSpd: "移动速度",
+            CastSpd: "吟唱速度",
+            Refine: "精炼物攻",
+            MRefine: "精炼魔攻",
+            DamIncrease: "物伤加成",
+            MDamIncrease: "魔伤加成",
+            DamReduc: "物伤减免",
+            MDamReduc: "魔伤减免",
+            RefineDamReduc: "精炼物免",
+            RefineMDamReduc: "精炼魔免",
+        },
+        "zh-TW": {
+            Atk: "物理攻擊",
+            Def: "物理防禦",
+            MAtk: "魔法攻擊",
+            MDef: "魔法防禦",
+            MaxHp: "最大生命值",
+            MaxHpPer: "最大生命值%",
+            Str: "力量",
+            Int: "智力",
+            Vit: "體質",
+            Agi: "敏捷",
+            Dex: "靈巧",
+            Luk: "幸運",
+            AtkPer: "物攻百分比",
+            DefPer: "物防百分比",
+            MAtkPer: "魔攻百分比",
+            MDefPer: "魔防百分比",
+            Hit: "命中",
+            Flee: "閃避",
+            Cri: "暴擊",
+            CriRes: "暴擊防護",
+            AtkSpd: "攻擊速度",
+            MoveSpd: "移動速度",
+            CastSpd: "吟唱速度",
+            Refine: "精煉物攻",
+            MRefine: "精煉魔攻",
+            DamIncrease: "物傷加成",
+            MDamIncrease: "魔傷加成",
+            DamReduc: "物傷減免",
+            MDamReduc: "魔傷減免",
+            RefineDamReduc: "精煉物免",
+            RefineMDamReduc: "精煉魔免",
+        }
+    }
+    var getEquipEffect = function (key) {
+        if (!EquipEffect[getLang()]) {
+            return key;
+        }
+        return EquipEffect[getLang()][key] || key;
+    };
     return {
         supportedLang: supportedLang,
         getText: getText,
         getLang: getLang,
         setLang: setLang,
+        getEquipEffect: getEquipEffect,
     };
 });
