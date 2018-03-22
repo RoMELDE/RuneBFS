@@ -61,7 +61,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         if (Data.isTest()) {
             $('.alert').show();
         }
-        else{
+        else {
             $('.alert').remove();
         }
         $('#btnSearch').click(function () {
@@ -187,9 +187,9 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 //.attr("title", desc.Name + '<button type="button" id="close" class="close" onclick="$(this).parents(&quot;.popover&quot;).popover(&quot;hide&quot;);">&times;</button>')
                 //.attr("title", $title.html())
                 .attr("data-content", (desc.Desc || "")
-                + "<br/>" + _.reduce(cost, function (result, current) {
-                    return result + current.Name + "*" + current.Count + " ";
-                }, ""))
+                    + "<br/>" + _.reduce(cost, function (result, current) {
+                        return result + current.Name + "*" + current.Count + " ";
+                    }, ""))
                 .click(function () {
                     runeClick(o.Id);
                 });
@@ -305,8 +305,8 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             linkcontext.fillText(Ui.getText("alertCBT"), 0, 25);
         }
         linkcontext.textAlign = "left";
-        linkcontext.fillText($('#runeCheckCost').text(), 0, runeLinkHeight - 5);
-        linkcontext.fillText($('#runeCost').text(), 0, runeLinkHeight - 35);
+        linkcontext.fillText($('#runeCheckCost').data('cost'), 0, runeLinkHeight - 5);
+        linkcontext.fillText($('#runeCost').data('cost'), 0, runeLinkHeight - 35);
         linkcontext.font = "25px Consolas";
         linkcontext.textAlign = "right";
         linkcontext.fillText("ROMEL Rune BFS", runeLinkWidth, runeLinkHeight - 25);
@@ -352,9 +352,13 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         var runeCheckCost = [];
         var runeResetCost = [];
         var runeCheckResetCost = [];
+
+        var runeTotalAttr = [];
+        var runeCheckTotalAttr = [];
         $(".rune").each(function (i, o) {
             var $rune = $(o);
-            var runeData = $rune.data("rune")
+            var runeData = $rune.data("rune");
+            var desc = $rune.data("desc");
             var status = $rune.data('status');
             var cost = $rune.data('cost');
             var resetCost = $rune.data('resetCost');
@@ -363,11 +367,13 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 case 1: {
                     runeCheckCost.push(cost);
                     runeCheckResetCost.push(resetCost);
+                    runeCheckTotalAttr.push(desc);
                     break;
                 }
                 case 2: {
                     runeCost.push(cost);
                     runeResetCost.push(resetCost);
+                    runeTotalAttr.push(desc);
                     break;
                 }
                 default: break;
@@ -413,8 +419,40 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         _.each(runeResetCost, function (o, i) {
             runeResetCostText += i + "*" + o + " ";
         })
-        $('#runeCheckCost').text(runeCheckCostText + "(" + runeCheckResetCostText + ")");
-        $('#runeCost').text(runeCostText + "(" + runeResetCostText + ")");
+        runeCheckTotalAttr = _.reduce(runeCheckTotalAttr, function (memo, o) {
+            if (!o || !o.Key) { return memo; }
+            memo[o.Key] = (memo[o.Key] || 0) + o.Value;
+            return memo;
+        }, {});
+        runeTotalAttr = _.reduce(runeTotalAttr, function (memo, o) {
+            if (!o || !o.Key) { return memo; }
+            memo[o.Key] = (memo[o.Key] || 0) + o.Value;
+            return memo;
+        }, {});
+        var runeCheckTotalAttrText = "";
+        var index = 0;
+        _.each(runeCheckTotalAttr, function (o, i) {
+            index++;
+            runeCheckTotalAttrText += i + "*" + Math.round(o * 100) / 100 + " ";
+            if (index % 4 == 0) { runeCheckTotalAttrText += "<br/>"; }
+        })
+        var runeTotalAttrText = "";
+        index = 0;
+        _.each(runeTotalAttr, function (o, i) {
+            index++;
+            runeTotalAttrText += i + "*" + Math.round(o * 100) / 100 + " ";
+            if (index % 4 == 0) { runeTotalAttrText += "<br/>"; }
+        })
+        $('#runeCheckCost').empty()
+            .append(runeCheckCostText.trim()
+                + "(" + runeCheckResetCostText.trim() + ")"
+                + '<br/>' + runeCheckTotalAttrText.trim());
+        $('#runeCheckCost').data('cost', runeCheckCostText.trim() + "(" + runeCheckResetCostText.trim() + ")");
+        $('#runeCost').empty()
+            .append(runeCostText.trim()
+                + "(" + runeResetCostText.trim() + ")"
+                + '<br/>' + runeTotalAttrText.trim());
+        $('#runeCost').data('cost', runeCostText.trim() + "(" + runeResetCostText.trim() + ")");
     };
 
     var runeClick = function (runeId) {
