@@ -83,7 +83,8 @@ define(['jquery', 'ui'], function ($, Ui) {
         if (desc.SpecialDescId) {
             desc.Runetip = _.find(data.runeSpecial, function (p) { return p.Id === parseInt(desc.SpecialDescId); });
             if (desc.Runetip) {
-                desc.Runetip.Text = _.find(data.runeSpecialDesc, function (p) { return p.Id === desc.Runetip.Runetip }).Text;
+                var runeTip = _.find(data.runeSpecialDesc, function (p) { return p.Id === desc.Runetip.Runetip }).Text;
+                desc.Runetip.Text = Ui.getTranslatedString(getTranslations(), runeTip);
                 desc.Desc = formatRunetip(desc.Runetip);
             }
         }
