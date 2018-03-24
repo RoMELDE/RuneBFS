@@ -27,12 +27,11 @@ define(['jquery', 'ui'], function ($, Ui) {
                     url: url,
                     cache: false,
                     dataType: "json"
-                })
-                    .done(function (jsondata) {
-                        localStorage[key] = JSON.stringify(jsondata);
-                        console.log("Get data from web. ", key);
-                        data[type] = jsondata;
-                    });
+                }).done(function (jsondata) {
+                    localStorage[key] = JSON.stringify(jsondata);
+                    console.log("Get data from web. ", key);
+                    data[type] = jsondata;
+                });
             }
         });
     };
