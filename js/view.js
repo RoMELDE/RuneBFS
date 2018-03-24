@@ -188,7 +188,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 //.attr("title", $title.html())
                 .attr("data-content", (desc.Desc || "")
                     + "<br/>" + _.reduce(cost, function (result, current) {
-                        return result + current.Name + "*" + current.Count + " ";
+                        return result + Ui.getTranslatedString(Data.getTranslations(), current.Name) + "*" + current.Count + " ";
                     }, ""))
                 .click(function () {
                     runeClick(o.Id);

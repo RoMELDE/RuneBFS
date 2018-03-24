@@ -69,6 +69,9 @@ define(['jquery', 'ui'], function ($, Ui) {
     var getAstrolabe = function () {
         return data["astrolabe"];
     };
+    var getTranslations = function() {
+        return data["strings"];
+    };
     var getRuneCost = function (id) {
         return (_.find(data.rune, function (p) { return p.Id === parseInt(id); }) || {}).Cost || [];
     }
@@ -294,6 +297,7 @@ define(['jquery', 'ui'], function ($, Ui) {
         getVersion: function () { return version; },
         isTest: function () { return isTest; },
         getAstrolabe: getAstrolabe,
+        getTranslations: getTranslations,
         getRuneCost: getRuneCost,
         getRuneResetCost: getRuneResetCost,
         getRuneDesc: getRuneDesc,

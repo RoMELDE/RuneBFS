@@ -34,7 +34,7 @@ require(['jquery', 'underscore', 'data', 'ui', 'view', 'router'], function ($, _
                 $.when(Data.init("rune"))
                     .then(function () {
                         NProgress.set(0.66);
-                        $.when(Data.init("runeByTypeBranch"), Data.init("runeSpecial"), Data.init("runeSpecialDesc"))
+                        $.when(Data.init("runeByTypeBranch"), Data.init("runeSpecial"), Data.init("runeSpecialDesc"), Data.init("strings"))
                             .done(function () {
                                 NProgress.set(0.9);
                                 Data.saveLastUpdate();
