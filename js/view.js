@@ -234,7 +234,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                     .attr('runeId', $rune.attr("data-id"))
                     .addClass('rune-icon')
                     .addClass('rune-' + (status == 0 ? "off" : "on") + '-' + desc.Type)
-                    .text(desc.Name))
+                    .text(Ui.getTranslatedString(Data.getTranslations(), desc.Name)))
                 .append('<button type="button" id="close" class="close" onclick="$(this).parents(&quot;.popover&quot;).popover(&quot;hide&quot;);">&times;</button>');
             $rune.attr('data-original-title', $title.html());
         });
