@@ -266,7 +266,8 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
 
         $('#txtSearch').empty();
         _.each(Data.getAllRuneDescNameByTypeBranch(typeBranch), function (o, i) {
-            $('#txtSearch').append($('<option>').text(o).val(o));
+            var translatedDesc = Ui.getTranslatedString(Data.getTranslations(), o);
+            $('#txtSearch').append($('<option>').text(translatedDesc).val(o));
         });
         $('.selectpicker').selectpicker('refresh');
 
