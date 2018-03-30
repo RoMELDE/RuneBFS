@@ -68,8 +68,16 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             var text = $('#txtSearch').val();
             //$('.rune[data-name*="' + text + '"]').popover('show');
             var list = $('.rune[data-name="' + text + '"]').not('.rune-not-available');
-            list.popover('show');
-            if (list.length) {
+            if (list.length > 10) {
+                $.each(list, function(i, runeElement) {
+                    var runeElementJ = $(runeElement);
+                    if (!runeElementJ.hasClass('rune-saved') && !runeElementJ.hasClass('rune-checked')) {
+                        runeElementJ.addClass('rune-matches-criteria');
+                    }
+                });
+            }
+            else if (list.length) {
+                list.popover('show');
                 var top = 9999999;
                 list.each(function (i, o) {
                     top = Math.min(top, parseFloat($(o).css('top')));
@@ -85,6 +93,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         });
         $('#btnClear').click(function () {
             $('[data-toggle="popover"]').popover('hide');
+            $('.rune.rune-matches-criteria').removeClass('rune-matches-criteria');
         });
 
         $('#btnSaveImage').click(function () {
@@ -106,6 +115,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                     var $rune = $("#rune" + o);
                     $rune.data('status', 0)
                         .removeClass('rune-checked')
+                        .removeClass('rune-matches-criteria');
                 });
                 runeCheckList = [];
 
