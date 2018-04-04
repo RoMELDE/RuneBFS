@@ -68,8 +68,16 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             var text = $('#txtSearch').val();
             //$('.rune[data-name*="' + text + '"]').popover('show');
             var list = $('.rune[data-name="' + text + '"]').not('.rune-not-available');
-            list.popover('show');
-            if (list.length) {
+            if (list.length > 10) {
+                $.each(list, function(i, runeElement) {
+                    var runeElementJ = $(runeElement);
+                    if (!runeElementJ.hasClass('rune-saved') && !runeElementJ.hasClass('rune-checked')) {
+                        runeElementJ.addClass('rune-matches-criteria');
+                    }
+                });
+            }
+            else if (list.length) {
+                list.popover('show');
                 var top = 9999999;
                 list.each(function (i, o) {
                     top = Math.min(top, parseFloat($(o).css('top')));
@@ -85,6 +93,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         });
         $('#btnClear').click(function () {
             $('[data-toggle="popover"]').popover('hide');
+            $('.rune.rune-matches-criteria').removeClass('rune-matches-criteria');
         });
 
         $('#btnSaveImage').click(function () {
@@ -106,6 +115,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                     var $rune = $("#rune" + o);
                     $rune.data('status', 0)
                         .removeClass('rune-checked')
+                        .removeClass('rune-matches-criteria');
                 });
                 runeCheckList = [];
 
@@ -188,7 +198,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                 //.attr("title", $title.html())
                 .attr("data-content", (desc.Desc || "")
                     + "<br/>" + _.reduce(cost, function (result, current) {
-                        return result + current.Name + "*" + current.Count + " ";
+                        return result + Ui.getTranslatedString(Data.getTranslations(), current.Name) + "*" + current.Count + " ";
                     }, ""))
                 .click(function () {
                     runeClick(o.Id);
@@ -234,7 +244,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                     .attr('runeId', $rune.attr("data-id"))
                     .addClass('rune-icon')
                     .addClass('rune-' + (status == 0 ? "off" : "on") + '-' + desc.Type)
-                    .text(desc.Name))
+                    .text(Ui.getTranslatedString(Data.getTranslations(), desc.Name)))
                 .append('<button type="button" id="close" class="close" onclick="$(this).parents(&quot;.popover&quot;).popover(&quot;hide&quot;);">&times;</button>');
             $rune.attr('data-original-title', $title.html());
         });
@@ -266,7 +276,8 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
 
         $('#txtSearch').empty();
         _.each(Data.getAllRuneDescNameByTypeBranch(typeBranch), function (o, i) {
-            $('#txtSearch').append($('<option>').text(o).val(o));
+            var translatedDesc = Ui.getTranslatedString(Data.getTranslations(), o);
+            $('#txtSearch').append($('<option>').text(translatedDesc).val(o));
         });
         $('.selectpicker').selectpicker('refresh');
 
@@ -393,11 +404,11 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         }, {});
         var runeCheckCostText = "";
         _.each(runeCheckCost, function (o, i) {
-            runeCheckCostText += i + "*" + o + " ";
+            runeCheckCostText += Ui.getTranslatedString(Data.getTranslations(), i) + "*" + o + " ";
         })
         var runeCostText = "";
         _.each(runeCost, function (o, i) {
-            runeCostText += i + "*" + o + " ";
+            runeCostText += Ui.getTranslatedString(Data.getTranslations(), i) + "*" + o + " ";
         })
         runeCheckResetCost = _.reduce(runeCheckResetCost, function (memo, item) {
             _.each(item, function (o, i) {
@@ -413,11 +424,11 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         }, {});
         var runeCheckResetCostText = "";
         _.each(runeCheckResetCost, function (o, i) {
-            runeCheckResetCostText += i + "*" + o + " ";
+            runeCheckResetCostText += Ui.getTranslatedString(Data.getTranslations(), i) + "*" + o + " ";
         })
         var runeResetCostText = "";
         _.each(runeResetCost, function (o, i) {
-            runeResetCostText += i + "*" + o + " ";
+            runeResetCostText += Ui.getTranslatedString(Data.getTranslations(), i) + "*" + o + " ";
         })
         runeCheckTotalAttr = _.reduce(runeCheckTotalAttr, function (memo, o) {
             if (!o || !o.Key) { return memo; }

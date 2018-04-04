@@ -84,6 +84,23 @@ define(['jquery', 'underscore'], function ($, _) {
         }
         return data[key][getLang()] || data[key]['en-US'];
     };
+    var getTranslatedString = function (translationBundle, key) {
+        if (!translationBundle) {
+            console.log("translationBundle missing");
+            return key;
+        }
+        var stringOfAllLanguages = translationBundle[key];
+        if (!stringOfAllLanguages) {
+            console.log("translation for \"" + key + "\" missing");
+            return key;
+        }
+        var translatedString = stringOfAllLanguages[getLang()];
+        if (!translatedString) {
+            console.log("translation for \"" + key + "\" in \"" + getLang() + "\" missing");
+            return key;
+        }
+        return translatedString;
+    }
     var getLang = function () {
         if (!currentLang) {
             setLang();
@@ -181,5 +198,6 @@ define(['jquery', 'underscore'], function ($, _) {
         getLang: getLang,
         setLang: setLang,
         getEquipEffect: getEquipEffect,
+        getTranslatedString: getTranslatedString,
     };
 });

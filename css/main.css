@@ -38,6 +38,21 @@ div.alert + #main {
     border-radius: 100px;
 }
 
+/** 
+ * It is important that this style is defined before ".rune.rune-checked" and ".rune.rune-saved".
+ * So that this rule has lower priority than those 2 rules.
+ *
+ * Checking/unchecking/saving does not remove the ".rune-matches-criteria" class from an element,
+ * but it adds/removex the class ".rune-checked" and ".rune-saved" correspondingly, when one of
+ * those classes is added, the rule ".rune.rune-checked" and ".rune.rune-saved" have priority over 
+ * this rule, so those nodes appear as checked/saved. But when the user unchecks the rune, those
+ * classes are removed and this rule will have effect again.
+ */
+.rune.rune-matches-criteria {
+    background-color: #8800ff;
+    border-color: #8844ff;
+}
+
 .rune.rune-center {
     background-color: gold !important;
     border-color: gold !important;

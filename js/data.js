@@ -27,12 +27,11 @@ define(['jquery', 'ui'], function ($, Ui) {
                     url: url,
                     cache: false,
                     dataType: "json"
-                })
-                    .done(function (jsondata) {
-                        localStorage[key] = JSON.stringify(jsondata);
-                        console.log("Get data from web. ", key);
-                        data[type] = jsondata;
-                    });
+                }).done(function (jsondata) {
+                    localStorage[key] = JSON.stringify(jsondata);
+                    console.log("Get data from web. ", key);
+                    data[type] = jsondata;
+                });
             }
         });
     };
@@ -70,6 +69,9 @@ define(['jquery', 'ui'], function ($, Ui) {
     var getAstrolabe = function () {
         return data["astrolabe"];
     };
+    var getTranslations = function() {
+        return data["strings"];
+    };
     var getRuneCost = function (id) {
         return (_.find(data.rune, function (p) { return p.Id === parseInt(id); }) || {}).Cost || [];
     }
@@ -81,7 +83,8 @@ define(['jquery', 'ui'], function ($, Ui) {
         if (desc.SpecialDescId) {
             desc.Runetip = _.find(data.runeSpecial, function (p) { return p.Id === parseInt(desc.SpecialDescId); });
             if (desc.Runetip) {
-                desc.Runetip.Text = _.find(data.runeSpecialDesc, function (p) { return p.Id === desc.Runetip.Runetip }).Text;
+                var runeTip = _.find(data.runeSpecialDesc, function (p) { return p.Id === desc.Runetip.Runetip }).Text;
+                desc.Runetip.Text = Ui.getTranslatedString(getTranslations(), runeTip);
                 desc.Desc = formatRunetip(desc.Runetip);
             }
         }
@@ -295,6 +298,7 @@ define(['jquery', 'ui'], function ($, Ui) {
         getVersion: function () { return version; },
         isTest: function () { return isTest; },
         getAstrolabe: getAstrolabe,
+        getTranslations: getTranslations,
         getRuneCost: getRuneCost,
         getRuneResetCost: getRuneResetCost,
         getRuneDesc: getRuneDesc,
