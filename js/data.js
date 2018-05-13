@@ -1,8 +1,8 @@
 define(['jquery', 'ui'], function ($, Ui) {
     var data = {};
 
-    var version = 173718;
-    var isTest = false;
+    var version = 188466;
+    var isTest = true;
 
     var init = function (type) {
         var dtd = $.Deferred();
@@ -106,7 +106,8 @@ define(['jquery', 'ui'], function ($, Ui) {
     var getRuneLink = function (id) {
         return (getRuneDataById(id) || {}).Link || [];
     };
-    var getPath = function (runeList, runeId, disableEvo3) {
+    var getPath = function (runeList, runeId, maxevo) {
+        maxevo = maxevo || 999;
         var pathList = [];
 
         var queue = [];
@@ -118,7 +119,7 @@ define(['jquery', 'ui'], function ($, Ui) {
             while (queue.length) {
                 var v = queue.shift();
                 _.each(getRuneLink(v), function (w) {
-                    if (disableEvo3 && (_.find(data.astrolabe, function (p) { return p.Id === parseInt(w); }) || {}).Evo === 3) {
+                    if ((_.find(data.astrolabe, function (p) { return p.Id === parseInt(w); }) || {}).Evo > maxevo) {
                         return;
                     }
                     if (!marked[w]) {
@@ -160,7 +161,8 @@ define(['jquery', 'ui'], function ($, Ui) {
         return _.min(pathList, function (o) { return o.length; });
     }
 
-    var getPathWithWeight = function (runeList, runeId, disableEvo3, param) {
+    var getPathWithWeight = function (runeList, runeId, maxevo, param) {
+        maxevo = maxevo || 999;
         var distTo = [];
         var edgeTo = [];
         var pq = [];
@@ -180,7 +182,7 @@ define(['jquery', 'ui'], function ($, Ui) {
 
         var relax = function (v) {
             _.each(getRuneLink(v), function (w) {
-                if (disableEvo3 && (_.find(data.astrolabe, function (p) { return p.Id === parseInt(w); }) || {}).Evo === 3) {
+                if ((_.find(data.astrolabe, function (p) { return p.Id === parseInt(w); }) || {}).Evo > maxevo) {
                     return;
                 }
                 var weight = getRuneWeight(v, param);

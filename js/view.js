@@ -8,7 +8,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
     var minY = 0;
     var maxY = 0;
     var scale = 0.2;
-    var disableEvo3 = false;
+    var maxevo = 4;
     var pathAlgorithm = "nogold";
     var inited = false;
     var runeSize = 60.0;
@@ -116,13 +116,8 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
         $('#btnSave').click(function () {
             save();
         });
-        $('input[name="evo3"]').change(function () {
-            if (this.value == "true") {
-                disableEvo3 = false;
-            }
-            else {
-                disableEvo3 = true;
-            }
+        $('input[name="evo"]').change(function () {
+            maxevo = parseInt(this.value);
             render(typeBranch);
         });
         $('#scale').change(function () {
@@ -201,7 +196,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                     .attr("title", "")
                     .attr("data-toggle", "");
             }
-            if (disableEvo3 && o.Evo == 3) {
+            if (o.Evo > maxevo) {
                 $rune.addClass("rune-not-available")
                     .attr("title", "")
                     .attr("data-toggle", "")
@@ -320,7 +315,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
                     linkcontext.moveTo((runeData.X - minX + runeSize) * scale, (maxY - runeData.Y + runeSize) * scale);
                     linkcontext.lineTo((runeToData.X - minX + runeSize) * scale, (maxY - runeToData.Y + runeSize) * scale);
                     linkcontext.lineWidth = 3;
-                    if (disableEvo3 && (runeData.Evo == 3 || runeToData.Evo == 3)) {
+                    if (runeData.Evo > maxevo || runeToData.Evo > maxevo) {
                         linkcontext.strokeStyle = 'rgba(233, 233, 233, 0.15)';
                         linkcontext.stroke();
                     }
@@ -479,18 +474,18 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
             return;
         }
         var $rune = $("#rune" + runeId);
-        if (disableEvo3 && $rune.data('rune').evo == 3) {
+        if ($rune.data('rune').evo > maxevo) {
             return;
         }
         if (!noRecursion) {
             //var path = Data.getPath(runeList.concat(runeCheckList), runeId);
             var path = [];
             switch (pathAlgorithm) {
-                case "simple": path = Data.getPath(runeList.concat(runeCheckList), runeId, disableEvo3); break;
-                case "nogold": path = Data.getPathWithWeight(runeList.concat(runeCheckList), runeId, disableEvo3); break;
+                case "simple": path = Data.getPath(runeList.concat(runeCheckList), runeId, maxevo); break;
+                case "nogold": path = Data.getPathWithWeight(runeList.concat(runeCheckList), runeId, maxevo); break;
                 case "custom": {
                     var param = [{ id: 140, weight: parseFloat($('#weight140').val()) || 0 }, { id: 5261, weight: parseFloat($('#weight5261').val()) || 0 }];
-                    path = Data.getPathWithWeight(runeList.concat(runeCheckList), runeId, disableEvo3, param);
+                    path = Data.getPathWithWeight(runeList.concat(runeCheckList), runeId, maxevo, param);
                     break;
                 }
             }
@@ -525,7 +520,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
     };
     var uncheckRune = function (runeId, noRecursion) {
         var $rune = $("#rune" + runeId);
-        if (disableEvo3 && $rune.data('rune').evo == 3) {
+        if ($rune.data('rune').evo >maxevo) {
             return;
         }
         $rune.data('status', 0)

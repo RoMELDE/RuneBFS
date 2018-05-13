@@ -53,7 +53,12 @@ define(['jquery', 'underscore'], function ($, _) {
 
     data["alertCBT"] = { "ja-JP": "", "zh-TW": "警告：正在使用測試服務器數據。", "en-US": "Warning:Currently using CBT server data.", "zh-CN": "警告：正在使用测试服务器数据。" };
     //rune panel
-    data["evorune"] = { "ja-JP": "", "zh-TW": "進階符文", "en-US": "Evolution Rune", "zh-CN": "进阶符文" };
+    data["runerange"] = { "ja-JP": "", "zh-TW": "符文範圍", "en-US": "Rune Range", "zh-CN": "符文范围" };
+    data["firstclass"] = { "ja-JP": "", "zh-TW": "一轉", "en-US": "First Class", "zh-CN": "一转" };
+    data["transcendentsecondclass"] = { "ja-JP": "", "zh-TW": "進階二轉", "en-US": "Transcendent Second Class", "zh-CN": "进阶二转" };
+    data["thirdclass"] = { "ja-JP": "", "zh-TW": "三轉", "en-US": "Third Class", "zh-CN": "三转" };
+
+
     data["disable"] = { "ja-JP": "", "zh-TW": "不啟用", "en-US": "Disable", "zh-CN": "不启用" };
     data["enable"] = { "ja-JP": "", "zh-TW": "啟用", "en-US": "Enable", "zh-CN": "启用" };
     data["zoom"] = { "ja-JP": "", "zh-TW": "縮放", "en-US": "Zoom", "zh-CN": "缩放" };
