@@ -520,7 +520,7 @@ define(['jquery', 'underscore', 'backbone', 'data', 'ui', 'nouislider', 'LZStrin
     };
     var uncheckRune = function (runeId, noRecursion) {
         var $rune = $("#rune" + runeId);
-        if ($rune.data('rune').evo >maxevo) {
+        if ($rune.data('rune').evo > maxevo) {
             return;
         }
         $rune.data('status', 0)
