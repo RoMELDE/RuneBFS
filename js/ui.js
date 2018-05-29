@@ -44,7 +44,7 @@ define(['jquery', 'underscore'], function ($, _) {
     data["search"] = { "ja-JP": "検索", "zh-TW": "搜尋", "en-US": "Search", "zh-CN": "查询" };
     data["clear"] = { "ja-JP": "クリア", "zh-TW": "清空", "en-US": "Clear", "zh-CN": "清空" };
 
-    data["currentversion"] = { "ja-JP": "ver:", "zh-TW": "當前版本：", "en-US": "Current Ver.:", "zh-CN": "当前版本：" };
+    data["currentversion"] = { "ja-JP": "Ver: ", "zh-TW": "當前版本：", "en-US": "Current Ver.:", "zh-CN": "当前版本：" };
     data["officalsite"] = { "ja-JP": "公式サイト", "zh-TW": "官網", "en-US": "Offical Site", "zh-CN": "官网" };
     data["donate"] = { "ja-JP": "NGA RO", "zh-TW": "送版主女裝", "en-US": "NGA RO", "zh-CN": "送版主女装" };
 
