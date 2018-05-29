@@ -69,8 +69,8 @@ define(['jquery', 'underscore'], function ($, _) {
     data["weight"] = { "ja-JP": "比重", "zh-TW": "權重", "en-US": "Weights", "zh-CN": "权重" };
     data["contribution"] = { "ja-JP": "貢献", "zh-TW": "貢獻", "en-US": "Contribution", "zh-CN": "贡献" };
     data["goldmedal"] = { "ja-JP": "金盾", "zh-TW": "金質勳章", "en-US": "Golden Badge", "zh-CN": "金质勋章" };
-    data["selected"] = { "ja-JP": "保存済", "zh-TW": "已選：", "en-US": "Selected:", "zh-CN": "已选：" };
-    data["currentselected"] = { "ja-JP": "現選択", "zh-TW": "本次：", "en-US": "Current:", "zh-CN": "本次：" };
+    data["selected"] = { "ja-JP": "保存済：", "zh-TW": "已選：", "en-US": "Selected:", "zh-CN": "已选：" };
+    data["currentselected"] = { "ja-JP": "現選択：", "zh-TW": "本次：", "en-US": "Current:", "zh-CN": "本次：" };
     data["saveimage"] = { "ja-JP": "画像生成", "zh-TW": "生成全符文圖片", "en-US": "Generate all rune image", "zh-CN": "生成全符文图片" };
     data["reset"] = { "ja-JP": "選択リセット", "zh-TW": "重置本次選擇", "en-US": "Reset current selected", "zh-CN": "重置本次选择" };
     data["save"] = { "ja-JP": "選択保存", "zh-TW": "保存", "en-US": "Save", "zh-CN": "保存" };
