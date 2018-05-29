@@ -46,12 +46,12 @@ define(['jquery', 'underscore'], function ($, _) {
 
     data["currentversion"] = { "ja-JP": "ver:", "zh-TW": "當前版本：", "en-US": "Current Ver.:", "zh-CN": "当前版本：" };
     data["officalsite"] = { "ja-JP": "公式サイト", "zh-TW": "官網", "en-US": "Offical Site", "zh-CN": "官网" };
-    data["donate"] = { "ja-JP": "寄付", "zh-TW": "送版主女裝", "en-US": "NGA RO", "zh-CN": "送版主女装" };
+    data["donate"] = { "ja-JP": "NGA RO", "zh-TW": "送版主女裝", "en-US": "NGA RO", "zh-CN": "送版主女装" };
 
     data["ui"] = { "ja-JP": "言語", "zh-TW": "界面語言", "en-US": "UI", "zh-CN": "界面语言" };
     data["data"] = { "ja-JP": "データ", "zh-TW": "資料語言", "en-US": "Data", "zh-CN": "数据语言" };
 
-    data["alertCBT"] = { "ja-JP": "注意：中国サーバのデータを利用しています。", "zh-TW": "警告：正在使用測試服務器數據。", "en-US": "Warning:Currently using CBT server data.", "zh-CN": "警告：正在使用测试服务器数据。" };
+    data["alertCBT"] = { "ja-JP": "注意：CBTサーバのデータを利用しています。", "zh-TW": "警告：正在使用測試服務器數據。", "en-US": "Warning:Currently using CBT server data.", "zh-CN": "警告：正在使用测试服务器数据。" };
     //rune panel
     data["runerange"] = { "ja-JP": "神碑拡張", "zh-TW": "符文範圍", "en-US": "Rune Range", "zh-CN": "符文范围" };
     data["firstclass"] = { "ja-JP": "未拡張", "zh-TW": "一轉", "en-US": "First Class", "zh-CN": "一转" };
