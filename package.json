@@ -1,0 +1,48 @@
+{
+  "name": "RuneBFS",
+  "version": "1.0.0",
+  "description": "ROMEL Rune Breadth-First-Search",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack --env.production=false --progress --colors --watch",
+    "build": "webpack --env.production --progress --colors --display-error-details"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RoMELDE/RuneBFS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RoMELDE/RuneBFS/issues"
+  },
+  "homepage": "https://github.com/RoMELDE/RuneBFS#readme",
+  "devDependencies": {
+    "clean-webpack-plugin": "^0.1.18",
+    "css-loader": "^0.28.9",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^1.1.6",
+    "html-webpack-plugin": "^2.30.1",
+    "style-loader": "^0.20.2",
+    "uglifyjs-webpack-plugin": "^1.1.8",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.11.0"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome": "^1.1.3",
+    "@fortawesome/fontawesome-free-regular": "^5.0.6",
+    "@fortawesome/fontawesome-free-solid": "^5.0.6",
+    "backbone": "^1.3.3",
+    "bootstrap": "^4.0.0",
+    "bootstrap-select": "^1.13.1",
+    "dom-to-image": "^2.6.0",
+    "jquery": "^3.3.1",
+    "localforage": "^1.6.0",
+    "lz-string": "^1.4.4",
+    "nprogress": "^0.2.0",
+    "popper.js": "^1.14.3",
+    "underscore": "^1.9.0"
+  }
+}
