@@ -189,10 +189,12 @@ var render = function (id, savedata) {
             .attr("data-name", desc.Name)
             //.attr("title", desc.Name + '<button type="button" id="close" class="close" onclick="$(this).parents(&quot;.popover&quot;).popover(&quot;hide&quot;);">&times;</button>')
             //.attr("title", $title.html())
-            .attr("data-content", (desc.Desc || "")
-                + "<br/>" + _.reduce(cost, function (result, current) {
+            .attr("data-content",
+                '<ul class="list-group list-group-flush">' +
+                '<li class="list-group-item p-1">' + (desc.Desc || "") + '</li>' +
+                '<li class="list-group-item p-1">' + _.reduce(cost, function (result, current) {
                     return result + current.Name + "*" + current.Count + " ";
-                }, ""))
+                }, "") + '</li>' + '</ul>')
             .click(function () {
                 runeClick(o.Id);
             });
@@ -238,7 +240,6 @@ var render = function (id, savedata) {
                 .addClass('rune-icon')
                 .addClass('rune-' + (status == 0 ? "off" : "on") + '-' + desc.Type)
                 .text(desc.Name))
-            .append('<button type="button" id="close" class="close" onclick="$(this).parents(&quot;.popover&quot;).popover(&quot;hide&quot;);">&times;</button>');
         $rune.attr('data-original-title', $title.html());
     });
     $('#main').on('inserted.bs.popover', function (e) {
@@ -248,7 +249,13 @@ var render = function (id, savedata) {
                 z = parseInt($(o).css('z-index'));
             }
         });
-        $('.popover:last')
+        var $closeButton = $('<button type="button" id="close" class="close">&times;</button>');
+        $closeButton.click(function () {
+            $(this).parents(".popover").popover("hide");
+        });
+        var $latestPopover = $('.popover:last');
+        $latestPopover.find('.popover-header').append($closeButton);
+        $latestPopover
             .css('z-index', z + 1)
             .off('mouseenter').off('click')
             .on("mouseenter click", function () {
