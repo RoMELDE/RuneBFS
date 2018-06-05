@@ -245,17 +245,20 @@ var render = function (id, savedata) {
     $('#main').on('inserted.bs.popover', function (e) {
         var z = 0;
         $('.popover').each(function (i, o) {
-            if (z < parseInt($(o).css('z-index'))) {
-                z = parseInt($(o).css('z-index'));
+            var $popover=$(o);
+            if (z < parseInt($popover.css('z-index'))) {
+                z = parseInt($popover.css('z-index'));
+            }
+            if($popover.find('button.close').length<1)
+            {
+                var $closeButton = $('<button type="button" id="close" class="close">&times;</button>');
+                $closeButton.click(function () {
+                    $(this).parents(".popover").popover("hide");
+                });
+                $popover.find('.popover-header').append($closeButton);
             }
         });
-        var $closeButton = $('<button type="button" id="close" class="close">&times;</button>');
-        $closeButton.click(function () {
-            $(this).parents(".popover").popover("hide");
-        });
-        var $latestPopover = $('.popover:last');
-        $latestPopover.find('.popover-header').append($closeButton);
-        $latestPopover
+        $('.popover:last')
             .css('z-index', z + 1)
             .off('mouseenter').off('click')
             .on("mouseenter click", function () {
