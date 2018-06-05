@@ -228,7 +228,7 @@ var render = function (id, savedata) {
     $('[data-toggle="popover"]').popover({
         html: true,
         trigger: 'hover focus',
-        viewport: '.astrolabe-container'
+        container: '.astrolabe-container'
     });
     $('#main').on('show.bs.popover', function (e) {
         var $rune = $(e.target);
@@ -245,12 +245,11 @@ var render = function (id, savedata) {
     $('#main').on('inserted.bs.popover', function (e) {
         var z = 0;
         $('.popover').each(function (i, o) {
-            var $popover=$(o);
+            var $popover = $(o);
             if (z < parseInt($popover.css('z-index'))) {
                 z = parseInt($popover.css('z-index'));
             }
-            if($popover.find('button.close').length<1)
-            {
+            if ($popover.find('button.close').length < 1) {
                 var $closeButton = $('<button type="button" id="close" class="close">&times;</button>');
                 $closeButton.click(function () {
                     $(this).parents(".popover").popover("hide");
