@@ -1,6 +1,13 @@
-define(['jquery', 'underscore', 'backbone', 'ui', 'view'], function ($, _, Backbone, Ui, View) {
-    var app_router;
-    function init() {
+import $ from "jquery";
+import _ from 'underscore';
+import Backbone from 'backbone';
+import Ui from './ui.js';
+import Data from './data.js'
+
+var init = function () {
+    import(
+        /* webpackChunkName: "view" */
+        './view.js').then(View => {
         var AppRouter = Backbone.Router.extend({
             routes: {
                 "class/:id": "classRoute",
@@ -15,7 +22,7 @@ define(['jquery', 'underscore', 'backbone', 'ui', 'view'], function ($, _, Backb
             }
         });
         // Initiate the router
-        app_router = new AppRouter;
+        var app_router = new AppRouter;
 
         app_router.on('route:classRoute', function (id, data) {
             console.log("route:classRoute");
@@ -32,8 +39,8 @@ define(['jquery', 'underscore', 'backbone', 'ui', 'view'], function ($, _, Backb
         });
 
         Backbone.history.start();
-    }
-    return {
-        init: init
-    };
-});
+    });
+};
+
+export { init };
+export default { init };

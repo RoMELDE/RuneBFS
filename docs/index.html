@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>*β*ROMEL Rune BFS</title>
+    <meta name="description" content="仙境传说：守护永恒的爱 阿萨神碑加点模拟器;ROMEL Rune Breadth-First-Search." />
+    <meta name="keywords" content="仙境传说,守护永恒的爱,阿萨神碑,符文,碑文,加点,RuneBFS,ForeverLove">
+<link href="main.4c024683b51e6e8c604aab2c622e586a.css" rel="stylesheet"></head>
+
+<body>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" title="ROMEL Rune Breadth-First-Search" href="#">ROMEL Rune BFS
+            <sup>β</sup>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span data-lang="class" id="class">class</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <h6 class="dropdown-header" data-lang="type-1">剑士系</h6>
+                        <a class="dropdown-item" href="#typeBranch/11" data-type-branch-id="11" data-lang="typeBranch-11">骑士</a>
+                        <a class="dropdown-item" href="#typeBranch/12" data-type-branch-id="12" data-lang="typeBranch-12">十字军</a>
+                        <h6 class="dropdown-header" data-lang="type-2">魔法师系</h6>
+                        <a class="dropdown-item" href="#typeBranch/21" data-type-branch-id="21" data-lang="typeBranch-21">巫师</a>
+                        <h6 class="dropdown-header" data-lang="type-3">盗贼系</h6>
+                        <a class="dropdown-item" href="#typeBranch/31" data-type-branch-id="31" data-lang="typeBranch-31">刺客</a>
+                        <a class="dropdown-item" href="#typeBranch/32" data-type-branch-id="32" data-lang="typeBranch-32">流氓</a>
+                        <h6 class="dropdown-header" data-lang="type-4">弓箭手系</h6>
+                        <a class="dropdown-item" href="#typeBranch/41" data-type-branch-id="41" data-lang="typeBranch-41">猎人</a>
+                        <h6 class="dropdown-header" data-lang="type-5">服事系</h6>
+                        <a class="dropdown-item" href="#typeBranch/51" data-type-branch-id="51" data-lang="typeBranch-51">牧师</a>
+                        <a class="dropdown-item" href="#typeBranch/52" data-type-branch-id="52" data-lang="typeBranch-52">武僧</a>
+                        <h6 class="dropdown-header" data-lang="type-6">商人系</h6>
+                        <a class="dropdown-item" href="#typeBranch/61" data-type-branch-id="61" data-lang="typeBranch-61">铁匠</a>
+                        <a class="dropdown-item" href="#typeBranch/62" data-type-branch-id="62" data-lang="typeBranch-62">炼金术士</a>
+                    </ul>
+                </li>
+                <form class="form-inline my-2 my-lg-0">
+                    <div class="input-group">
+                        <select class="selectpicker" id="txtSearch" data-width='auto' data-size='8' data-live-search='true' data-live-search-normalize='true' data-style='btn-outline-secondary'></select>
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-outline-primary" id="btnSearch" data-lang="search">查询</button>
+                            <button type="button" class="btn btn-outline-danger" id="btnClear" data-lang="clear">清空</button>
+                        </div>
+                    </div>
+                </form>
+            </ul>
+
+            <ul class="navbar-nav my-2 my-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span data-lang="currentversion">当前版本：</span>
+                        <span id="version"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <h6 class="dropdown-header" data-lang="externallink">Link</h6>
+                        <a class="dropdown-item" href="http://ro.xd.com/" target="_blank" data-lang="officalsite">OfficalSite</a>
+                        <a class="dropdown-item" href="http://nga.178.com/thread.php?fid=555/" target="_blank" data-lang="donate">Donate</a>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-globe"></i>
+                        <span data-lang="ui">UI</span>
+                        <span id="currentLang"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#lang/ja-JP">日本語</a>
+                        <a class="dropdown-item" href="#lang/zh-TW">正體中文</a>
+                        <a class="dropdown-item" href="#lang/en-US">English</a>
+                        <a class="dropdown-item" href="#lang/zh-CN">简体中文</a>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown" style="display:none">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-database"></i>
+                        <span data-lang="data">Data</span>
+                        <span id="currentDataLang"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <a class="dropdown-item" href="#lang/data/ja-JP">日本語</a>
+                        <a class="dropdown-item" href="#lang/data/zh-TW">正體中文</a>
+                        <a class="dropdown-item" href="#lang/data/en-US">English</a>
+                        <a class="dropdown-item" href="#lang/data/zh-CN">简体中文</a>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="alert alert-danger" role="alert" style="display:none;" data-lang="alertCBT">警告：正在使用测试服数据。</div>
+    <div id="main">
+    </div>
+    <div class="rune-panel">
+        <div class="rune-panel-main">
+            <div>
+                <span data-lang="runerange">符文范围</span>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-outline-secondary ">
+                        <input type="radio" name="evo" id="radEvo1" autocomplete="off" value="1">
+                        <span data-lang="firstclass">一转</span>
+                    </label>
+                    <label class="btn btn-outline-secondary ">
+                        <input type="radio" name="evo" id="radEvo3" autocomplete="off" value="3">
+                        <span data-lang="transcendentsecondclass">进阶二转</span>
+                    </label>
+                    <label class="btn btn-outline-secondary active">
+                        <input type="radio" name="evo" id="radEvo4" autocomplete="off" value="4" checked>
+                        <span data-lang="thirdclass">三转</span>
+                    </label>
+                </div>
+            </div>
+            <div class="rune-panel-divider"></div>
+            <div class="form-inline justify-content-end">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" data-lang="zoom">缩放</span>
+                    </div>
+                    <input type="number" class="form-control" id="scale" value="0.20" min="0.1" max="1" step="0.05" style="width:100px">
+                </div>
+            </div>
+            <div class="rune-panel-divider"></div>
+            <div>
+                <span data-lang="algorithm">寻路算法</span>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-outline-secondary">
+                        <input type="radio" name="pathAlgorithm" autocomplete="off" value="simple">
+                        <span data-lang="algorithm-simple">最短路径</span>
+                    </label>
+                    <label class="btn btn-outline-secondary active">
+                        <input type="radio" name="pathAlgorithm" autocomplete="off" value="nogold" checked>
+                        <span data-lang="algorithm-nogold">最少金质勋章</span>
+                    </label>
+                    <label class="btn btn-outline-secondary">
+                        <input type="radio" name="pathAlgorithm" autocomplete="off" value="custom">
+                        <span data-lang="algorithm-custom">自定义</span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-inline justify-content-end" id="algorithmWeight" style="display:none;">
+                <span data-lang="weight">权重</span>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" data-lang='contribution'>贡献</span>
+                    </div>
+                    <input type="number" class="form-control" id="weight140" value="0.001" style="width:100px">
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" data-lang='goldmedal'>金质勋章</span>
+                    </div>
+                    <input type="number" class="form-control" id="weight5261" value="1000" style="width:100px">
+                </div>
+            </div>
+            <div class="rune-panel-divider"></div>
+            <div>
+                <span data-lang="selected">已选：</span>
+                <span id="runeCost">0</span>
+            </div>
+            <div>
+                <span data-lang="currentselected">本次：</span>
+                <span id="runeCheckCost">0</span>
+            </div>
+            <div class="row justify-content-end">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-secondary" id="btnSaveImage" data-lang="saveimage">生成全符文图片</button>
+                    <button type="button" class="btn btn-danger" id="btnReset" data-lang="reset">重置本次选择</button>
+                    <button type="button" class="btn btn-primary" id="btnSave" data-lang="save">保存</button>
+                </div>
+            </div>
+        </div>
+        <div class="rune-panel-switch"></div>
+    </div>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-97666474-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-97666474-2');
+    </script>
+<script type="text/javascript" src="data.4dcd6b4c7d4065e5b734.js"></script><script type="text/javascript" src="main.33be5ca5c8f628375df3.js"></script></body>
+
+</html>
