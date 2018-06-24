@@ -32,6 +32,11 @@ div.alert+#main {
     height: calc(100% - 75px);
 }
 
+#txtSearch~button {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
 .astrolabe-container {
     position: relative;
     display: inline-block;
