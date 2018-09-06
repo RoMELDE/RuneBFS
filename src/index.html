@@ -6,18 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>*β*ROMEL Rune BFS</title>
+    <title>ROMEL Rune BFS</title>
     <meta name="description" content="仙境传说：守护永恒的爱 阿萨神碑加点模拟器;ROMEL Rune Breadth-First-Search." />
-    <meta name="keywords" content="仙境传说,守护永恒的爱,阿萨神碑,符文,碑文,加点,RuneBFS,ForeverLove">
+    <meta name="keywords" content="仙境传说,守护永恒的爱,阿萨神碑,符文,碑文,加点,RuneBFS,ForeverLove,仙境傳說,守護永恆的愛">
 </head>
 
 <body>
     <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" title="ROMEL Rune Breadth-First-Search" href="#">ROMEL Rune BFS
-            <sup>β</sup>
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-            aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand" title="ROMEL Rune Breadth-First-Search" href="#">ROMEL Rune BFS</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -107,16 +104,20 @@
                 <span data-lang="runerange">符文范围</span>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                     <label class="btn btn-outline-secondary ">
-                        <input type="radio" name="evo" id="radEvo1" autocomplete="off" value="1">
-                        <span data-lang="firstclass">一转</span>
+                        <input type="radio" name="evo" id="radEvo2" autocomplete="off" value="20000">
+                        <span data-lang="secondclass">二转</span>
                     </label>
                     <label class="btn btn-outline-secondary ">
-                        <input type="radio" name="evo" id="radEvo3" autocomplete="off" value="3">
+                        <input type="radio" name="evo" id="radEvo3" autocomplete="off" value="30000">
                         <span data-lang="transcendentsecondclass">进阶二转</span>
                     </label>
                     <label class="btn btn-outline-secondary active">
-                        <input type="radio" name="evo" id="radEvo4" autocomplete="off" value="4" checked>
+                        <input type="radio" name="evo" id="radEvo4" autocomplete="off" value="40000" checked>
                         <span data-lang="thirdclass">三转</span>
+                    </label>
+                    <label class="btn btn-outline-secondary ">
+                        <input type="radio" name="evo" id="radEvo4+" autocomplete="off" value="99999">
+                        <span data-lang="thirdclassplus">深化</span>
                     </label>
                 </div>
             </div>
@@ -185,6 +186,7 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-97666474-2"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
+
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
 

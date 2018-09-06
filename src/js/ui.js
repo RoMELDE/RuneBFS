@@ -55,18 +55,20 @@ data["data"] = { "ja-JP": "データ", "zh-TW": "資料語言", "en-US": "Data",
 
 data["alertCBT"] = { "ja-JP": "注意：CBTサーバのデータを利用しています。", "zh-TW": "警告：正在使用測試服務器數據。", "en-US": "Warning:Currently using CBT server data.", "zh-CN": "警告：正在使用测试服务器数据。" };
 //rune panel
-data["runerange"] = { "ja-JP": "神碑拡張", "zh-TW": "符文範圍", "en-US": "Rune Range", "zh-CN": "符文范围" };
-data["firstclass"] = { "ja-JP": "未拡張", "zh-TW": "一轉", "en-US": "First Class", "zh-CN": "一转" };
-data["transcendentsecondclass"] = { "ja-JP": "2次拡張", "zh-TW": "進階二轉", "en-US": "Transcendent Second Class", "zh-CN": "进阶二转" };
-data["thirdclass"] = { "ja-JP": "3次拡張", "zh-TW": "三轉", "en-US": "Third Class", "zh-CN": "三转" };
+data["runerange"] = { "ja-JP": "ルーン範囲", "zh-TW": "符文範圍", "en-US": "Rune Range", "zh-CN": "符文范围" };
+data["firstclass"] = { "ja-JP": "一次職", "zh-TW": "一轉", "en-US": "First Class", "zh-CN": "一转" };
+data["secondclass"] = { "ja-JP": "二次職", "zh-TW": "二轉", "en-US": "Second Class", "zh-CN": "二转" };
+data["transcendentsecondclass"] = { "ja-JP": "上位二次職", "zh-TW": "進階二轉", "en-US": "Transcendent Second Class", "zh-CN": "进阶二转" };
+data["thirdclass"] = { "ja-JP": "三次職", "zh-TW": "三轉", "en-US": "Third Class", "zh-CN": "三转" };
+data["thirdclassplus"] = { "ja-JP": "三次職+", "zh-TW": "三轉+", "en-US": "Third Class+", "zh-CN": "深化" };
 
 
 data["disable"] = { "ja-JP": "拡張前", "zh-TW": "不啟用", "en-US": "Disable", "zh-CN": "不启用" };
 data["enable"] = { "ja-JP": "拡張後", "zh-TW": "啟用", "en-US": "Enable", "zh-CN": "启用" };
 data["zoom"] = { "ja-JP": "拡大率", "zh-TW": "縮放", "en-US": "Zoom", "zh-CN": "缩放" };
 data["algorithm"] = { "ja-JP": "経路算出：", "zh-TW": "尋路算法", "en-US": "Pathfinding algorithm", "zh-CN": "寻路算法" };
-data["algorithm-simple"] = { "ja-JP": "最短", "zh-TW": "最短路徑", "en-US": "Shortest Path", "zh-CN": "最短路径" };
-data["algorithm-nogold"] = { "ja-JP": "金盾最少", "zh-TW": "最少金質勳章", "en-US": "Minimum Golden Badge", "zh-CN": "最少金质勋章" };
+data["algorithm-simple"] = { "ja-JP": "最短経路", "zh-TW": "最短路徑", "en-US": "Shortest Path", "zh-CN": "最短路径" };
+data["algorithm-nogold"] = { "ja-JP": "最低金メダル", "zh-TW": "最少金質勳章", "en-US": "Minimum Golden Badge", "zh-CN": "最少金质勋章" };
 data["algorithm-custom"] = { "ja-JP": "カスタム", "zh-TW": "自定義", "en-US": "Custom", "zh-CN": "自定义" };
 data["weight"] = { "ja-JP": "比重", "zh-TW": "權重", "en-US": "Weights", "zh-CN": "权重" };
 data["contribution"] = { "ja-JP": "貢献", "zh-TW": "貢獻", "en-US": "Contribution", "zh-CN": "贡献" };
