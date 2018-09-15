@@ -28,8 +28,12 @@ body {
     position: relative;
 }
 
+.alert {
+    margin-bottom: 0;
+}
+
 div.alert+#main {
-    height: calc(100% - 75px);
+    height: calc(100% - 3.25rem);
 }
 
 #txtSearch~button {
