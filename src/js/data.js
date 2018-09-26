@@ -4,9 +4,9 @@ import Ui from './ui.js';
 
 var data = {};
 
-var version = 227854;
+var version = 230445;
 var getVersion = function () { return version; };
-var _isTest = true;
+var _isTest = false;
 var isTest = function () { return _isTest; };
 
 const baseKey = "ROMEL_RuneBFS_";
