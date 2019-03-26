@@ -31,9 +31,10 @@
     "webpack": "^3.11.0"
   },
   "dependencies": {
-    "@fortawesome/fontawesome": "^1.1.3",
-    "@fortawesome/fontawesome-free-regular": "^5.0.6",
-    "@fortawesome/fontawesome-free-solid": "^5.0.6",
+    "@fortawesome/fontawesome-free": "^5.5.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.8",
+    "@fortawesome/free-regular-svg-icons": "^5.5.0",
+    "@fortawesome/free-solid-svg-icons": "^5.5.0",
     "backbone": "^1.3.3",
     "bootstrap": "^4.0.0",
     "bootstrap-select": "^1.13.1",

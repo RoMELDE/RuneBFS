@@ -4,7 +4,7 @@ import Ui from './ui.js';
 
 var data = {};
 
-var version = 235945;
+var version = 280704;
 var getVersion = function () { return version; };
 var _isTest = false;
 var isTest = function () { return _isTest; };

@@ -57,6 +57,8 @@ data["data"] = { "ja-JP": "データ", "zh-TW": "資料語言", "en-US": "Data",
 
 data["alertCBT"] = { "ja-JP": "注意：CBTサーバのデータを利用しています。", "zh-TW": "警告：正在使用測試服務器數據。", "en-US": "Warning:Currently using CBT server data.", "zh-CN": "警告：正在使用测试服务器数据。" };
 //rune panel
+data["selectall"] = { "ja-JP": "ルーン全選択", "zh-TW": "選擇全部符文", "en-US": "Select All Runes", "zh-CN": "选择全部符文" };
+
 data["runerange"] = { "ja-JP": "ルーン範囲", "zh-TW": "符文範圍", "en-US": "Rune Range", "zh-CN": "符文范围" };
 data["firstclass"] = { "ja-JP": "一次職", "zh-TW": "一轉", "en-US": "First Class", "zh-CN": "一转" };
 data["secondclass"] = { "ja-JP": "二次職", "zh-TW": "二轉", "en-US": "Second Class", "zh-CN": "二转" };

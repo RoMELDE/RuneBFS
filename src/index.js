@@ -4,11 +4,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-select'
 import 'bootstrap-select/dist/css/bootstrap-select.min.css'
 
-import fontawesome from '@fortawesome/fontawesome'
-import faGlobe from '@fortawesome/fontawesome-free-solid/faGlobe'
-fontawesome.library.add(faGlobe)
-import faDatabase from '@fortawesome/fontawesome-free-solid/faDatabase'
-fontawesome.library.add(faDatabase)
+import { library, dom } from '@fortawesome/fontawesome-svg-core'
+import { faGlobe, faDatabase, faUndo, faRedo } from '@fortawesome/free-solid-svg-icons'
+library.add(faGlobe, faDatabase, faUndo, faRedo)
+dom.watch()
 
 import './style.css'
 

@@ -95,6 +95,15 @@ var initControl = function () {
         $('[data-toggle="popover"]').popover('hide');
     });
 
+    $('#btnSelectAll').click(function () {
+        var astrolabe = Data.getAstrolabe();
+        _.each(astrolabe, function (o, i) {
+            checkRune(o.Id, true, false);
+        });
+        renderCost();
+        renderRuneLink();
+    });
+
     $('#btnSaveImage').click(function () {
         var w = window.open('about:blank;', '_blank');
         $(w.document.body).append(Ui.getText('generating'));
@@ -184,7 +193,7 @@ var render = function (id, savedata) {
             .data("cost", cost)
             .data("resetCost", resetCost)
             .data("desc", desc)
-            .data("status", 0)  //0:unchecked,1:checked,2:saved
+            .data("status", 0) //0:unchecked,1:checked,2:saved
             .attr("data-toggle", "popover")
             .attr("data-name", desc.Name)
             //.attr("title", desc.Name + '<button type="button" id="close" class="close" onclick="$(this).parents(&quot;.popover&quot;).popover(&quot;hide&quot;);">&times;</button>')
@@ -375,20 +384,24 @@ var renderCost = function () {
         var cost = $rune.data('cost');
         var resetCost = $rune.data('resetCost');
         switch (status) {
-            case 0: break;
-            case 1: {
-                runeCheckCost.push(cost);
-                runeCheckResetCost.push(resetCost);
-                runeCheckTotalAttr.push(desc);
+            case 0:
                 break;
-            }
-            case 2: {
-                runeCost.push(cost);
-                runeResetCost.push(resetCost);
-                runeTotalAttr.push(desc);
+            case 1:
+                {
+                    runeCheckCost.push(cost);
+                    runeCheckResetCost.push(resetCost);
+                    runeCheckTotalAttr.push(desc);
+                    break;
+                }
+            case 2:
+                {
+                    runeCost.push(cost);
+                    runeResetCost.push(resetCost);
+                    runeTotalAttr.push(desc);
+                    break;
+                }
+            default:
                 break;
-            }
-            default: break;
         }
     });
     runeCheckCost = _.reduce(runeCheckCost, function (memo, item) {
@@ -457,14 +470,14 @@ var renderCost = function () {
         if (index % 4 == 0) { runeTotalAttrText += "<br/>"; }
     })
     $('#runeCheckCost').empty()
-        .append(runeCheckCostText.trim()
-            + "(" + runeCheckResetCostText.trim() + ")"
-            + '<br/>' + runeCheckTotalAttrText.trim());
+        .append(runeCheckCostText.trim() +
+            "(" + runeCheckResetCostText.trim() + ")" +
+            '<br/>' + runeCheckTotalAttrText.trim());
     $('#runeCheckCost').data('cost', runeCheckCostText.trim() + "(" + runeCheckResetCostText.trim() + ")");
     $('#runeCost').empty()
-        .append(runeCostText.trim()
-            + "(" + runeResetCostText.trim() + ")"
-            + '<br/>' + runeTotalAttrText.trim());
+        .append(runeCostText.trim() +
+            "(" + runeResetCostText.trim() + ")" +
+            '<br/>' + runeTotalAttrText.trim());
     $('#runeCost').data('cost', runeCostText.trim() + "(" + runeResetCostText.trim() + ")");
 };
 
@@ -476,10 +489,17 @@ var runeClick = function (runeId) {
         var $rune = $("#rune" + runeId);
         var status = $rune.data('status');
         switch (status) {
-            case 0: checkRune(runeId); break;
-            case 1: uncheckRune(runeId); break;
-            case 2: uncheckRuneWithConfirm(runeId); break;
-            default: break;
+            case 0:
+                checkRune(runeId);
+                break;
+            case 1:
+                uncheckRune(runeId);
+                break;
+            case 2:
+                uncheckRuneWithConfirm(runeId);
+                break;
+            default:
+                break;
         }
     }
     renderCost();
@@ -498,13 +518,18 @@ var checkRune = function (runeId, noRecursion, isSaved) {
         //var path = Data.getPath(runeList.concat(runeCheckList), runeId);
         var path = [];
         switch (pathAlgorithm) {
-            case "simple": path = Data.getPath(runeList.concat(runeCheckList), runeId, maxevo); break;
-            case "nogold": path = Data.getPathWithWeight(runeList.concat(runeCheckList), runeId, maxevo); break;
-            case "custom": {
-                var param = [{ id: 140, weight: parseFloat($('#weight140').val()) || 0 }, { id: 5261, weight: parseFloat($('#weight5261').val()) || 0 }];
-                path = Data.getPathWithWeight(runeList.concat(runeCheckList), runeId, maxevo, param);
+            case "simple":
+                path = Data.getPath(runeList.concat(runeCheckList), runeId, maxevo);
                 break;
-            }
+            case "nogold":
+                path = Data.getPathWithWeight(runeList.concat(runeCheckList), runeId, maxevo);
+                break;
+            case "custom":
+                {
+                    var param = [{ id: 140, weight: parseFloat($('#weight140').val()) || 0 }, { id: 5261, weight: parseFloat($('#weight5261').val()) || 0 }];
+                    path = Data.getPathWithWeight(runeList.concat(runeCheckList), runeId, maxevo, param);
+                    break;
+                }
         }
         console.log("getPath", pathAlgorithm, path);
         if (!path.length) {
@@ -517,12 +542,16 @@ var checkRune = function (runeId, noRecursion, isSaved) {
     }
     else {
         if (isSaved) {
-            $rune.data('status', 2)
-                .addClass('rune-saved');
+            if ($rune.data('status') >= 2) {
+                return;
+            }
+            $rune.data('status', 2).addClass('rune-saved');
         }
         else {
-            $rune.data('status', 1)
-                .addClass('rune-checked');
+            if ($rune.data('status') >= 1) {
+                return;
+            }
+            $rune.data('status', 1).addClass('rune-checked');
             runeCheckList.push(runeId);
         }
         $('.rune-icon[runeId="' + runeId + '"]')

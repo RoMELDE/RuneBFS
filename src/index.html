@@ -103,6 +103,17 @@
     </div>
     <div class="rune-panel">
         <div class="rune-panel-main">
+            <div style="display:none;">
+                <div class="btn-group" style="display:none;">
+                    <button type="button" class="btn btn-outline-secondary">
+                        <i class="fas fa-undo"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="rune-panel-divider" style="display:none;"></div>
             <div>
                 <span data-lang="runerange">符文范围</span>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -125,13 +136,10 @@
                 </div>
             </div>
             <div class="rune-panel-divider"></div>
-            <div class="form-inline justify-content-end">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" data-lang="zoom">缩放</span>
-                    </div>
-                    <input type="number" class="form-control" id="scale" value="0.20" min="0.1" max="1" step="0.05" style="width:100px">
-                </div>
+            <div>
+                <button type="button" id="btnSelectAll" class="btn btn-outline-secondary float-left" data-lang="selectall">选择全部符文</button>
+                <span data-lang="zoom">缩放</span>
+                <input type="number" class="d-inline form-control" id="scale" value="0.20" min="0.1" max="1" step="0.05" style="width:100px">
             </div>
             <div class="rune-panel-divider"></div>
             <div>
