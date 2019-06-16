@@ -60,13 +60,24 @@
             <ul class="navbar-nav my-2 my-lg-0">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span data-lang="currentversion">当前版本：</span>
-                        <span id="version"></span>
+                        <div data-lang="currentversion" class="d-inline-block">当前版本：</div>
+                        <div class="d-inline-block" style="vertical-align: top; height: 0; margin-top: -0.5rem;">
+                            <div id="server">Loading...</div>
+                            <div class="m-0" style="font-size: 0.75rem;line-height:0.75rem;" id="version"></div>
+                        </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right">
+                        <h6 class="dropdown-header" data-lang="server">server</h6>
+                        <div class="dropdown-divider" id="serverDivider"></div>
                         <h6 class="dropdown-header" data-lang="externallink">Link</h6>
-                        <a class="dropdown-item" href="http://ro.xd.com/" target="_blank" data-lang="officalsite">OfficalSite</a>
-                        <a class="dropdown-item" href="http://nga.178.com/thread.php?fid=555/" target="_blank" data-lang="donate">Donate</a>
+                        <a class="dropdown-item" href="http://ro.xd.com/" target="_blank" rel="noopener noreferrer">
+                            <span class="mr-4" data-lang="officalsite"></span>
+                            <i class="fas fa-external-link-alt text-black-50" style="position:absolute;right: 0.5rem;font-size: 1.25rem;"></i>
+                        </a>
+                        <a class="dropdown-item" href="http://nga.178.com/thread.php?fid=555/" target="_blank" rel="noopener noreferrer">
+                            <span class="mr-4" data-lang="donate"></span>
+                            <i class="fas fa-external-link-alt text-black-50" style="position:absolute;right: 0.5rem;font-size: 1.25rem;"></i>
+                        </a>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">

@@ -1,25 +1,45 @@
 import localForage from "localforage";
 import _ from 'underscore';
 import Ui from './ui.js';
-
-var data = {};
-
-var version = 280704;
-var getVersion = function () { return version; };
-var _isTest = false;
-var isTest = function () { return _isTest; };
+import serverList from "../data/serverList.json";
 
 const baseKey = "ROMEL_RuneBFS_";
 const lastUpdateKey = "lastUpdate_ROMEL_RuneBFS";
+const serverKey = baseKey + "Server";
+
+var data = {};
+
+var getAllServers = function () {
+    return serverList;
+}
+var getDefaultServer = function () {
+    return _.find(getAllServers(), function (o) { return o.isDefault });
+}
+var getCurrentServer = function () {
+    var currentServerID = localStorage.getItem(serverKey);
+    if (!currentServerID) {
+        return getDefaultServer();
+    }
+    var current = _.find(getAllServers(), function (o) { return o.id == currentServerID });
+    return current || getDefaultServer();
+}
+var setCurrentServer = function (id) {
+    var server = getAllServers()[id] || getDefaultServer();
+    localStorage.setItem(serverKey, server.id);
+}
 
 var init = function (forceInit) {
     forceInit = !!forceInit;
+    var folder = getCurrentServer().folder;
+    var store = localForage.createInstance({
+        name: baseKey + folder
+    });
     return isDataOutdated().then(function (needForceUpdate) {
         var promises = [];
         if (!forceInit && !needForceUpdate) {
-            console.log("All data cached. ");
+            console.log("All data cached. ", folder);
             var loaddata = function (key) {
-                return localForage.getItem(baseKey + key).then(json => {
+                return store.getItem(baseKey + key).then(json => {
                     data[key] = JSON.parse(json);
                 });
             };
@@ -30,40 +50,40 @@ var init = function (forceInit) {
             promises.push(loaddata('runeSpecialDesc'));
             return Promise.all(promises);
         }
-        return localForage.clear().then(() => {
-            var savedata = function (key, jsondata) {
-                return localForage.setItem(baseKey + key, JSON.stringify(jsondata), function () {
-                    console.log("Get data from web. ", key);
+        return store.clear().then(() => {
+            var savedata = function (key, server, jsondata) {
+                return store.setItem(baseKey + key, JSON.stringify(jsondata), function () {
+                    console.log("Get data from web. ", server, key);
                     data[key] = jsondata;
                 });
             }
             promises.push(import(
                 /* webpackChunkName: "jsondata" */
-                '../data/astrolabe.json').then(jsondata => {
-                    return savedata('astrolabe', jsondata);
-                }));
+                '../data/' + folder + '/astrolabe.json').then(jsondata => {
+                return savedata('astrolabe', folder, jsondata.default);
+            }));
             promises.push(import(
                 /* webpackChunkName: "jsondata" */
-                '../data/rune.json').then(jsondata => {
-                    return savedata('rune', jsondata);
-                }));
+                '../data/' + folder + '/rune.json').then(jsondata => {
+                return savedata('rune', folder, jsondata.default);
+            }));
             promises.push(import(
                 /* webpackChunkName: "jsondata" */
-                '../data/runeByTypeBranch.json').then(jsondata => {
-                    return savedata('runeByTypeBranch', jsondata);
-                }));
+                '../data/' + folder + '/runeByTypeBranch.json').then(jsondata => {
+                return savedata('runeByTypeBranch', folder, jsondata.default);
+            }));
             promises.push(import(
                 /* webpackChunkName: "jsondata" */
-                '../data/runeSpecial.json').then(jsondata => {
-                    return savedata('runeSpecial', jsondata);
-                }));
+                '../data/' + folder + '/runeSpecial.json').then(jsondata => {
+                return savedata('runeSpecial', folder, jsondata.default);
+            }));
             promises.push(import(
                 /* webpackChunkName: "jsondata" */
-                '../data/runeSpecialDesc.json').then(jsondata => {
-                    return savedata('runeSpecialDesc', jsondata);
-                }));
+                '../data/' + folder + '/runeSpecialDesc.json').then(jsondata => {
+                return savedata('runeSpecialDesc', folder, jsondata.default);
+            }));
             return Promise.all(promises).then(() => {
-                return saveLastUpdate();
+                return store.setItem(lastUpdateKey, lastUpdate)
             });
         });
     });
@@ -71,11 +91,15 @@ var init = function (forceInit) {
 
 var lastUpdate;
 var isDataOutdated = function () {
-    return localForage.getItem(lastUpdateKey).then(function (data) {
+    var folder = getCurrentServer().folder;
+    var store = localForage.createInstance({
+        name: baseKey + folder
+    });
+    return store.getItem(lastUpdateKey).then(function (data) {
         lastUpdate = data;
-        return import('../data/lastUpdate.json').then(data => {
+        return import('../data/' + folder + '/lastUpdate.json').then(data => {
             var local = lastUpdate;
-            var remote = data;
+            var remote = data.default;
             var isLatest = new Date(local).getTime() >= new Date(remote).getTime();
             lastUpdate = remote;
             if (!local) {
@@ -84,9 +108,6 @@ var isDataOutdated = function () {
             return isLatest == false;
         });
     });
-};
-var saveLastUpdate = function () {
-    return localForage.setItem(lastUpdateKey, lastUpdate)
 };
 
 var getAstrolabe = function () {
@@ -314,9 +335,10 @@ var formatRichText = function (richText) {
     return richText.replace(/(?:\r\n|\r|\n|\\n)/g, "<br/>").replace(/\[-\]/g, "</span>").replace(/\[([A-Za-z0-9]{6})\]/g, "<span style='color:#$1'>");
 };
 
-export {
-    getVersion,
-    isTest,
+const Data = {
+    getAllServers,
+    getCurrentServer,
+    setCurrentServer,
     getAstrolabe,
     getRuneCost,
     getRuneResetCost,
@@ -328,21 +350,7 @@ export {
     getConnectedComponent,
     init,
     isDataOutdated,
-    saveLastUpdate,
 };
-export default {
-    getVersion,
-    isTest,
-    getAstrolabe,
-    getRuneCost,
-    getRuneResetCost,
-    getRuneDesc,
-    getAllRuneDescNameByTypeBranch,
-    getRuneDataById,
-    getPath,
-    getPathWithWeight,
-    getConnectedComponent,
-    init,
-    isDataOutdated,
-    saveLastUpdate,
-};
+
+export { Data };
+export default Data;

@@ -55,6 +55,16 @@ data["donate"] = { "ja-JP": "NGA RO", "zh-TW": "送版主女裝", "en-US": "NGA 
 data["ui"] = { "ja-JP": "言語", "zh-TW": "界面語言", "en-US": "UI", "zh-CN": "界面语言" };
 data["data"] = { "ja-JP": "データ", "zh-TW": "資料語言", "en-US": "Data", "zh-CN": "数据语言" };
 
+data["server"] = { "ja-JP": "サーバー", "zh-TW": "伺服器", "en-US": "Server", "zh-CN": "服务器" };
+data["disablecache"] = { "ja-JP": "キャッシュを無効化", "zh-TW": "停用快取", "en-US": "Disable Cache", "zh-CN": "禁用缓存", };
+data["enablecache"] = { "ja-JP": "キャッシュを有効化", "zh-TW": "啟用快取", "en-US": "Enable Cache", "zh-CN": "启用缓存", };
+data["disablecachewarning"]={
+    "ja-JP": "キャッシュを無効化にすると、ページの読み込みが遅くなります。無効化にしますか？",
+    "zh-TW": "停用快取會使網頁載入變慢，是否確認停用？",
+    "en-US": "Disabling caching will cause the page to load slowly, CONFIRM?",
+    "zh-CN": "禁用缓存会导致网页加载缓慢，是否确认禁用？"
+};
+
 data["alertCBT"] = { "ja-JP": "注意：CBTサーバのデータを利用しています。", "zh-TW": "警告：正在使用測試服務器數據。", "en-US": "Warning:Currently using CBT server data.", "zh-CN": "警告：正在使用测试服务器数据。" };
 //rune panel
 data["selectall"] = { "ja-JP": "ルーン全選択", "zh-TW": "選擇全部符文", "en-US": "Select All Runes", "zh-CN": "选择全部符文" };

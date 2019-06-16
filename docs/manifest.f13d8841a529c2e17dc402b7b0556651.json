@@ -1,0 +1,46 @@
+{
+  "icons": [
+    {
+      "src": "icon_1024x1024.061bd04a8a2f4fb1b3e901fc6410e3f9.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_512x512.3853c960f004b490c4efeb6cba620c8f.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_384x384.c7283f5cb07c82e07eac6d3a0591894c.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_256x256.75234123f590c460c79a86bc2fd026ad.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_192x192.41c303ce165873ef88d1c8d8ccb7c2b4.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_128x128.ae28fd32f0465b6501d66a5548b4d27d.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_96x96.487be35bdaae7d04736566629653d5db.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    }
+  ],
+  "name": "ROMEL|Rune BFS",
+  "short_name": "ROMEL|Rune BFS",
+  "orientation": "portrait",
+  "display": "standalone",
+  "start_url": ".",
+  "theme_color": "#FAFAFA",
+  "background_color": "#FAFAFA"
+}

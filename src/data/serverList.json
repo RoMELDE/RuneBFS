@@ -1,0 +1,52 @@
+{
+    "com.xd.ro.roapk": {
+        "id": "com.xd.ro.roapk",
+        "name": "X.D.Network",
+        "folder": "com.xd.ro.roapk",
+        "version": "280704",
+        "isDefault": true,
+        "isTest": false
+    },
+    "com.xd.ro.xdapk": {
+        "id": "com.xd.ro.xdapk",
+        "name": "X.D.Network(TEST)",
+        "folder": "com.xd.ro.xdapk",
+        "version": "",
+        "isTest": true
+    },
+    "com.gravity.ro.and": {
+        "id": "com.gravity.ro.and",
+        "name": "WeGames Corporation",
+        "folder": "com.gravity.ro.and",
+        "version": "",
+        "isTest": false
+    },
+    "com.gravity.romg": {
+        "id": "com.gravity.romg",
+        "name": "Gravity Interactive Inc.(SEA)",
+        "folder": "com.gravity.romg",
+        "version": "",
+        "isTest": false
+    },
+    "com.gravity.romNAg": {
+        "id": "com.gravity.romNAg",
+        "name": "Gravity Interactive Inc.(NA)",
+        "folder": "com.gravity.romNAg",
+        "version": "",
+        "isTest": false
+    },
+    "jp.gungho.ragnarokm": {
+        "id": "jp.gungho.ragnarokm",
+        "name": "GungHoOnlineEntertainment",
+        "folder": "jp.gungho.ragnarokm",
+        "version": "",
+        "isTest": false
+    },
+    "com.gravity.rom.aos":{
+        "id": "com.gravity.rom.aos",
+        "name": "GRAVITY Co., Ltd.",
+        "folder": "com.gravity.rom.aos",
+        "version": "",
+        "isTest": false
+    }
+}

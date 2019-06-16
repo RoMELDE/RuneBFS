@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "webpack --env.production=false --progress --colors --watch",
-    "build": "webpack --env.production --progress --colors --display-error-details"
+    "watch": "webpack --env.NODE_ENV=development --progress --colors --watch",
+    "build": "webpack --env.NODE_ENV=production --progress --colors --display-error-details"
   },
   "repository": {
     "type": "git",
@@ -20,30 +20,32 @@
   },
   "homepage": "https://github.com/RoMELDE/RuneBFS#readme",
   "devDependencies": {
-    "clean-webpack-plugin": "^0.1.18",
-    "css-loader": "^0.28.9",
-    "extract-text-webpack-plugin": "^3.0.2",
-    "file-loader": "^1.1.6",
-    "html-webpack-plugin": "^2.30.1",
-    "style-loader": "^0.20.2",
-    "uglifyjs-webpack-plugin": "^1.1.8",
-    "url-loader": "^0.6.2",
-    "webpack": "^3.11.0"
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.0.0",
+    "file-loader": "^4.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.7.0",
+    "style-loader": "^0.23.1",
+    "url-loader": "^2.0.0",
+    "webpack": "^4.34.0",
+    "webpack-cli": "^3.3.4",
+    "webpack-pwa-manifest": "^4.0.0"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.5.0",
-    "@fortawesome/fontawesome-svg-core": "^1.2.8",
-    "@fortawesome/free-regular-svg-icons": "^5.5.0",
-    "@fortawesome/free-solid-svg-icons": "^5.5.0",
-    "backbone": "^1.3.3",
-    "bootstrap": "^4.0.0",
-    "bootstrap-select": "^1.13.1",
+    "@fortawesome/fontawesome-free": "^5.9.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.19",
+    "@fortawesome/free-regular-svg-icons": "^5.9.0",
+    "@fortawesome/free-solid-svg-icons": "^5.9.0",
+    "backbone": "^1.4.0",
+    "bootstrap": "^4.3.1",
+    "bootstrap-select": "^1.13.10",
     "dom-to-image": "^2.6.0",
-    "jquery": "^3.3.1",
-    "localforage": "^1.6.0",
+    "jquery": "^3.4.1",
+    "localforage": "^1.7.3",
     "lz-string": "^1.4.4",
     "nprogress": "^0.2.0",
-    "popper.js": "^1.14.3",
-    "underscore": "^1.9.0"
+    "offline-plugin": "^5.0.7",
+    "popper.js": "^1.15.0",
+    "underscore": "^1.9.1"
   }
 }
