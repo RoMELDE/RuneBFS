@@ -83,7 +83,8 @@ var initControl = function () {
         if (!o.version) {
             return;
         }
-        $('#serverDivider').before('<a class="dropdown-item ' + ((o.id == server.id) ? ' active ' : '') + (o.version ? '' : ' disabled ') + '" href="#server/' + o.id + '">' + o.name + '<div class="m-0" style="font-size:0.75rem;line-height:0.75rem;"><span class="mr-5">' + o.id + '</span><div class="m-0" style="font-size:0.75rem;line-height:0.75rem;float:right;">' + o.version + '</div></div></a>');
+        //$('#serverDivider').before('<a class="dropdown-item ' + ((o.id == server.id) ? ' active ' : '') + (o.version ? '' : ' disabled ') + '" href="#server/' + o.id + '">' + o.name + '<div class="m-0" style="font-size:0.75rem;line-height:0.75rem;"><span class="mr-5">' + o.id + '</span><div class="m-0" style="font-size:0.75rem;line-height:0.75rem;float:right;">' + o.version + '</div></div></a>');
+        $('#serverDivider').before('<a class="dropdown-item ' + ((o.id == server.id) ? ' active ' : '') + (o.version ? '' : ' disabled ') + '" href="#server/' + o.id + '">' + o.name + '<div class="m-0" style="font-size:0.75rem;line-height:0.75rem;">' + o.version + '</div></a>');
     });
 
     $('#btnSearch').click(function () {
