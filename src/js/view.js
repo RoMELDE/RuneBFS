@@ -260,10 +260,10 @@ var render = function (id, savedata) {
         var status = $rune.data("status");
         var $title = $('<div>')
             .append($('<div>')
-                .attr('runeId', $rune.attr("data-id"))
                 .addClass('rune-icon')
                 .addClass('rune-' + (status == 0 ? "off" : "on") + '-' + desc.Type)
-                .text(desc.Name))
+                .text(desc.Name)
+                .append('<div class="rune-id d-none">' + $rune.attr("data-id")));
         $rune.attr('data-original-title', $title.html());
     });
     $('#main').on('inserted.bs.popover', function (e) {
@@ -296,7 +296,7 @@ var render = function (id, savedata) {
             })
             .on("click", '.rune-icon', function () {
                 $(e.target).popover('hide');
-                runeClick(parseInt($(this).attr('runeId')));
+                runeClick(parseInt($(this).find('.rune-id').text()));
             });
     });
 
