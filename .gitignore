@@ -3,6 +3,9 @@
 .idea/*
 *.map
 
+# docs/* are auto-generated files
+docs/*
+
 # Logs
 logs
 *.log

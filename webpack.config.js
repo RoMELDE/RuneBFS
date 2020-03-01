@@ -31,8 +31,8 @@ module.exports = env => {
             jQuery: 'jquery'
         }),
         new WebpackPwaManifest({
-            name: "ROMEL|Rune BFS",
-            short_name: "ROMEL|Rune BFS",
+            name: "Tommy|Rune BFS",
+            short_name: "Tommy|Rune BFS",
             theme_color: "#FAFAFA",
             background_color: '#FAFAFA',
             icons: [{
@@ -44,7 +44,7 @@ module.exports = env => {
             appShell: '/RuneBFS/',
             autoUpdate: true,
             ServiceWorker: {
-                cacheName: "ROMEL_RuneBFS",
+                cacheName: "TOMMY_RuneBFS",
                 events: true,
             },
             AppCache: false,
