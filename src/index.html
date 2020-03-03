@@ -6,14 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>ROMEL Rune BFS</title>
-    <meta name="description" content="仙境传说：守护永恒的爱 阿萨神碑加点模拟器;ROMEL Rune Breadth-First-Search." />
-    <meta name="keywords" content="仙境传说,守护永恒的爱,阿萨神碑,符文,碑文,加点,RuneBFS,ForeverLove,仙境傳說,守護永恆的愛">
+    <title>Rune BFS</title>
+    <meta name="description" content="ラグマス ルーンシミュレータ; Rune Breadth-First-Search." />
+    <meta name="keywords" content="ラグナロクマスターズ ラグマス ルーン シミュレータ">
 </head>
 
 <body>
     <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" title="ROMEL Rune Breadth-First-Search" href="#">ROMEL Rune BFS</a>
+        <a class="navbar-brand" title="Rune Breadth-First-Search" href="#">Rune BFS</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -25,23 +25,17 @@
                         <span data-lang="class" id="class">class</span>
                     </a>
                     <ul class="dropdown-menu">
-                        <h6 class="dropdown-header" data-lang="type-1">剑士系</h6>
                         <a class="dropdown-item" href="#typeBranch/11" data-type-branch-id="11" data-lang="typeBranch-11">骑士</a>
                         <a class="dropdown-item" href="#typeBranch/12" data-type-branch-id="12" data-lang="typeBranch-12">十字军</a>
-                        <h6 class="dropdown-header" data-lang="type-2">魔法师系</h6>
                         <a class="dropdown-item" href="#typeBranch/21" data-type-branch-id="21" data-lang="typeBranch-21">巫师</a>
                         <a class="dropdown-item" href="#typeBranch/22" data-type-branch-id="22" data-lang="typeBranch-22">贤者</a>
-                        <h6 class="dropdown-header" data-lang="type-3">盗贼系</h6>
                         <a class="dropdown-item" href="#typeBranch/31" data-type-branch-id="31" data-lang="typeBranch-31">刺客</a>
                         <a class="dropdown-item" href="#typeBranch/32" data-type-branch-id="32" data-lang="typeBranch-32">流氓</a>
-                        <h6 class="dropdown-header" data-lang="type-4">弓箭手系</h6>
                         <a class="dropdown-item" href="#typeBranch/41" data-type-branch-id="41" data-lang="typeBranch-41">猎人</a>
                         <a class="dropdown-item" href="#typeBranch/42" data-type-branch-id="42" data-lang="typeBranch-42">诗人</a>
                         <a class="dropdown-item" href="#typeBranch/43" data-type-branch-id="43" data-lang="typeBranch-43">舞娘</a>
-                        <h6 class="dropdown-header" data-lang="type-5">服事系</h6>
                         <a class="dropdown-item" href="#typeBranch/51" data-type-branch-id="51" data-lang="typeBranch-51">牧师</a>
                         <a class="dropdown-item" href="#typeBranch/52" data-type-branch-id="52" data-lang="typeBranch-52">武僧</a>
-                        <h6 class="dropdown-header" data-lang="type-6">商人系</h6>
                         <a class="dropdown-item" href="#typeBranch/61" data-type-branch-id="61" data-lang="typeBranch-61">铁匠</a>
                         <a class="dropdown-item" href="#typeBranch/62" data-type-branch-id="62" data-lang="typeBranch-62">炼金术士</a>
                     </ul>
@@ -111,6 +105,7 @@
     </nav>
     <div class="alert alert-danger" role="alert" style="display:none;" data-lang="alertCBT">警告：正在使用测试服数据。</div>
     <div id="main">
+    	<div id="astrolabe-viewer" style="width:100%; height: 800px;"></div>
     </div>
     <div class="rune-panel">
         <div class="rune-panel-main">
@@ -205,7 +200,7 @@
         <div class="rune-panel-switch"></div>
     </div>
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-97666474-2"></script>
+<!--    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-97666474-2"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
 
@@ -214,6 +209,7 @@
 
         gtag('config', 'UA-97666474-2');
     </script>
+    -->
 </body>
 
 </html>

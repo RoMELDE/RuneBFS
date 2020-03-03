@@ -1,7 +1,7 @@
 {
   "name": "RuneBFS",
   "version": "1.0.0",
-  "description": "ROMEL Rune Breadth-First-Search",
+  "description": "Rune Breadth-First-Search",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RoMELDE/RuneBFS.git"
+    "url": "git+https://github.com/tommy-private/RuneBFS.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/RoMELDE/RuneBFS/issues"
+    "url": "https://github.com/tommy-private/RuneBFS/issues"
   },
-  "homepage": "https://github.com/RoMELDE/RuneBFS#readme",
+  "homepage": "https://github.com/tommy-private/RuneBFS#readme",
   "devDependencies": {
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.0.0",
@@ -40,6 +40,7 @@
     "bootstrap": "^4.3.1",
     "bootstrap-select": "^1.13.10",
     "dom-to-image": "^2.6.0",
+    "imports-loader": "^0.8.0",
     "jquery": "^3.4.1",
     "localforage": "^1.7.3",
     "lodash": "^4.17.15",
@@ -47,6 +48,7 @@
     "nprogress": "^0.2.0",
     "offline-plugin": "^5.0.7",
     "popper.js": "^1.15.0",
+    "sigma": "1.2.1",
     "underscore": "^1.9.1"
   }
 }

@@ -6,20 +6,45 @@ import NProgress from 'nprogress'
 import LZString from 'lz-string'
 import domtoimage from 'dom-to-image';
 import Backbone from 'backbone';
+import * as sigma from 'sigma';
+import 'sigma/plugins/sigma.renderers.customShapes/shape-library';
+import 'sigma/plugins/sigma.renderers.customShapes/sigma.renderers.customShapes';
+
+// icon & color setting
+import IMG_RUNE_OFF_1 from '../img/Rune_Off_1.png';
+import IMG_RUNE_OFF_2 from '../img/Rune_Off_2.png';
+import IMG_RUNE_OFF_3 from '../img/Rune_Off_3.png';
+import IMG_RUNE_OFF_4 from '../img/Rune_Off_4.png';
+import IMG_RUNE_OFF_5 from '../img/Rune_Off_5.png';
+import IMG_RUNE_OFF_6 from '../img/Rune_Off_6.png';
+import IMG_RUNE_SEL_1 from '../img/Rune_SEL_1.png';
+import IMG_RUNE_SEL_2 from '../img/Rune_SEL_2.png';
+import IMG_RUNE_SEL_3 from '../img/Rune_SEL_3.png';
+import IMG_RUNE_SEL_4 from '../img/Rune_SEL_4.png';
+import IMG_RUNE_SEL_5 from '../img/Rune_SEL_5.png';
+import IMG_RUNE_SEL_6 from '../img/Rune_SEL_6.png';
+import IMG_RUNE_ON_1 from '../img/Rune_On_1.png';
+import IMG_RUNE_ON_2 from '../img/Rune_On_2.png';
+import IMG_RUNE_ON_3 from '../img/Rune_On_3.png';
+import IMG_RUNE_ON_4 from '../img/Rune_On_4.png';
+import IMG_RUNE_ON_5 from '../img/Rune_On_5.png';
+import IMG_RUNE_ON_6 from '../img/Rune_On_6.png';
+// IMG_RUNE[status][type]
+var IMG_RUNE = [["", IMG_RUNE_OFF_1, IMG_RUNE_OFF_2, IMG_RUNE_OFF_3, IMG_RUNE_OFF_4, IMG_RUNE_OFF_5, IMG_RUNE_OFF_6],
+                ["", IMG_RUNE_SEL_1, IMG_RUNE_SEL_2, IMG_RUNE_SEL_3, IMG_RUNE_SEL_4, IMG_RUNE_SEL_5, IMG_RUNE_SEL_6],
+                ["", IMG_RUNE_ON_1, IMG_RUNE_ON_2, IMG_RUNE_ON_3, IMG_RUNE_ON_4, IMG_RUNE_ON_5, IMG_RUNE_ON_6]];
+var NODE_COLOR = [["","#333333","#333333","#333333","#333333","#333333","#666666"], 
+				  ["", "#0ed9d6", "#0ed9d6", "#0ed9d6", "#0ed9d6", "#0ed9d6", "#0ed9d6"],
+				  ["", "#e36956", "#3a85ed", "#c6a701", "#379f1e", "#d08349", "#ae56ed"]];
 
 var activeMenu = "";
 var runeList = [];
 var runeCheckList = [];
 var typeBranch = 0;
-var minX = 0;
-var maxX = 0;
-var minY = 0;
-var maxY = 0;
-var scale = 0.2;
 var maxevo = 99999;
 var pathAlgorithm = "nogold";
 var inited = false;
-var runeSize = 60.0;
+var runeSize = 6.0;
 var defaultTypeBranch = {
     1: 11,
     2: 21,
@@ -28,6 +53,8 @@ var defaultTypeBranch = {
     5: 51,
     6: 61,
 };
+// sigma.js 
+var s, g;
 
 var initUiLanguage = function () {
     $('[data-lang]').each(function () {
@@ -62,7 +89,8 @@ var init = function (id, savedata, server) {
     }
     clear();
     initControl();
-    render(id, savedata);
+    initGraph(id, savedata);
+    initEventListener();
 };
 var clear = function () {
     runeList = [];
@@ -83,7 +111,6 @@ var initControl = function () {
         if (!o.version) {
             return;
         }
-        //$('#serverDivider').before('<a class="dropdown-item ' + ((o.id == server.id) ? ' active ' : '') + (o.version ? '' : ' disabled ') + '" href="#server/' + o.id + '">' + o.name + '<div class="m-0" style="font-size:0.75rem;line-height:0.75rem;"><span class="mr-5">' + o.id + '</span><div class="m-0" style="font-size:0.75rem;line-height:0.75rem;float:right;">' + o.version + '</div></div></a>');
         $('#serverDivider').before('<a class="dropdown-item ' + ((o.id == server.id) ? ' active ' : '') + (o.version ? '' : ' disabled ') + '" href="#server/' + o.id + '">' + o.name + '<div class="m-0" style="font-size:0.75rem;line-height:0.75rem;">' + o.version + '</div></a>');
     });
 
@@ -102,8 +129,7 @@ var initControl = function () {
             }, 500);
         }
         else {
-            //alert("该符文不存在，请尝试启用进阶符文");
-            alert(Ui.getText('runenotexist'));
+            alert(Ui.getText('Rune not exist'));
         }
     });
     $('#btnClear').click(function () {
@@ -115,8 +141,8 @@ var initControl = function () {
         _.each(astrolabe, function (o, i) {
             checkRune(o.Id, true, false);
         });
-        renderCost();
-        renderRuneLink();
+        //renderCost();
+		updateGraph();
     });
 
     $('#btnSaveImage').click(function () {
@@ -135,14 +161,11 @@ var initControl = function () {
     $('#btnReset').click(function () {
         if (confirm(Ui.getText('confirmreset'))) {
             _.each(runeCheckList, function (o, i) {
-                var $rune = $("#rune" + o);
-                $rune.data('status', 0)
-                    .removeClass('rune-checked')
+                var rune = s.graph.nodes("rune" + o);
+                rune.status = 0;
             });
             runeCheckList = [];
-
-            renderCost();
-            renderRuneLink();
+			updateGraph();
         }
     });
     $('#btnSave').click(function () {
@@ -150,11 +173,7 @@ var initControl = function () {
     });
     $('input[name="evo"]').change(function () {
         maxevo = parseInt(this.value);
-        render(typeBranch);
-    });
-    $('#scale').change(function () {
-        scale = parseFloat(this.value) || 0.2;
-        render(typeBranch);
+        initGraph(typeBranch);
     });
     $('input[name="pathAlgorithm"]').change(function () {
         pathAlgorithm = this.value;
@@ -170,135 +189,123 @@ var initControl = function () {
     });
     inited = true;
 };
-var render = function (id, savedata) {
-    console.log("render", id, savedata);
+
+var updateGraph = function(){
+	_.each(s.graph.nodes(), function(rune, i) {
+        rune.color = NODE_COLOR[rune.status][rune.runetype];
+	    rune.image.url = IMG_RUNE[rune.status][rune.runetype];
+	});
+	s.refresh();
+};
+
+var initGraph = function (id, savedata) {
+    console.log("initGraph", id, savedata);
+    if(s) s.kill();
     var self = this;
     if (id == 0) {
         return;
     }
     typeBranch = id;
     setActiveMenu(typeBranch);
-    //clear main
-    $('#main').find("img").attr('src', ''); //stop image loading when doPage
-    $('#main').empty();
+
     //get data
     var astrolabe = Data.getAstrolabe();
 
-    minX = _.min(astrolabe, function (o) { return o.X }).X;
-    maxX = _.max(astrolabe, function (o) { return o.X }).X;
-    minY = _.min(astrolabe, function (o) { return o.Y }).Y;
-    maxY = _.max(astrolabe, function (o) { return o.Y }).Y;
-
-    var $div = $("<div>").addClass("astrolabe-container");
-
+	// generate nodes and edges
+	var nodes = [];
+	var edges = []
     _.each(astrolabe, function (o, i) {
-        //debugger;
+        // nodes: 
         var cost = Data.getRuneCost(o.Id);
         var resetCost = Data.getRuneResetCost(o.Id);
         var desc = Data.getRuneDesc(o.Id, typeBranch);
-        var $rune = $("<div>")
-            .addClass("rune")
-            .css("left", (((o.X - minX) + runeSize / 2) * scale))
-            .css("top", (((maxY - o.Y) + runeSize / 2) * scale))
-            .css("width", runeSize * scale)
-            .css("height", runeSize * scale)
-            .attr("id", "rune" + o.Id)
-            .attr("data-id", o.Id)
-            .data("rune", o)
-            .data("cost", cost)
-            .data("resetCost", resetCost)
-            .data("desc", desc)
-            .data("status", 0) //0:unchecked,1:checked,2:saved
-            .attr("data-toggle", "popover")
-            .attr("data-name", desc.Name)
-            //.attr("title", desc.Name + '<button type="button" id="close" class="close" onclick="$(this).parents(&quot;.popover&quot;).popover(&quot;hide&quot;);">&times;</button>')
-            //.attr("title", $title.html())
-            .attr("data-content",
-                '<ul class="list-group list-group-flush">' +
-                '<li class="list-group-item p-1">' + (desc.Desc || "") + '</li>' +
-                '<li class="list-group-item p-1">' + _.reduce(cost, function (result, current) {
-                    return result + current.Name + "*" + current.Count + " ";
-                }, "") + '</li>' + '</ul>')
-            .click(function () {
-                runeClick(o.Id);
-            });
+        var rune = {
+            id: "rune" + o.Id,
+            x: o.X,
+            y: -1 * o.Y ,
+            size: runeSize,
+            image: {
+	            url: IMG_RUNE[0][desc.Type],
+	            scale: 1.3
+	        },
+            dataid: o.Id,
+            rune: o,
+            cost: cost,
+            label: desc.Name, //desc.Desc,
+            runetype: desc.Type,
+            status: 0,   //0:unchecked,1:checked,2:saved
+        };
         if (o.Id == 10000) {
             //set default rune as saved
-            runeList.push(10000);
-            $rune.addClass("rune-center")
-                .data("status", 2)
-                .attr("title", "")
-                .attr("data-toggle", "");
+            rune.status = 2;
+            runeCheckList.push(o.Id);
         }
-        if (o.Evo > maxevo) {
-            $rune.addClass("rune-not-available")
-                .attr("title", "")
-                .attr("data-toggle", "")
-                .off('click');
+        if (o.Evo > maxevo) {  // evo はルーン盤の解放範囲
+            rune.status = 3;
         }
-        if (_.any(cost, function (o) { return o.Id == 5261; })) {
-            $rune.addClass("rune-special");
-        }
-        if ((o.X - minX) / (maxX - minX) > 0.8) {
-            $rune.attr("data-placement", "left");
-        }
-        if ((maxY - o.Y) / (maxY - minY) < 0.2) {
-            $rune.attr("data-placement", "bottom");
-        }
-        $div.append($rune);
+        nodes.push(rune);
+        
+        // edges 
+        _.each(o.Link, function (oo, i) {
+        	var target = Data.getRuneDataById(oo)
+            if (target) {
+				var edge = {
+		    		id: 'edge'+ o.Id +'-'+ target.Id,
+	    			source: 'rune' + o.Id,
+	    			target: 'rune' + target.Id 
+	    		};
+		    	edges.push(edge);
+	    	}
+	    });
     });
-    $('#main').append($div);
+	g = { nodes: nodes, edges : edges };
+    s = new sigma({ graph: g,
+					renderer: {
+						container: document.getElementById('astrolabe-viewer'),
+						type: 'canvas'
+    				},
+					settings: {
+				        autoRescale: ["nodePosition", "nodeSize"],
+				        adjustSizes: false,
+				        fixed: true,
+				        defaultNodeType: 'circle', 
+				        defaultLabelAlignment : 'inside',
+				        labelSize : "proportional", 
+				        labelSizeRatio: 0.5, 
+				        labelThreshold: 12,
+				}
+			});
+    CustomShapes.init(s);
+    s.cameras[0].goTo({ x: 0, y: 50, angle: 0, ratio: 0.25 });
+    updateGraph();	
+};
 
-    $('[data-toggle="popover"]').popover({
-        html: true,
-        trigger: 'hover focus',
-        container: '.astrolabe-container'
-    });
-    $('#main').on('show.bs.popover', function (e) {
-        var $rune = $(e.target);
-        var desc = $rune.data("desc");
-        var status = $rune.data("status");
-        var $title = $('<div>')
-            .append($('<div>')
-                .addClass('rune-icon')
-                .addClass('rune-' + (status == 0 ? "off" : "on") + '-' + desc.Type)
-                .text(desc.Name)
-                .append('<div class="rune-id d-none">' + $rune.attr("data-id")));
-        $rune.attr('data-original-title', $title.html());
-    });
-    $('#main').on('inserted.bs.popover', function (e) {
-        var z = 0;
-        $('.popover').each(function (i, o) {
-            var $popover = $(o);
-            if (z < parseInt($popover.css('z-index'))) {
-                z = parseInt($popover.css('z-index'));
-            }
-            if ($popover.find('button.close').length < 1) {
-                var $closeButton = $('<button type="button" id="close" class="close">&times;</button>');
-                $closeButton.click(function () {
-                    $(this).parents(".popover").popover("hide");
-                });
-                $popover.find('.popover-header').append($closeButton);
-            }
-        });
-        $('.popover:last')
-            .css('z-index', z + 1)
-            .off('mouseenter').off('click')
-            .on("mouseenter click", function () {
-                var zIndex = 0;
-                $('.popover').each(function (i, o) {
-                    if (zIndex < parseInt($(o).css('z-index'))) {
-                        zIndex = parseInt($(o).css('z-index'));
-                    }
-                })
-                $(this).css('z-index', zIndex + 1);
-                //console.log("current popover Z-Index", zIndex);
-            })
-            .on("click", '.rune-icon', function () {
-                $(e.target).popover('hide');
-                runeClick(parseInt($(this).find('.rune-id').text()));
-            });
-    });
+var initEventListener = function(){
+	s.bind("clickNode", function(e){
+	    /*if (e.node.dataId == 10000) {
+	        uncheckRuneWithConfirm(runeId);
+	    }else{*/
+	    console.log("clicked :", e);
+		switch(e.data.node.status) {
+            case 0:
+			    console.log("case 0 : checkRune");
+                checkRune(e.data.node);
+                break;	
+            case 1:
+                uncheckRune(e.data.node);
+                break;
+            case 2:
+                uncheckRuneWithConfirm(e.data.node);
+                break;
+            default:
+                break;
+         }
+		updateGraph();
+	});
+};
+
+
+	/*
 
     $('#txtSearch').empty();
     _.each(Data.getAllRuneDescNameByTypeBranch(typeBranch), function (o, i) {
@@ -309,80 +316,14 @@ var render = function (id, savedata) {
     if (savedata) {
         runeList = parseCondition(savedata);
     }
-    _.each(runeList, function (o, i) {
+    _.each(, function (o, i) {
         checkRune(o, true, true);
     });
     _.each(runeCheckList, function (o, i) {
         checkRune(o, true, false);
     });
     renderCost();
-    renderRuneLink();
-
-    //setTimeout(function () {
-    //    //a little delay to unveil for better unveil effect
-    //    $('#main').find("img").unveil();
-    //}, 100);
-};
-
-var renderRuneLink = function () {
-    $(".rune-link-container").remove();
-    var runeLinkWidth = (maxX - minX + runeSize * 2) * scale;
-    var runeLinkHeight = (maxY - minY + runeSize * 2) * scale
-    var $runeLink = $("<canvas>")
-        .attr("width", runeLinkWidth)
-        .attr("height", runeLinkHeight)
-        .addClass("rune-link-container");
-    $('.astrolabe-container').append($runeLink);
-    var linkcontext = $runeLink[0].getContext('2d');
-    linkcontext.fillStyle = "rgba(0, 0, 0, 0.25)";
-    linkcontext.font = "25px PingFang SC,Source Han Sans SC,Noto Sans CJK SC,Hiragino Sans GB,Microsoft YaHei UI,Microsoft YaHei,sans-serif";
-    var server = Data.getCurrentServer();
-    if (server.isTest) {
-        linkcontext.textAlign = "left";
-        linkcontext.fillText(Ui.getText("alertCBT"), 0, 25);
-    }
-    linkcontext.textAlign = "left";
-    linkcontext.fillText($('#runeCheckCost').data('cost'), 0, runeLinkHeight - 5);
-    linkcontext.fillText($('#runeCost').data('cost'), 0, runeLinkHeight - 35);
-    linkcontext.font = "25px Consolas";
-    linkcontext.textAlign = "right";
-    linkcontext.fillText("ROMEL Rune BFS", runeLinkWidth, runeLinkHeight - 35);
-    linkcontext.fillText("Version:" + server.version + "(" + server.id + ")", runeLinkWidth, runeLinkHeight - 5);
-    _.each(Data.getAstrolabe(), function (o, i) {
-        var runeData = o;
-        _.each(runeData.Link, function (o, i) {
-            var runeToData = Data.getRuneDataById(o);
-            if (runeToData) {
-                linkcontext.beginPath();
-                linkcontext.moveTo((runeData.X - minX + runeSize) * scale, (maxY - runeData.Y + runeSize) * scale);
-                linkcontext.lineTo((runeToData.X - minX + runeSize) * scale, (maxY - runeToData.Y + runeSize) * scale);
-                linkcontext.lineWidth = 3;
-                if (runeData.Evo > maxevo || runeToData.Evo > maxevo) {
-                    linkcontext.strokeStyle = 'rgba(233, 233, 233, 0.15)';
-                    linkcontext.stroke();
-                }
-                else if (!(_.contains(runeList.concat(runeCheckList), runeData.Id) && _.contains(runeList.concat(runeCheckList), runeToData.Id))) {
-                    linkcontext.strokeStyle = '#333';
-                    linkcontext.stroke();
-                }
-                else {
-                    linkcontext.lineWidth = 4;
-                    linkcontext.strokeStyle = '#13a7ff';
-                    linkcontext.stroke();
-                    linkcontext.lineWidth = 3;
-                    linkcontext.strokeStyle = '#85e2ff';
-                    linkcontext.stroke();
-                    linkcontext.lineWidth = 2;
-                    linkcontext.strokeStyle = '#cef3ff';
-                    linkcontext.stroke();
-                    linkcontext.lineWidth = 1;
-                    linkcontext.strokeStyle = '#eefcff';
-                    linkcontext.stroke();
-                }
-            }
-        });
-    });
-};
+    */
 
 var renderCost = function () {
     var runeCost = [];
@@ -495,37 +436,12 @@ var renderCost = function () {
     $('#runeCost').data('cost', runeCostText.trim() + "(" + runeResetCostText.trim() + ")");
 };
 
-var runeClick = function (runeId) {
-    if (runeId == 10000) {
-        uncheckRuneWithConfirm(runeId);
-    }
-    else {
-        var $rune = $("#rune" + runeId);
-        var status = $rune.data('status');
-        switch (status) {
-            case 0:
-                checkRune(runeId);
-                break;
-            case 1:
-                uncheckRune(runeId);
-                break;
-            case 2:
-                uncheckRuneWithConfirm(runeId);
-                break;
-            default:
-                break;
-        }
-    }
-    renderCost();
-    renderRuneLink();
-};
-
-var checkRune = function (runeId, noRecursion, isSaved) {
+var checkRune = function (rune, noRecursion, isSaved) {
+	var runeId = rune.dataid;
     if (runeId == 10000) {
         return;
     }
-    var $rune = $("#rune" + runeId);
-    if ($rune.data('rune').evo > maxevo) {
+    if (rune.Evo > maxevo) {
         return;
     }
     if (!noRecursion) {
@@ -550,44 +466,38 @@ var checkRune = function (runeId, noRecursion, isSaved) {
             return;
         }
         _.each(path, function (o, i) {
-            checkRune(o, true);
+            checkRune(s.graph.nodes('rune'+ o), true);
         });
     }
     else {
         if (isSaved) {
-            if ($rune.data('status') >= 2) {
+            if (rune.status >= 2) {
                 return;
             }
-            $rune.data('status', 2).addClass('rune-saved');
+            rune.status = 2;
         }
         else {
-            if ($rune.data('status') >= 1) {
+            if (rune.status >= 1) {
                 return;
             }
-            $rune.data('status', 1).addClass('rune-checked');
+            rune.status = 1;
             runeCheckList.push(runeId);
         }
-        $('.rune-icon[runeId="' + runeId + '"]')
-            .toggleClass('rune-off-' + $rune.data('desc').Type)
-            .toggleClass('rune-on-' + $rune.data('desc').Type);
     }
 };
+
 var uncheckRuneWithConfirm = function (runeId) {
     if (confirm(Ui.getText("confirmuncheck"))) {
         uncheckRune(runeId);
     }
 };
-var uncheckRune = function (runeId, noRecursion) {
-    var $rune = $("#rune" + runeId);
-    if ($rune.data('rune').evo > maxevo) {
+var uncheckRune = function (rune, noRecursion) {
+    var runeId = rune.dataid;
+    if (rune.Evo > maxevo) {
         return;
     }
-    $rune.data('status', 0)
-        .removeClass('rune-checked')
-        .removeClass('rune-saved');
-    $('.rune-icon[runeId="' + runeId + '"]')
-        .toggleClass('rune-off-' + $rune.data('desc').Type)
-        .toggleClass('rune-on-' + $rune.data('desc').Type);
+    rune.status = 0;
+
     runeList = _.without(runeList, runeId);
     runeCheckList = _.without(runeCheckList, runeId);
     if (!noRecursion) {
@@ -595,7 +505,7 @@ var uncheckRune = function (runeId, noRecursion) {
         _.each(components, function (o, i) {
             if (_.contains(o, 10000) == false) {
                 _.each(o, function (p, j) {
-                    uncheckRune(p, true);
+                    uncheckRune(s.graph.nodes('rune'+ p), true);
                 });
             }
         });
@@ -607,13 +517,11 @@ var save = function () {
     runeList = _.unique(runeList.concat(runeCheckList));
     runeCheckList = [];
     _.each(runeList, function (o, i) {
-        var $rune = $("#rune" + o);
-        $rune.data('status', 2)
-            .removeClass('rune-checked')
-            .addClass('rune-saved');
+        var rune = s.graph.nodes("rune" + o);
+        rune.status = 2;
     });
-    renderCost();
-    renderRuneLink();
+    // renderCost();
+    updateGraph();
 
     var data = stringifyCondition(runeList);
     Backbone.history.navigate("typeBranch/" + typeBranch + "/share/" + data + '/server/' + Data.getCurrentServer().id, { trigger: false });

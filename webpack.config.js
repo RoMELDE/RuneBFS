@@ -68,6 +68,11 @@ module.exports = env => {
                 //chunks: 'all'
             }
         },
+	resolve: {
+	    modules: [
+		'node_modules',
+	    ],
+	},
         module: {
             rules: [{
                     test: /\.css$/,
@@ -90,6 +95,12 @@ module.exports = env => {
                             limit: 16384
                         }
                     }]
+                },
+                {
+		   // for sigma plugins (https://github.com/jacomyal/sigma.js/issues/871)
+                   // need to install imports-loader: `yarn add imports-loader`
+                    test: /sigma.*/,
+                    use: 'imports-loader?this=>window'
                 },
                 // {
                 //   test: /\.(tpl|html)$/,
