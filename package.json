@@ -47,6 +47,6 @@
     "nprogress": "^0.2.0",
     "offline-plugin": "^5.0.7",
     "popper.js": "^1.15.0",
-    "underscore": "^1.9.1"
+    "underscore": "^1.12.1"
   }
 }
